@@ -1,5 +1,5 @@
 # dchat
-This application is a proof of concept of distributed chat. 
+This application is a proof that disrtibuted chat can be implemented in real world. 
 
 Application is built on top of textile.io (threads v1):
 https://github.com/textileio/android-textile
