@@ -1,4 +1,4 @@
-package com.legion1900.dchat.data.abs
+package com.legion1900.dchat.data.textile.abs
 
 sealed class TextileEvent
 

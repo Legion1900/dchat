@@ -1,4 +1,4 @@
-package com.legion1900.dchat.data.abs
+package com.legion1900.dchat.data.textile.abs
 
 import io.reactivex.Single
 import io.textile.textile.Textile

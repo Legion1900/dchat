@@ -1,8 +1,8 @@
-package com.legion1900.dchat.data.impl
+package com.legion1900.dchat.data.textile.impl
 
-import com.legion1900.dchat.data.abs.NodeStateChanged
-import com.legion1900.dchat.data.abs.TextileEvent
-import com.legion1900.dchat.data.abs.TextileEventBus
+import com.legion1900.dchat.data.textile.abs.NodeStateChanged
+import com.legion1900.dchat.data.textile.abs.TextileEvent
+import com.legion1900.dchat.data.textile.abs.TextileEventBus
 import io.reactivex.subjects.PublishSubject
 import io.textile.textile.TextileEventListener
 import kotlin.reflect.KClass
