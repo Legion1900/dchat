@@ -1,10 +1,10 @@
 package com.legion1900.dchat.data.textile.impl
 
-import com.legion1900.dchat.data.textile.abs.NodeStateChanged
-import com.legion1900.dchat.data.textile.abs.TextileEvent
-import com.legion1900.dchat.data.textile.abs.TextileEventBus
+import com.legion1900.dchat.data.textile.abs.*
 import io.reactivex.subjects.PublishSubject
+import io.textile.pb.Model
 import io.textile.textile.TextileEventListener
+import java.lang.Exception
 import kotlin.reflect.KClass
 
 class TextileEventBusImpl(
@@ -13,6 +13,9 @@ class TextileEventBusImpl(
 
     private val subjects = mapOf(
         newSubject<NodeStateChanged>(),
+        newSubject<QueryDone>(),
+        newSubject<QueryError>(),
+        newSubject<ContactQueryResult>(),
     )
 
     @Suppress("UNCHECKED_CAST")
@@ -30,6 +33,21 @@ class TextileEventBusImpl(
     override fun nodeStopped() {
         globalListener.nodeStopped()
         routeEvent(NodeStateChanged(false))
+    }
+
+    override fun queryDone(queryId: String) {
+        globalListener.queryDone(queryId)
+        routeEvent(QueryDone(queryId))
+    }
+
+    override fun queryError(queryId: String, e: Exception) {
+        globalListener.queryError(queryId, e)
+        routeEvent(QueryError(queryId, e))
+    }
+
+    override fun contactQueryResult(queryId: String, contact: Model.Contact) {
+        globalListener.contactQueryResult(queryId, contact)
+        routeEvent(ContactQueryResult(queryId, contact))
     }
 
     private inline fun <reified T : TextileEvent> newSubject(): Pair<KClass<T>, PublishSubject<T>> {
