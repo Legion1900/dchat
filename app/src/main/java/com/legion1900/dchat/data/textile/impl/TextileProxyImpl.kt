@@ -13,15 +13,22 @@ import io.textile.textile.Textile
 
 class TextileProxyImpl(
     override val eventBus: TextileEventBus,
-    private val app: Application
+    private val app: Application,
+    private val path: String,
+    private val isDebug: Boolean
 ) : TextileProxy {
     override val instance: Single<Textile>
-        get() = isRunning.filter { it }
-            .firstOrError()
-            .map { Textile.instance() }
-            .subscribeOn(Schedulers.io())
+        get() {
+            launch()
+            return isRunning.filter { it }
+                .firstOrError()
+                .map { Textile.instance() }
+                .subscribeOn(Schedulers.io())
+        }
 
     private val isRunning = BehaviorSubject.create<Boolean>().apply { onNext(false) }
+
+    private val lock = Any()
 
     init {
         attachBus()
@@ -31,10 +38,13 @@ class TextileProxyImpl(
             .subscribe(isRunning)
     }
 
-    override fun init(path: String) {
+    private fun launch() {
         if (isRunning.value == false) {
-            val isDebug = BuildConfig.DEBUG
-            Textile.launch(app, path, isDebug)
+            synchronized(lock) {
+                if (isRunning.value == false) {
+                    Textile.launch(app, path, isDebug)
+                }
+            }
         }
     }
 

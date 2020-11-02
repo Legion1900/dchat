@@ -11,11 +11,7 @@ interface TextileProxy {
     val instance: Single<Textile>
     val eventBus: TextileEventBus
 
-    /**
-     * Initiate and start Textile node
-     * @param path - path to Textile wallet root folder
-     * */
-    fun init(path: String)
+
 
     /**
      * Dispose currently running instance
