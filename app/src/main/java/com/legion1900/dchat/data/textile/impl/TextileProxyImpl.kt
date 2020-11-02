@@ -7,6 +7,7 @@ import com.legion1900.dchat.data.textile.abs.TextileEventBus
 import com.legion1900.dchat.data.textile.abs.TextileEventBus.Companion.getSubject
 import com.legion1900.dchat.data.textile.abs.TextileProxy
 import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.textile.textile.Textile
 
@@ -18,6 +19,7 @@ class TextileProxyImpl(
         get() = isRunning.filter { it }
             .firstOrError()
             .map { Textile.instance() }
+            .subscribeOn(Schedulers.io())
 
     private val isRunning = BehaviorSubject.create<Boolean>().apply { onNext(false) }
 
@@ -25,6 +27,7 @@ class TextileProxyImpl(
         attachBus()
         eventBus.getSubject<NodeStateChanged>()
             .map(NodeStateChanged::isRunning)
+            .subscribeOn(Schedulers.io())
             .subscribe(isRunning)
     }
 
