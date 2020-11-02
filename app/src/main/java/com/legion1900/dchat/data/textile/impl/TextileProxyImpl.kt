@@ -10,6 +10,7 @@ import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import io.reactivex.subjects.BehaviorSubject
 import io.textile.textile.Textile
+import java.util.concurrent.atomic.AtomicBoolean
 
 class TextileProxyImpl(
     override val eventBus: TextileEventBus,
@@ -29,6 +30,7 @@ class TextileProxyImpl(
     private val isRunning = BehaviorSubject.create<Boolean>().apply { onNext(false) }
 
     private val lock = Any()
+    private val isLaunched = AtomicBoolean(false)
 
     init {
         attachBus()
@@ -39,10 +41,11 @@ class TextileProxyImpl(
     }
 
     private fun launch() {
-        if (isRunning.value == false) {
+        if (!isLaunched.get()) {
             synchronized(lock) {
-                if (isRunning.value == false) {
+                if (!isLaunched.get()) {
                     Textile.launch(app, path, isDebug)
+                    isLaunched.set(true)
                 }
             }
         }
