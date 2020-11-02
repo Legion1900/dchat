@@ -17,7 +17,7 @@ class TextileAccountManager(
 ) : AccountManager {
     override fun currentAccount(): Single<Account> {
         return proxy.instance.map { it.account.contact() }
-            .map { Account(it.address, it.name) }
+            .map { Account(it.address, it.name, it.avatar) }
     }
 
     override fun createNewAccount(name: String): Single<String> {

@@ -42,7 +42,7 @@ class TextileContactManager(
             .flatMap { contacts ->
                 if (contacts.isNotEmpty())
                 Observable.fromIterable(contacts)
-                    .map { Account(it.address, it.name) }
+                    .map { toAccount(it) }
                     .buffer(contacts.size)
                     .firstOrError()
                 else Single.just(emptyList())
@@ -108,7 +108,7 @@ class TextileContactManager(
         }
     }
 
-    private fun toAccount(c: Model.Contact) = Account(c.address, c.name)
+    private fun toAccount(c: Model.Contact) = Account(c.address, c.name, c.avatar)
 
     private companion object {
         const val DEFAULT_WAIT = 10
