@@ -41,12 +41,25 @@ class TextileContactManager(
             .map { it.contacts.list().itemsList }
             .flatMap { contacts ->
                 if (contacts.isNotEmpty())
-                Observable.fromIterable(contacts)
-                    .map { toAccount(it) }
-                    .buffer(contacts.size)
-                    .firstOrError()
+                    Observable.fromIterable(contacts)
+                        .map { toAccount(it) }
+                        .buffer(contacts.size)
+                        .firstOrError()
                 else Single.just(emptyList())
             }
+    }
+
+    override fun getContact(id: String): Maybe<Account> {
+        return proxy.instance
+            .filter { it.contacts.list().itemsCount > 0 }
+            .flatMap { textile ->
+                try {
+                    Maybe.just(textile.contacts[id])
+                } catch (e: NullPointerException) {
+                    Maybe.empty()
+                }
+            }
+            .map { Account(it.address, it.name, it.avatar) }
     }
 
     private fun newQueryOptions(wait: Int, limit: Int): QueryOuterClass.QueryOptions {
