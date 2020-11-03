@@ -1,4 +1,4 @@
-package com.legion1900.dchat.data
+package com.legion1900.dchat.data.media
 
 import com.legion1900.dchat.data.textile.abs.TextileProxy
 import com.legion1900.dchat.domain.media.PhotoRepo
