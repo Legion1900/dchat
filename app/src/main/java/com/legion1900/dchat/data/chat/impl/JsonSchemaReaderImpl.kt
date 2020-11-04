@@ -1,6 +1,7 @@
-package com.legion1900.dchat.data.chat
+package com.legion1900.dchat.data.chat.impl
 
 import android.content.Context
+import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
 import java.io.BufferedReader

@@ -1,4 +1,4 @@
-package com.legion1900.dchat.data.chat
+package com.legion1900.dchat.data.chat.abs
 
 import androidx.annotation.RawRes
 import io.reactivex.Single
