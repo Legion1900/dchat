@@ -5,7 +5,7 @@
     "$id": "com.legion1900.dchat/chat_schema.json",
     "$schema": "http://json-schema.org/draft-07/schema#",
     "title": "Chat Thread",
-    "required": ["participants"],
+    "required": ["contentType", "content"],
     "type": "object",
     "properties": {
       "contentType": {
