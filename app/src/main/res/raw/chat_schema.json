@@ -1,0 +1,31 @@
+{
+  "name": "chat_thread",
+  "mill": "/json",
+  "json_schema": {
+    "$id": "com.legion1900.dchat/chat_schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "Chat Thread",
+    "required": ["participants"],
+    "type": "object",
+    "properties": {
+      "contentType": {
+        "type": "string",
+        "enum": ["text", "photo"],
+        "description": "Specifies exact media type to properly tackle it"
+      },
+      "content": {
+        "type": "object",
+        "properties": {
+          "text": {
+            "type": "string",
+            "description": "Text message"
+          },
+          "media": {
+            "type": ["string", "null"],
+            "description": "Media file IPFS hash"
+          }
+        }
+      }
+    }
+  }
+}

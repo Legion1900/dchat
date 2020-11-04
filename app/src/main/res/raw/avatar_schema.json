@@ -1,0 +1,17 @@
+{
+  "name": "acl_thread",
+  "mill": "/json",
+  "json_schema": {
+    "$id": "com.legion1900.dchat/acl_schema.json",
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "title": "ACL Thread",
+    "required": ["participants"],
+    "type": "object",
+    "properties": {
+      "chatAvatar": {
+        "type": "string",
+        "description": "IPFS hash of current chat avatar"
+      }
+    }
+  }
+}
