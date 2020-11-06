@@ -20,6 +20,7 @@ class ThreadFileRepoImpl(private val proxy: TextileProxy, private val gson: Gson
         limit: Int
     ): Single<ThreadFiles<T>> {
         return proxy.instance
+            // Offset - Model.File.block
             .map { it.files.list(threadId, offset, limit.toLong()).itemsList }
             .flatMap { models ->
                 Observable.fromIterable(models)

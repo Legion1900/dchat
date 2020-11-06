@@ -1,3 +1,11 @@
 package com.legion1900.dchat.data.chat.gson
 
-data class MessageJson(val contentType: String, val content: ContentJson)
+import com.google.gson.annotations.SerializedName
+
+data class MessageJson(
+    @SerializedName("content_type")
+    val contentType: ContentType,
+    val content: ContentJson,
+    @SerializedName("from_id")
+    val fromUser: String
+)
