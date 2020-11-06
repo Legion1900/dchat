@@ -32,8 +32,11 @@
             "description": "Text message"
           },
           "media": {
-            "type": ["string", "null"],
-            "description": "Media file IPFS hash"
+            "type": [
+              "string",
+              "null"
+            ],
+            "description": "File ID"
           }
         }
       }
