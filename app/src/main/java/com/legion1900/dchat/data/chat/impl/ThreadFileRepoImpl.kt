@@ -26,8 +26,9 @@ class ThreadFileRepoImpl(private val proxy: TextileProxy, private val gson: Gson
                 Observable.fromIterable(models)
                     .concatMapSingle { readFile(it.getFiles(0).file.hash, clazz) }
                     .buffer(limit)
+                    .defaultIfEmpty(emptyList())
                     .firstOrError()
-                    .map { ThreadFiles(it, models.last().block) }
+                    .map { ThreadFiles(it, models.lastOrNull()?.block) }
             }
     }
 
