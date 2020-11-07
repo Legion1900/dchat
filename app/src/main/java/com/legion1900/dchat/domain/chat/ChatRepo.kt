@@ -2,9 +2,11 @@ package com.legion1900.dchat.domain.chat
 
 import com.legion1900.dchat.domain.dto.Chat
 import io.reactivex.Single
-import java.io.File
 
 interface ChatRepo {
+
+    fun getChatCount(): Single<Int>
+
     /**
      * @param offset - zero-based offset by index
      * @return empty list when there is no chat in specified range
