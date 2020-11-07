@@ -2,7 +2,7 @@ package com.legion1900.dchat.data.chat
 
 import com.legion1900.dchat.R
 import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
-import com.legion1900.dchat.data.chat.abs.ThreadFileRepo
+import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
 import com.legion1900.dchat.data.chat.gson.AvatarJson
 import com.legion1900.dchat.data.chat.gson.MessageJson
 import com.legion1900.dchat.data.message.converter.MessageModelConverter

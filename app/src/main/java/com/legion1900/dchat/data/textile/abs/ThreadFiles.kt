@@ -1,4 +1,4 @@
-package com.legion1900.dchat.data.chat.abs
+package com.legion1900.dchat.data.textile.abs
 
 /**
  * @param data - data that was read from thread

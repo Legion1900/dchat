@@ -1,9 +1,9 @@
-package com.legion1900.dchat.data.chat.impl
+package com.legion1900.dchat.data.textile.impl
 
 import android.util.Base64
 import com.google.gson.Gson
-import com.legion1900.dchat.data.chat.abs.ThreadFileRepo
-import com.legion1900.dchat.data.chat.abs.ThreadFiles
+import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
+import com.legion1900.dchat.data.textile.abs.ThreadFiles
 import com.legion1900.dchat.data.textile.blockHandler
 import com.legion1900.dchat.data.textile.dataHandler
 import com.legion1900.dchat.data.textile.abs.TextileProxy
