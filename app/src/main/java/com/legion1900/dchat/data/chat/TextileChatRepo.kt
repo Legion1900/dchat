@@ -1,24 +1,41 @@
 package com.legion1900.dchat.data.chat
 
 import com.legion1900.dchat.R
+import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
+import com.legion1900.dchat.data.chat.abs.ThreadFileRepo
+import com.legion1900.dchat.data.chat.gson.AvatarJson
+import com.legion1900.dchat.data.chat.gson.MessageJson
+import com.legion1900.dchat.data.message.converter.MessageModelConverter
 import com.legion1900.dchat.data.textile.abs.TextileProxy
-import com.legion1900.dchat.domain.chat.ChatManager
+import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.domain.dto.Chat
+import io.reactivex.Observable
 import io.reactivex.Single
 import io.textile.pb.Model
 import io.textile.pb.View
 import io.textile.textile.Textile
 import java.util.*
 
-class TextileChatManager(
+class TextileChatRepo(
     private val proxy: TextileProxy,
-    private val schemaReader: JsonSchemaReader
-) : ChatManager {
-    override fun getChats(offset: String?, limit: Int): Single<List<Chat>> {
-        TODO()
+    private val schemaReader: JsonSchemaReader,
+    private val fileRepo: ThreadFileRepo
+) : ChatRepo {
+
+    private val msgConverter = MessageModelConverter()
+
+    override fun getChats(offset: Int, limit: Int): Single<List<Chat>> {
+        return proxy.instance.map { it.threads.list().itemsList }
+            .flatMapObservable { Observable.fromIterable(it) }
+            .filter { !otherThreadsRegex.containsMatchIn(it.key) }
+            .skip(offset.toLong())
+            .concatMapSingle { getChatModel(it) }
+            .buffer(limit)
+            .defaultIfEmpty(emptyList())
+            .firstOrError()
     }
 
-    override fun createChat(name: String): Single<String> {
+    override fun addNewChat(name: String): Single<String> {
         val getChatSchema = schemaReader.readSchema(R.raw.chat_schema)
             .map { newJsonSchema(it) }
         return Single.zip(
@@ -34,7 +51,7 @@ class TextileChatManager(
             val key = "${aclThread.id};${mediaThread.id};${avatarThread.id}"
             val sharing = Model.Thread.Sharing.INVITE_ONLY
             val type = Model.Thread.Type.OPEN
-            textile.newThread(chatSchema, sharing, type, key)
+            textile.newThread(chatSchema, sharing, type, key, name)
         }.map { it.id }
     }
 
@@ -80,9 +97,10 @@ class TextileChatManager(
         schema: View.AddThreadConfig.Schema,
         sharing: Model.Thread.Sharing,
         type: Model.Thread.Type,
-        key: String
+        key: String,
+        name: String = ""
     ): Model.Thread {
-        val config = newThreadConfig(schema, sharing, type, key)
+        val config = newThreadConfig(schema, sharing, type, key, name)
         return threads.add(config)
     }
 
@@ -105,21 +123,46 @@ class TextileChatManager(
         schema: View.AddThreadConfig.Schema,
         sharing: Model.Thread.Sharing,
         type: Model.Thread.Type,
-        key: String
+        key: String,
+        name: String
     ): View.AddThreadConfig {
         return View.AddThreadConfig.newBuilder()
             .setSchema(schema)
             .setSharing(sharing)
             .setType(type)
+            .setName(name)
             .setKey(key)
             .build()
     }
 
+    private fun getAvatarHash(threadId: String): Single<List<AvatarJson>> {
+        return fileRepo.getFiles(AvatarJson::class.java, threadId, null, 1)
+            .map { it.data }
+    }
+
+    private fun getLastMessage(threadId: String): Single<List<MessageJson>> {
+        return fileRepo.getFiles(MessageJson::class.java, threadId, null, 1)
+            .map { it.data }
+    }
+
     private fun newUUID() = UUID.randomUUID().toString()
+
+    private fun getChatModel(chatThread: Model.Thread): Single<Chat> {
+        val avatarId = chatThread.key.split(";").last()
+        val avatarHash = getAvatarHash(avatarId)
+        val msg = getLastMessage(chatThread.id)
+        return Single.zip(avatarHash, msg) { hashList, msgList ->
+            val avatar = hashList.firstOrNull()?.chatAvatar
+            val lastMsg = msgList.firstOrNull()?.let { msgConverter.convert(it) }
+            Chat(chatThread.id, chatThread.name, avatar, lastMsg)
+        }
+    }
 
     private companion object {
         const val AVATAR_KEY_PREFIX = "avatar: "
         const val MEDIA_KEY_PREFIX = "media: "
         const val ACL_KEY_PREFIX = "acl: "
+
+        val otherThreadsRegex = Regex("^avatar:\\s|^media:\\s|^acl:\\s")
     }
 }

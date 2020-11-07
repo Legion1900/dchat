@@ -11,10 +11,7 @@
     "type": "object",
     "properties": {
       "chat_avatar": {
-        "type": [
-          "string",
-          "null"
-        ],
+        "type": "string",
         "description": "IPFS hash of current chat avatar"
       }
     }
