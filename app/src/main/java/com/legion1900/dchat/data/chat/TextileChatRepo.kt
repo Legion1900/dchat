@@ -2,13 +2,16 @@ package com.legion1900.dchat.data.chat
 
 import com.legion1900.dchat.R
 import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
+import com.legion1900.dchat.data.chat.gson.AclJson
 import com.legion1900.dchat.data.chat.gson.AvatarJson
 import com.legion1900.dchat.data.chat.gson.MessageJson
 import com.legion1900.dchat.data.message.converter.MessageModelConverter
 import com.legion1900.dchat.data.textile.abs.TextileProxy
 import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
+import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.domain.dto.Chat
+import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 import io.textile.pb.Model
@@ -19,7 +22,8 @@ import java.util.*
 class TextileChatRepo(
     private val proxy: TextileProxy,
     private val schemaReader: JsonSchemaReader,
-    private val fileRepo: ThreadFileRepo
+    private val fileRepo: ThreadFileRepo,
+    private val profileManager: ProfileManager
 ) : ChatRepo {
 
     private val chatKeyUtil = ChatKeyUtil()
@@ -69,6 +73,15 @@ class TextileChatRepo(
                     Model.Thread.Type.READ_ONLY,
                     "$ACL_KEY_PREFIX${newUUID()}"
                 )
+            }.flatMap { addChatOwner(it.id).andThen(Single.just(it)) }
+    }
+
+    private fun addChatOwner(aclId: String): Completable {
+        return profileManager.getCurrentAccount()
+            .map { it.id }
+            .flatMapCompletable { ownerId ->
+                val acl = AclJson(listOf(ownerId))
+                fileRepo.insertData(acl, aclId)
             }
     }
 
