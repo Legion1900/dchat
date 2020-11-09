@@ -2,11 +2,11 @@ package com.legion1900.dchat.data.chat
 
 import com.legion1900.dchat.R
 import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
-import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
 import com.legion1900.dchat.data.chat.gson.AvatarJson
 import com.legion1900.dchat.data.chat.gson.MessageJson
 import com.legion1900.dchat.data.message.converter.MessageModelConverter
 import com.legion1900.dchat.data.textile.abs.TextileProxy
+import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
 import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.domain.dto.Chat
 import io.reactivex.Observable
@@ -21,6 +21,8 @@ class TextileChatRepo(
     private val schemaReader: JsonSchemaReader,
     private val fileRepo: ThreadFileRepo
 ) : ChatRepo {
+
+    private val chatKeyUtil = ChatKeyUtil()
 
     private val msgConverter = MessageModelConverter()
 
@@ -50,7 +52,7 @@ class TextileChatRepo(
             /*
             * Chat thread key retrieval algorithm must not be modified!
             * */
-            val key = "${aclThread.id};${mediaThread.id};${avatarThread.id}"
+            val key = chatKeyUtil.createChatKey(aclThread.id, mediaThread.id, avatarThread.id)
             val sharing = Model.Thread.Sharing.INVITE_ONLY
             val type = Model.Thread.Type.OPEN
             textile.newThread(chatSchema, sharing, type, key, name)
@@ -150,7 +152,7 @@ class TextileChatRepo(
     }
 
     private fun getChatModel(chatThread: Model.Thread): Single<Chat> {
-        val avatarId = chatThread.key.split(";").last()
+        val avatarId = chatKeyUtil.getAvatarId(chatThread.key)
         val avatarHash = getAvatarHash(avatarId)
         val msg = getLastMessage(chatThread.id)
         return Single.zip(avatarHash, msg) { hashList, msgList ->
