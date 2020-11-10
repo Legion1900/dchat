@@ -40,7 +40,7 @@ class TextileAclManager(
     private fun getChatThreadIds(textile: Textile, chatId: String): List<String> {
         val key = textile.threads[chatId].key
         return keyUtil.run {
-            listOf(chatId, getAclId(key), getMediaId(key), getAvatarId(key))
+            listOf(getAclId(key), getMediaId(key), getAvatarId(key), chatId)
         }
     }
 
