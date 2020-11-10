@@ -16,6 +16,7 @@ class TextileEventBusImpl(
         newSubject<QueryDone>(),
         newSubject<QueryError>(),
         newSubject<ContactQueryResult>(),
+        newSubject<NotificationReceived>()
     )
 
     @Suppress("UNCHECKED_CAST")
@@ -48,6 +49,11 @@ class TextileEventBusImpl(
     override fun contactQueryResult(queryId: String, contact: Model.Contact) {
         globalListener.contactQueryResult(queryId, contact)
         routeEvent(ContactQueryResult(queryId, contact))
+    }
+
+    override fun notificationReceived(notification: Model.Notification) {
+        globalListener.notificationReceived(notification)
+        routeEvent(NotificationReceived(notification))
     }
 
     private inline fun <reified T : TextileEvent> newSubject(): Pair<KClass<T>, PublishSubject<T>> {

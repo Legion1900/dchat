@@ -11,3 +11,5 @@ data class QueryDone(val id: String) : TextileEvent()
 data class QueryError(val id: String, val e: Exception) : TextileEvent()
 
 data class ContactQueryResult(val id: String, val contact: Model.Contact) : TextileEvent()
+
+data class NotificationReceived(val notification: Model.Notification) : TextileEvent()
