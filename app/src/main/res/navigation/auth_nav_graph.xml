@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/auth_nav_graph"
+    app:startDestination="@id/selectAuthFragment">
+
+    <fragment
+        android:id="@+id/selectAuthFragment"
+        android:name="com.legion1900.dchat.view.auth.selectauth.SelectAuthFragment"
+        android:label="fragment_select_auth"
+        tools:layout="@layout/fragment_select_auth" >
+        <action
+            android:id="@+id/action_selectAuth_to_createMnemonic"
+            app:destination="@id/createMnemonicFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/createMnemonicFragment"
+        android:name="com.legion1900.dchat.view.auth.signup.CreateMnemonicFragment"
+        android:label="fragment_create_mnemonic"
+        tools:layout="@layout/fragment_create_mnemonic" />
+</navigation>

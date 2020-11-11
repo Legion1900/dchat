@@ -1,118 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
-    android:padding="12dp"
-    tools:context=".view.MainActivity">
+    tools:context=".view.main.MainActivity">
 
-    <LinearLayout
+    <androidx.fragment.app.FragmentContainerView
+        android:id="@+id/nav_host_fragment"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="vertical"
-        android:padding="12dp"
-        tools:context=".view.MainActivity">
+        app:defaultNavHost="true"
+        app:navGraph="@navigation/main_nav_graph"
+        android:layout_height="match_parent" />
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Avatar"
-            android:textStyle="bold" />
-
-        <ImageView
-            android:id="@+id/avatar"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="12dp" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Name"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textStyle="bold"
-            android:textIsSelectable="true"
-            tools:text="Adam Jensen" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Address"
-            android:textStyle="bold" />
-
-        <TextView
-            android:id="@+id/address"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:ellipsize="middle"
-            android:textIsSelectable="true"
-            android:textStyle="bold"
-            tools:text="QAasd12fsd" />
-
-        <EditText
-            android:id="@+id/nameOrId"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:hint="Name or ID" />
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <Button
-                android:id="@+id/serach"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:onClick="onSearchClick"
-                android:text="Search" />
-
-            <Button
-                android:id="@+id/addContact"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:onClick="onAddContactClick"
-                android:text="Add contact" />
-
-            <Button
-                android:id="@+id/contacts"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:onClick="onContactsClick"
-                android:text="contacts" />
-        </LinearLayout>
-
-        <Button
-            android:text="threads"
-            android:onClick="onThreadsClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:onClick="onAddThreadClick"
-            android:text="add thread"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:text="test write"
-            android:onClick="testWriteMsg"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-        <Button
-            android:text="Invite User"
-            android:onClick="onInviteUserClick"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
-
-    </LinearLayout>
-
-</ScrollView>
+</FrameLayout>

@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/main_nav_graph"
+    app:startDestination="@id/flowSelectorFragment">
+    <fragment
+        android:id="@+id/flowSelectorFragment"
+        android:name="com.legion1900.dchat.view.main.navigation.FlowSelectorFragment"
+        android:label="FlowSelectorFragment" >
+        <action
+            android:id="@+id/action_to_chat_nav_graph"
+            app:destination="@id/chat_nav_graph"
+            app:popUpTo="@id/flowSelectorFragment"
+            app:popUpToInclusive="true" />
+        <action
+            android:id="@+id/action_to_auth_nav_graph"
+            app:destination="@id/auth_nav_graph"
+            app:popUpTo="@id/flowSelectorFragment"
+            app:popUpToInclusive="true" />
+    </fragment>
+    <include app:graph="@navigation/auth_nav_graph" />
+    <include app:graph="@navigation/chat_nav_graph" />
+</navigation>

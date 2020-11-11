@@ -1,15 +1,13 @@
-package com.legion1900.dchat.view
+package com.legion1900.dchat.view.main
 
 import android.os.Build
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.bumptech.glide.Glide
 import com.google.gson.Gson
 import com.legion1900.dchat.data.account.TextileMnemonicGenerator
 import com.legion1900.dchat.data.account.TextileProfileManager
-import com.legion1900.dchat.data.account.TextileRegistrationManager
 import com.legion1900.dchat.data.chat.TextileAclManager
 import com.legion1900.dchat.data.chat.TextileChatManager
 import com.legion1900.dchat.data.chat.TextileChatRepo
@@ -34,6 +32,9 @@ import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.domain.media.PhotoWidth
+import com.legion1900.dchat.view.main.di.activityContainer
+import com.legion1900.dchat.view.main.navigation.DirectionProvider
+import com.legion1900.dchat.view.main.navigation.FlowSelectorFragmentDirections
 import io.reactivex.Completable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.textile.pb.Model
@@ -102,14 +103,20 @@ class MainActivity : AppCompatActivity() {
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        repoPath = "${filesDir}/textile"
-        registrationManager = TextileRegistrationManager(
-            repoPath,
-            isDebug = true,
-            isLogToDisk = false
-        )
+//        repoPath = "${filesDir}/textile"
+//        registrationManager = TextileRegistrationManager(
+//            repoPath,
+//            isDebug = true,
+//            isLogToDisk = false
+//        )
 
-        launch()
+//        launch()
+        ChatApplication.activityContainer = activityContainer {
+            appContainer { ChatApplication.appContainer }
+            directionProvider {
+                DirectionProvider { FlowSelectorFragmentDirections.actionToAuthNavGraph() }
+            }
+        }
     }
 
     private fun launch() {
@@ -153,25 +160,25 @@ class MainActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { (id, name, bytes) ->
                 binding.run {
-                    address.text = id
-                    this.name.text = name
-                    Glide.with(this@MainActivity)
-                        .asBitmap()
-                        .load(bytes)
-                        .into(binding.avatar)
+//                    address.text = id
+//                    this.name.text = name
+//                    Glide.with(this@MainActivity)
+//                        .asBitmap()
+//                        .load(bytes)
+//                        .into(binding.avatar)
                 }
             }
     }
 
     fun onAddContactClick(v: View) {
-        val id = binding.nameOrId.text.toString()
-        contactManager.addContact(id).subscribe { Log.d("enigma", "contact added!!") }
+//        val id = binding.nameOrId.text.toString()
+//        contactManager.addContact(id).subscribe { Log.d("enigma", "contact added!!") }
     }
 
     fun onSearchClick(v: View) {
-        val id = binding.nameOrId.text.toString()
-        contactManager.searchContactByName(id, 10, 10)
-            .subscribe { contact -> Log.d("enigma", "found contact: $contact") }
+//        val id = binding.nameOrId.text.toString()
+//        contactManager.searchContactByName(id, 10, 10)
+//            .subscribe { contact -> Log.d("enigma", "found contact: $contact") }
     }
 
     fun onContactsClick(v: View) {
@@ -183,14 +190,19 @@ class MainActivity : AppCompatActivity() {
         chatRepo.getChats(0, 1)
             .doOnSuccess { Log.d("enigma", "chat: $it") }
             .map { it.first() }
-            .doOnSuccess { Log.d("enigma", "users in chat: ${aclManager.getChatMembers(it.id).blockingGet()}") }
+            .doOnSuccess {
+                Log.d(
+                    "enigma",
+                    "users in chat: ${aclManager.getChatMembers(it.id).blockingGet()}"
+                )
+            }
             .flatMap { photoRepo.getPhoto(it.avatarId!!, PhotoWidth.LARGE) }
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe { photoBytes ->
-                Glide.with(this)
-                    .asBitmap()
-                    .load(photoBytes)
-                    .into(binding.avatar)
+//                Glide.with(this)
+//                    .asBitmap()
+//                    .load(photoBytes)
+//                    .into(binding.avatar)
             }
     }
 
@@ -223,9 +235,9 @@ class MainActivity : AppCompatActivity() {
 
     fun onInviteUserClick(v: View) {
         val chatId = "12D3KooWMAbUALgAkeh64dWDRHeXwSbRN3xjieQZxP1tv3hoBvea"
-        val id = binding.nameOrId.text.toString()
-        aclManager.inviteToChat(id, chatId).subscribe {
-            Log.d("enigma", "Invite sent")
-        }
+//        val id = binding.nameOrId.text.toString()
+//        aclManager.inviteToChat(id, chatId).subscribe {
+//            Log.d("enigma", "Invite sent")
+//        }
     }
 }
