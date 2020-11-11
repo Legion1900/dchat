@@ -15,8 +15,9 @@ class ActivityContainer : Container {
     private val dependencyProvider by lazy {
         DependencyProvider(
             ViewModelProvider.Factory::class to viewModelFactoryProvider(
-                MainViewModel::class.java to mainVmProvider(demandFromParent())
+                MainViewModel::class.java to mainVmProvider(demandFromParent()),
             ),
+            DirectionProvider::class to Provider { directionProvider }
         )
     }
 
@@ -28,8 +29,7 @@ class ActivityContainer : Container {
         appContainer = create()
     }
 
-    fun getAppContainer(): AppContainer = appContainer!!
-    fun getDirectionProvider(): DirectionProvider = directionProvider!!
+    private fun getAppContainer(): AppContainer = appContainer!!
 
     override fun <T : Any> resolve(klass: KClass<T>): T? {
         var dep = getAppContainer().resolve(klass)

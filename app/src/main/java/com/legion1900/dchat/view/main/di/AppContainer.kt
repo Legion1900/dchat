@@ -9,7 +9,8 @@ class AppContainer(val application: Application) : Container {
 
     private val dependencyProvider by lazy {
         DependencyProvider(
-            AppStateRepo::class to appStateRepoProvider(application)
+            AppStateRepo::class to appStateRepoProvider(application),
+            Application::class to Provider { application },
         )
     }
 

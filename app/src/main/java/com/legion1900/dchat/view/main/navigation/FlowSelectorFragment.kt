@@ -12,7 +12,7 @@ class FlowSelectorFragment : Fragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        directionProvider = ChatApplication.activityContainer!!.getDirectionProvider()
+        directionProvider = ChatApplication.activityContainer!!.resolve(DirectionProvider::class)!!
         requireActivity()
             .findNavController(R.id.nav_host_fragment)
             .navigate(directionProvider.provideDirection())
