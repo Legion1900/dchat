@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.legion1900.dchat.data.account.TextileMnemonicGenerator
 import com.legion1900.dchat.data.account.TextileProfileManager
@@ -43,6 +44,11 @@ import io.textile.textile.Textile
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var factory: ViewModelProvider.Factory
+    private val viewModel by lazy {
+        ViewModelProvider(this, factory)[MainViewModel::class.java]
+    }
 
     private lateinit var repoPath: String
 
@@ -99,6 +105,8 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        initContainer()
+        inject()
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
@@ -111,12 +119,23 @@ class MainActivity : AppCompatActivity() {
 //        )
 
 //        launch()
+    }
+
+    private fun initContainer() {
         ChatApplication.activityContainer = activityContainer {
             appContainer { ChatApplication.appContainer }
             directionProvider {
-                DirectionProvider { FlowSelectorFragmentDirections.actionToAuthNavGraph() }
+                DirectionProvider {
+                    if (viewModel.isLoggedIn()) {
+                        FlowSelectorFragmentDirections.actionToChatNavGraph()
+                    } else FlowSelectorFragmentDirections.actionToAuthNavGraph()
+                }
             }
         }
+    }
+
+    private fun inject() {
+        factory = ChatApplication.activityContainer!!.resolve(ViewModelProvider.Factory::class)!!
     }
 
     private fun launch() {
