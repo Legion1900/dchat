@@ -18,4 +18,11 @@
     <style name="DefaultButton.Primary" parent="DefaultButton">
         <item name="android:backgroundTint">?attr/colorPrimaryVariant</item>
     </style>
+
+    <style name="DefaultText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
+        <item name="android:textSize">18sp</item>
+    </style>
 </resources>

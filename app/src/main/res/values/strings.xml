@@ -1,7 +1,12 @@
 <resources>
     <string name="app_name">ÐChat</string>
-    <string name="test">Chat</string>
+
+    <!-- SelectAuthFragment -->
     <string name="select_auth_sign_in">Sign In</string>
     <string name="select_auth_sign_up">Sign Up</string>
     <string name="powered_by_textile">Powered by Textile.io</string>
+
+    <!-- CreateMnemonicFragment -->
+    <string name="create_mnemonic_toolbar_title">Create mnemonic</string>
+    <string name="create_mnemonic_manual">We do not use login and password to identify you. Instead we usу mnemonic phrases. Write down secret phrase and show it to no one.</string>
 </resources>

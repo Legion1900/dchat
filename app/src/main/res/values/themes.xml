@@ -5,6 +5,8 @@
         <item name="colorPrimary">@color/charcoal</item>
         <item name="colorPrimaryVariant">@color/black</item>
         <item name="colorOnPrimary">@color/white</item>
+        <!-- This one can be used to setup toolbar buttons color when used with NavComponent -->
+        <item name="colorControlNormal">?attr/colorPrimaryVariant</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/apple</item>
         <item name="colorSecondaryVariant">@color/leaf</item>
@@ -12,7 +14,5 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <item name="android:navigationBarColor">?attr/colorPrimaryVariant</item>
-        <!-- Customize your theme here. -->
-        <item name="android:textColorPrimary">?attr/colorPrimary</item>
     </style>
 </resources>
