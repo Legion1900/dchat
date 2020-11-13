@@ -3,6 +3,7 @@ package com.legion1900.dchat.view.main
 import android.app.Application
 import com.legion1900.dchat.view.main.di.ActivityContainer
 import com.legion1900.dchat.view.main.di.AppContainer
+import com.legion1900.dchat.view.main.di.FragmentContainer
 
 class ChatApplication : Application() {
     override fun onCreate() {
@@ -16,5 +17,6 @@ class ChatApplication : Application() {
             private set
 
         var activityContainer: ActivityContainer? = null
+        var fragmentContainer: FragmentContainer? = null
     }
 }

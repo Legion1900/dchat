@@ -8,5 +8,5 @@
 
     <!-- CreateMnemonicFragment -->
     <string name="create_mnemonic_toolbar_title">Create mnemonic</string>
-    <string name="create_mnemonic_manual">We do not use login and password to identify you. Instead we usу mnemonic phrases. Write down secret phrase and show it to no one.</string>
+    <string name="create_mnemonic_manual">We do not use login and password to identify you. Instead we use mnemonic phrases. Write down secret phrase and show it to no one.</string>
 </resources>
