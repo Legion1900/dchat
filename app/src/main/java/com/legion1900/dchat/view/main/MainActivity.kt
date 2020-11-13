@@ -259,4 +259,9 @@ class MainActivity : AppCompatActivity() {
 //            Log.d("enigma", "Invite sent")
 //        }
     }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        ChatApplication.activityContainer = null
+    }
 }
