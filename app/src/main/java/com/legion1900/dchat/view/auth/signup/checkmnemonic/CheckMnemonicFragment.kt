@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
 import androidx.navigation.fragment.navArgs
@@ -43,6 +44,7 @@ class CheckMnemonicFragment : Fragment() {
         toolbarUtil.setupToolbar(binding.toolbar)
         setupHint()
         initWords()
+        binding.continueBtn.setOnClickListener(::onContinueClick)
         return binding.root
     }
 
@@ -110,6 +112,15 @@ class CheckMnemonicFragment : Fragment() {
         binding.apply {
             shuffledWords.removeView(chip)
             selectedWords.addView(chip)
+        }
+    }
+
+    private fun onContinueClick(v: View) {
+        val isCorrect = viewModel.isSelectedCorrect(args.mnemonic)
+        if (isCorrect) {
+            Toast.makeText(requireContext(), "Correct!", Toast.LENGTH_SHORT).show()
+        } else {
+            Toast.makeText(requireContext(), "Wrong!", Toast.LENGTH_SHORT).show()
         }
     }
 }
