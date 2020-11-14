@@ -1,4 +1,4 @@
-package com.legion1900.dchat.view.auth.signup
+package com.legion1900.dchat.view.auth.signup.createmnemonic
 
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData

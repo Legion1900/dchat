@@ -3,7 +3,7 @@ package com.legion1900.dchat.view.main.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.legion1900.dchat.domain.account.MnemonicGenerator
-import com.legion1900.dchat.view.auth.signup.CreateMnemonicViewModel
+import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.main.di.providers.createMnemonicVmProvider
 import com.legion1900.dchat.view.main.di.providers.mnemonicGeneratorProvider
 import com.legion1900.dchat.view.main.di.providers.viewModelFactoryProvider

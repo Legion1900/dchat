@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/createMnemonicFragment"
-        android:name="com.legion1900.dchat.view.auth.signup.CreateMnemonicFragment"
+        android:name="com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicFragment"
         android:label="@string/create_mnemonic_toolbar_title"
         tools:layout="@layout/fragment_create_mnemonic" />
 </navigation>

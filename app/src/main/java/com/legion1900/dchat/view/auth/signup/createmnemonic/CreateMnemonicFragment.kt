@@ -1,4 +1,4 @@
-package com.legion1900.dchat.view.auth.signup
+package com.legion1900.dchat.view.auth.signup.createmnemonic
 
 import android.graphics.drawable.Drawable
 import android.os.Bundle
