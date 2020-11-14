@@ -16,4 +16,5 @@
     <!-- CHeckMnemonicFragment -->
     <string name="check_mnemonic_toolbar_title">Check mnemonic</string>
     <string name="check_mnemonic_continue_btn">Continue</string>
+    <string name="check_mnemonic_hint">Select at least %1$d words in a correct order.</string>
 </resources>

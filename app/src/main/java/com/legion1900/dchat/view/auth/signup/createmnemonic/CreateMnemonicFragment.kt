@@ -1,20 +1,16 @@
 package com.legion1900.dchat.view.auth.signup.createmnemonic
 
-import android.graphics.drawable.Drawable
 import android.os.Bundle
 import android.view.*
-import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
-import com.google.android.material.chip.Chip
 import com.legion1900.dchat.R
 import com.legion1900.dchat.databinding.FragmentCreateMnemonicBinding
+import com.legion1900.dchat.view.auth.signup.util.MnemonicChipFactory
 import com.legion1900.dchat.view.main.ChatApplication
 import com.legion1900.dchat.view.main.di.FragmentContainer
 import com.legion1900.dchat.view.util.ToolbarUtil
-import com.legion1900.dchat.view.util.views.ChipTextDrawable
-import com.legion1900.dchat.view.util.views.TextParameters
 
 class CreateMnemonicFragment : Fragment() {
 
@@ -22,6 +18,8 @@ class CreateMnemonicFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val toolbarUtil = ToolbarUtil(this)
+    private val chipFactory = MnemonicChipFactory(this)
+
     private lateinit var menu: Menu
 
     private lateinit var factory: ViewModelProvider.Factory
@@ -119,7 +117,7 @@ class CreateMnemonicFragment : Fragment() {
     }
 
     private fun populateWordsList(wordsList: List<String>) {
-        createChips(wordsList).forEach { chip ->
+        chipFactory.createChips(wordsList).forEach { chip ->
             binding.words.addView(chip)
         }
     }
@@ -128,41 +126,6 @@ class CreateMnemonicFragment : Fragment() {
         return if (viewModel.currentLength == CurrentLength.WORDS_12) {
             viewModel.shortMnemonic.value!!
         } else viewModel.mediumMnemonic.value!!
-    }
-
-    private fun createChips(wordsList: List<String>): List<Chip> {
-        val chips = mutableListOf<Chip>()
-        val bgIcon = getChipBgDrawable()
-        val params = createParams()
-        for ((i, word) in wordsList.withIndex()) {
-            chips += Chip(requireContext()).apply {
-                val numberDrawable = ChipTextDrawable((i + 1).toString(), params, bgIcon)
-                chipIconSize
-                text = word
-                setTextAppearanceResource(R.style.DefaultText)
-                chipIcon = numberDrawable
-                isClickable = false
-            }
-        }
-        return chips
-    }
-
-    private fun createParams(): TextParameters {
-        val numberSize = resources.getDimension(R.dimen.default_text) * 0.75f
-        val color = ResourcesCompat.getColor(
-            resources,
-            R.color.design_default_color_on_primary,
-            requireContext().theme
-        )
-        return TextParameters.defaultTypeface(color, false, numberSize)
-    }
-
-    private fun getChipBgDrawable(): Drawable {
-        return ResourcesCompat.getDrawable(
-            resources,
-            R.drawable.chip_icon_bg,
-            requireContext().theme
-        )!!
     }
 
     private fun onContinueClick(v: View) {
