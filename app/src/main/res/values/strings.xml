@@ -15,4 +15,5 @@
 
     <!-- CHeckMnemonicFragment -->
     <string name="check_mnemonic_toolbar_title">Check mnemonic</string>
+    <string name="check_mnemonic_continue_btn">Continue</string>
 </resources>
