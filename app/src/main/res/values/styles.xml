@@ -12,7 +12,7 @@
     <style name="DefaultButton">
         <item name="android:paddingHorizontal">@dimen/small_padding</item>
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/title_text</item>
+        <item name="android:textSize">@dimen/button_text</item>
     </style>
 
     <style name="DefaultButton.Primary" parent="DefaultButton">
