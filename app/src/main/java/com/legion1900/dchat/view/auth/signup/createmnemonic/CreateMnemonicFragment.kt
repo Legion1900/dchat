@@ -6,6 +6,7 @@ import android.view.*
 import androidx.core.content.res.ResourcesCompat
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.chip.Chip
 import com.legion1900.dchat.R
 import com.legion1900.dchat.databinding.FragmentCreateMnemonicBinding
@@ -59,6 +60,7 @@ class CreateMnemonicFragment : Fragment() {
                 updateMnemonic()
             }
         }
+        binding.continueBtn.setOnClickListener(::onContinueClick)
     }
 
     override fun onDestroyView() {
@@ -109,9 +111,7 @@ class CreateMnemonicFragment : Fragment() {
     }
 
     private fun updateMnemonic() {
-        val words = if (viewModel.currentLength == CurrentLength.WORDS_12) {
-            viewModel.shortMnemonic.value!!
-        } else viewModel.mediumMnemonic.value!!
+        val words = getCurrentMnemonic()
         if (binding.words.childCount > 0) {
             binding.words.removeAllViews()
         }
@@ -122,6 +122,12 @@ class CreateMnemonicFragment : Fragment() {
         createChips(wordsList).forEach { chip ->
             binding.words.addView(chip)
         }
+    }
+
+    private fun getCurrentMnemonic(): List<String> {
+        return if (viewModel.currentLength == CurrentLength.WORDS_12) {
+            viewModel.shortMnemonic.value!!
+        } else viewModel.mediumMnemonic.value!!
     }
 
     private fun createChips(wordsList: List<String>): List<Chip> {
@@ -157,5 +163,11 @@ class CreateMnemonicFragment : Fragment() {
             R.drawable.chip_icon_bg,
             requireContext().theme
         )!!
+    }
+
+    private fun onContinueClick(v: View) {
+        val words = getCurrentMnemonic().toTypedArray()
+        val direction = CreateMnemonicFragmentDirections.actionCreateMnemonicToCheckMnemonic(words)
+        findNavController().navigate(direction)
     }
 }

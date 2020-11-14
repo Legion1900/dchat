@@ -9,7 +9,7 @@
         android:id="@+id/selectAuthFragment"
         android:name="com.legion1900.dchat.view.auth.selectauth.SelectAuthFragment"
         android:label="fragment_select_auth"
-        tools:layout="@layout/fragment_select_auth" >
+        tools:layout="@layout/fragment_select_auth">
         <action
             android:id="@+id/action_selectAuth_to_createMnemonic"
             app:destination="@id/createMnemonicFragment" />
@@ -18,5 +18,18 @@
         android:id="@+id/createMnemonicFragment"
         android:name="com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicFragment"
         android:label="@string/create_mnemonic_toolbar_title"
-        tools:layout="@layout/fragment_create_mnemonic" />
+        tools:layout="@layout/fragment_create_mnemonic" >
+        <action
+            android:id="@+id/action_createMnemonic_to_checkMnemonic"
+            app:destination="@id/checkMnemonicFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/checkMnemonicFragment"
+        android:name="com.legion1900.dchat.view.auth.signup.checkmnemonic.CheckMnemonicFragment"
+        android:label="@string/check_mnemonic_toolbar_title"
+        tools:layout="@layout/fragment_check_mnemonic" >
+        <argument
+            android:name="mnemonic"
+            app:argType="string[]" />
+    </fragment>
 </navigation>

@@ -12,4 +12,7 @@
     <string name="create_mnemonic_length_12">12 words</string>
     <string name="create_mnemonic_length_24">24 words</string>
     <string name="create_mnemonic_continue_btn">I have written it down</string>
+
+    <!-- CHeckMnemonicFragment -->
+    <string name="check_mnemonic_toolbar_title">Check mnemonic</string>
 </resources>

@@ -8,10 +8,9 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:layout_width="match_parent"
-        android:layout_height="?attr/actionBarSize"
+        style="@style/BackgroundToolbar"
+        app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:titleTextColor="?attr/colorPrimaryVariant"
         tools:title="@string/create_mnemonic_toolbar_title" />
 
     <ScrollView
