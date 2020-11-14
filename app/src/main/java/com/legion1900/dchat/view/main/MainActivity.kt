@@ -6,7 +6,9 @@ import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.google.gson.Gson
+import com.legion1900.dchat.R
 import com.legion1900.dchat.data.account.TextileMnemonicGenerator
 import com.legion1900.dchat.data.account.TextileProfileManager
 import com.legion1900.dchat.data.chat.TextileAclManager
@@ -263,5 +265,9 @@ class MainActivity : AppCompatActivity() {
     override fun onDestroy() {
         super.onDestroy()
         ChatApplication.activityContainer = null
+    }
+
+    override fun onSupportNavigateUp(): Boolean {
+        return findNavController(R.id.nav_host_fragment).navigateUp()
     }
 }
