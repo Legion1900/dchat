@@ -1,40 +1,56 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.legion1900.dchat.view.auth.signup.CreateMnemonicFragment">
 
-    <LinearLayout
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintTop_toTopOf="parent"
+        app:titleTextColor="?attr/colorPrimaryVariant"
+        tools:title="@string/create_mnemonic_toolbar_title" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginHorizontal="@dimen/small_margin"
+        android:layout_marginTop="@dimen/small_margin"
+        app:layout_constraintBottom_toTopOf="@id/continue_btn"
+        app:layout_constraintTop_toBottomOf="@id/toolbar">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/hint"
+                style="@style/DefaultText"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/create_mnemonic_manual" />
+
+            <com.google.android.material.chip.ChipGroup
+                android:id="@+id/words"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/small_margin" />
+        </LinearLayout>
+    </ScrollView>
+
+    <Button
+        android:id="@+id/continue_btn"
+        style="@style/DefaultButton"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:orientation="vertical">
+        android:layout_marginBottom="@dimen/small_margin"
+        android:text="@string/create_mnemonic_continue_btn"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:layout_constraintTop_toTopOf="parent"
-            app:titleTextColor="?attr/colorPrimaryVariant"
-            tools:title="@string/create_mnemonic_toolbar_title" />
-
-        <TextView
-            style="@style/DefaultText"
-            android:id="@+id/hint"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginHorizontal="@dimen/small_margin"
-            android:layout_marginTop="@dimen/small_margin"
-            android:text="@string/create_mnemonic_manual"
-            app:layout_constraintTop_toBottomOf="@id/toolbar" />
-
-        <com.google.android.material.chip.ChipGroup
-            android:id="@+id/words"
-            android:layout_marginHorizontal="@dimen/small_margin"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/small_margin" />
-    </LinearLayout>
-
-</ScrollView>
+</androidx.constraintlayout.widget.ConstraintLayout>
