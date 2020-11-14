@@ -8,20 +8,39 @@ import com.legion1900.dchat.domain.account.MnemonicLength
 import io.reactivex.disposables.CompositeDisposable
 
 class CreateMnemonicViewModel(private val mnemonicGenerator: MnemonicGenerator) : ViewModel() {
-    private val _mnemonic = MutableLiveData<List<String>>()
-    val mnemonic: LiveData<List<String>> = _mnemonic
+
+    var currentLength = CurrentLength.WORDS_12
+
+    private val _shortMnemonic = MutableLiveData<List<String>>()
+    val shortMnemonic: LiveData<List<String>> = _shortMnemonic
+    private val _mediumMnemonic = MutableLiveData<List<String>>()
+    val mediumMnemonic: LiveData<List<String>> = _mediumMnemonic
+    private val _isMnemonicReady = MutableLiveData<Boolean>()
+    val isMnemonicReady: LiveData<Boolean> = _isMnemonicReady
 
     private val disposables = CompositeDisposable()
 
-    fun createMnemonic(length: MnemonicLength) {
-        mnemonicGenerator.generateMnemonic(length)
-            .subscribe { words ->
-                _mnemonic.postValue(words)
-            }
-            .let { disposables.add(it) }
+    private var shouldCreateMnemonic = true
+
+    fun createMnemonic() {
+        if (shouldCreateMnemonic) {
+            mnemonicGenerator.generateMnemonic(MnemonicLength.SHORT)
+                .zipWith(mnemonicGenerator.generateMnemonic(MnemonicLength.MEDIUM))
+                { short, medium -> short to medium }
+                .subscribe { (short, medium) ->
+                    _shortMnemonic.postValue(short)
+                    _mediumMnemonic.postValue(medium)
+                    _isMnemonicReady.postValue(true)
+                }.also { disposables.add(it) }
+            shouldCreateMnemonic = false
+        }
     }
 
     override fun onCleared() {
         disposables.dispose()
     }
+}
+
+enum class CurrentLength {
+    WORDS_12, WORDS_24
 }
