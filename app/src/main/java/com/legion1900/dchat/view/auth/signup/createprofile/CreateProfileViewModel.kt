@@ -1,4 +1,4 @@
-package com.legion1900.dchat.view.auth.signup.profile
+package com.legion1900.dchat.view.auth.signup.createprofile
 
 import androidx.lifecycle.ViewModel
 import com.legion1900.dchat.domain.account.RegistrationManager

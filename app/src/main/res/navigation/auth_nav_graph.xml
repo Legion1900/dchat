@@ -37,7 +37,7 @@
     </fragment>
     <fragment
         android:id="@+id/createProfileFragment"
-        android:name="com.legion1900.dchat.view.auth.signup.profile.CreateProfileFragment"
+        android:name="com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileFragment"
         android:label="@string/create_profile_toolbar_title"
         tools:layout="@layout/fragment_create_profile">
         <argument
