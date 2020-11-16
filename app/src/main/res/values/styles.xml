@@ -15,7 +15,7 @@
         <item name="android:textSize">@dimen/button_text</item>
     </style>
 
-    <style name="DefaultButton.Primary" parent="DefaultButton">
+    <style name="DefaultButton.Primary">
         <item name="android:backgroundTint">?attr/colorPrimaryVariant</item>
     </style>
 

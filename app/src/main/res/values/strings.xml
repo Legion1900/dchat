@@ -13,8 +13,15 @@
     <string name="create_mnemonic_length_24">24 words</string>
     <string name="create_mnemonic_continue_btn">I have written it down</string>
 
-    <!-- CHeckMnemonicFragment -->
+    <!-- CheckMnemonicFragment -->
     <string name="check_mnemonic_toolbar_title">Check mnemonic</string>
     <string name="check_mnemonic_continue_btn">Continue</string>
     <string name="check_mnemonic_hint">Select at least %1$d words in a correct order.</string>
+    <string name="check_mnemonic_skip_btn">Skip</string>
+    <string name="check_mnemonic_skip_dialog_title">You will not see phrase again. Are you sure?</string>
+    <string name="check_mnemonic_skip_positive_ans">I am sure!</string>
+    <string name="check_mnemonic_skip_negative_ans">No, let\'s get back</string>
+
+    <!-- CreateProfileFragment -->
+    <string name="create_profile_toolbar_title">Customize profile</string>
 </resources>

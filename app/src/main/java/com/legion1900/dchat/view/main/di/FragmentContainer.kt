@@ -1,22 +1,30 @@
 package com.legion1900.dchat.view.main.di
 
+import android.app.Application
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
+import com.legion1900.dchat.BuildConfig
 import com.legion1900.dchat.domain.account.MnemonicGenerator
+import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
-import com.legion1900.dchat.view.main.di.providers.createMnemonicVmProvider
-import com.legion1900.dchat.view.main.di.providers.mnemonicGeneratorProvider
-import com.legion1900.dchat.view.main.di.providers.viewModelFactoryProvider
+import com.legion1900.dchat.view.auth.signup.profile.CreateProfileViewModel
+import com.legion1900.dchat.view.main.di.providers.*
 import kotlin.reflect.KClass
 
 class FragmentContainer(
     private val activityContainer: ActivityContainer,
-    private val textileContainer: TextileContainer? = null,
-    private val vmClass: Class<out ViewModel>
+    private val vmClass: Class<out ViewModel>,
+    private val textileContainer: TextileContainer? = null
 ) : Container {
+
+    private val textilePath =
+        "${activityContainer.resolve(Application::class)!!.filesDir.absolutePath}/textile"
+    private val isDebug = BuildConfig.DEBUG
+    private val isLogToDisk = false
 
     private val dependencyProvider = DependencyProvider(
         MnemonicGenerator::class to mnemonicGeneratorProvider(),
+        RegistrationManager::class to registrationManagerProvider(isDebug, isLogToDisk, textilePath)
     )
 
     private val vmProvider = DependencyProvider(
@@ -37,6 +45,9 @@ class FragmentContainer(
                 createMnemonicVmProvider(
                     dependencyProvider[MnemonicGenerator::class]!!
                 )
+            }
+            CreateProfileViewModel::class.java -> getPair {
+                createProfileVmProvider(dependencyProvider[RegistrationManager::class]!!)
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")
         }
