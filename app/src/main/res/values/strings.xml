@@ -24,4 +24,6 @@
 
     <!-- CreateProfileFragment -->
     <string name="create_profile_toolbar_title">Customize profile</string>
+    <string name="create_profile_name_hint">Name</string>
+    <string name="create_profile_finish_btn">Finish</string>
 </resources>
