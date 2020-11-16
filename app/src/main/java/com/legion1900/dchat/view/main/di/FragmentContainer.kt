@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.legion1900.dchat.BuildConfig
 import com.legion1900.dchat.domain.account.MnemonicGenerator
 import com.legion1900.dchat.domain.account.RegistrationManager
+import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.profile.CreateProfileViewModel
 import com.legion1900.dchat.view.main.di.providers.*
@@ -47,7 +48,10 @@ class FragmentContainer(
                 )
             }
             CreateProfileViewModel::class.java -> getPair {
-                createProfileVmProvider(dependencyProvider[RegistrationManager::class]!!)
+                createProfileVmProvider(
+                    dependencyProvider[RegistrationManager::class]!!,
+                    activityContainer.resolve(AppStateRepo::class)!!
+                )
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")
         }
