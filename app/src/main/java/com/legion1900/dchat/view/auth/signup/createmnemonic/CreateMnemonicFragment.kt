@@ -17,6 +17,8 @@ class CreateMnemonicFragment : Fragment() {
     private var _binding: FragmentCreateMnemonicBinding? = null
     private val binding get() = _binding!!
 
+    private lateinit var fragmentContainer: FragmentContainer
+
     private val toolbarUtil = ToolbarUtil(this)
     private val chipFactory = MnemonicChipFactory(this)
 
@@ -66,11 +68,6 @@ class CreateMnemonicFragment : Fragment() {
         _binding = null
     }
 
-    override fun onDestroy() {
-        super.onDestroy()
-        ChatApplication.fragmentContainer = null
-    }
-
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return when (item.itemId) {
             R.id.length_small -> onSmallClick(item)
@@ -100,12 +97,11 @@ class CreateMnemonicFragment : Fragment() {
     }
 
     private fun inject() {
-        ChatApplication.fragmentContainer = FragmentContainer(
+        fragmentContainer = FragmentContainer(
             ChatApplication.activityContainer!!,
-            null,
             CreateMnemonicViewModel::class.java
         )
-        factory = ChatApplication.fragmentContainer!!.resolve(ViewModelProvider.Factory::class)!!
+        factory = fragmentContainer.resolve(ViewModelProvider.Factory::class)!!
     }
 
     private fun updateMnemonic() {
@@ -128,6 +124,7 @@ class CreateMnemonicFragment : Fragment() {
         } else viewModel.mediumMnemonic.value!!
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun onContinueClick(v: View) {
         val words = getCurrentMnemonic().toTypedArray()
         val direction = CreateMnemonicFragmentDirections.actionCreateMnemonicToCheckMnemonic(words)

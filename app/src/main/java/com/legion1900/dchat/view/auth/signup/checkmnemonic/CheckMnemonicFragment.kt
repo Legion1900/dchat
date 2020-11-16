@@ -115,6 +115,7 @@ class CheckMnemonicFragment : Fragment() {
         }
     }
 
+    @Suppress("UNUSED_PARAMETER")
     private fun onContinueClick(v: View) {
         val isCorrect = viewModel.isSelectedCorrect(args.mnemonic)
         if (isCorrect) {

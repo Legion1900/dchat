@@ -17,6 +17,5 @@ class ChatApplication : Application() {
             private set
 
         var activityContainer: ActivityContainer? = null
-        var fragmentContainer: FragmentContainer? = null
     }
 }
