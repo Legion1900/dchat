@@ -43,5 +43,11 @@
         <argument
             android:name="mnemonic"
             app:argType="string[]" />
+        <action
+            android:id="@+id/action_createProfile_to_chat"
+            app:destination="@id/chat_nav_graph"
+            app:popUpTo="@id/selectAuthFragment"
+            app:popUpToInclusive="true" />
     </fragment>
+    <include app:graph="@navigation/chat_nav_graph" />
 </navigation>
