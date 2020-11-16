@@ -97,10 +97,8 @@ class CreateMnemonicFragment : Fragment() {
     }
 
     private fun inject() {
-        fragmentContainer = FragmentContainer(
-            ChatApplication.activityContainer!!,
-            CreateMnemonicViewModel::class.java
-        )
+        fragmentContainer =
+            ChatApplication.newFragmentContainer(CreateMnemonicViewModel::class.java)
         factory = fragmentContainer.resolve(ViewModelProvider.Factory::class)!!
     }
 

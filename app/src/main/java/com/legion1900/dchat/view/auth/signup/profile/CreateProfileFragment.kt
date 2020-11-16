@@ -51,10 +51,7 @@ class CreateProfileFragment : Fragment() {
     }
 
     private fun inject() {
-        container = FragmentContainer(
-            ChatApplication.activityContainer!!,
-            CreateProfileViewModel::class.java
-        )
+        container = ChatApplication.newFragmentContainer(CreateProfileViewModel::class.java)
         factory = container.resolve(ViewModelProvider.Factory::class)!!
     }
 }

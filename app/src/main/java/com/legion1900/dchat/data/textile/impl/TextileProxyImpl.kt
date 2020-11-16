@@ -1,7 +1,6 @@
 package com.legion1900.dchat.data.textile.impl
 
 import android.app.Application
-import com.legion1900.dchat.BuildConfig
 import com.legion1900.dchat.data.textile.abs.NodeStateChanged
 import com.legion1900.dchat.data.textile.abs.TextileEventBus
 import com.legion1900.dchat.data.textile.abs.TextileEventBus.Companion.getSubject
