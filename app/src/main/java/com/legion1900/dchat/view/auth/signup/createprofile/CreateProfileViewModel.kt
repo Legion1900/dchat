@@ -58,11 +58,10 @@ class CreateProfileViewModel(
     }
 
     private fun setAvatar(): Completable {
-        val avatarFile = avatarStream?.let {
+        return avatarStream?.let {
             fileRepo.writeFile(avatar.value!!, "$TMP_AVATAR.$avatarExt")
-        } ?: Single.just(File(""))
-        return avatarFile
-            .flatMapCompletable { profileManager.setAvatar(it.absolutePath) }
+                .flatMapCompletable { profileManager.setAvatar(it.absolutePath) }
+        } ?: Completable.complete()
     }
 
     companion object {
