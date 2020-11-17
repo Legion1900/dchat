@@ -4,6 +4,7 @@ import com.legion1900.dchat.data.account.TextileMnemonicGenerator
 import com.legion1900.dchat.domain.account.MnemonicGenerator
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
+import com.legion1900.dchat.domain.app.TmpFileRepo
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.main.di.Provider
@@ -20,9 +21,10 @@ fun createMnemonicVmProvider(
 
 fun createProfileVmProvider(
     manager: () -> RegistrationManager,
-    appStateRepo: () -> AppStateRepo
+    appStateRepo: () -> AppStateRepo,
+    fileRepo: () -> TmpFileRepo
 ): Provider<CreateProfileViewModel> {
     return Provider {
-        CreateProfileViewModel(manager(), appStateRepo())
+        CreateProfileViewModel(manager(), appStateRepo(), fileRepo())
     }
 }

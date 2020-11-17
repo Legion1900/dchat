@@ -5,11 +5,13 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
+import com.legion1900.dchat.domain.app.TmpFileRepo
 import io.reactivex.disposables.CompositeDisposable
 
 class CreateProfileViewModel(
     private val registrationManager: RegistrationManager,
-    private val appStateRepo: AppStateRepo
+    private val appStateRepo: AppStateRepo,
+    private val fileRepo: TmpFileRepo
 ) : ViewModel() {
 
     private val _isCreated = MutableLiveData<Boolean>()
