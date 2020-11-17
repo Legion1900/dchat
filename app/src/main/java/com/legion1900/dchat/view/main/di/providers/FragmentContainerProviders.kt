@@ -6,8 +6,10 @@ import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
+import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
+import com.legion1900.dchat.view.chat.ChatListViewModel
 import com.legion1900.dchat.view.main.di.Provider
 
 fun mnemonicGeneratorProvider(): Provider<MnemonicGenerator> {
@@ -29,4 +31,10 @@ fun createProfileVmProvider(
     return Provider {
         CreateProfileViewModel(manager(), appStateRepo(), fileRepo(), profileManager())
     }
+}
+
+fun chatListVmProvider(
+    chatRepo: () -> ChatRepo
+): Provider<ChatListViewModel> {
+    return Provider { ChatListViewModel(chatRepo()) }
 }

@@ -7,12 +7,11 @@ import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
+import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
-import com.legion1900.dchat.view.main.di.providers.createMnemonicVmProvider
-import com.legion1900.dchat.view.main.di.providers.createProfileVmProvider
-import com.legion1900.dchat.view.main.di.providers.mnemonicGeneratorProvider
-import com.legion1900.dchat.view.main.di.providers.viewModelFactoryProvider
+import com.legion1900.dchat.view.chat.ChatListViewModel
+import com.legion1900.dchat.view.main.di.providers.*
 import kotlin.reflect.KClass
 
 class FragmentContainer(
@@ -45,6 +44,9 @@ class FragmentContainer(
                     { activityContainer.resolve(TmpFileRepo::class)!! },
                     { chatContainer.resolve(ProfileManager::class)!! }
                 )
+            }
+            ChatListViewModel::class.java -> getPair {
+                chatListVmProvider { chatContainer.resolve(ChatRepo::class)!! }
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")
         }

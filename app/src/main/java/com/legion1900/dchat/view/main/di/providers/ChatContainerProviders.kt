@@ -1,16 +1,20 @@
 package com.legion1900.dchat.view.main.di.providers
 
 import android.app.Application
+import android.content.Context
+import com.google.gson.Gson
 import com.legion1900.dchat.data.account.TextileProfileManager
 import com.legion1900.dchat.data.account.TextileRegistrationManager
+import com.legion1900.dchat.data.chat.TextileChatRepo
+import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
+import com.legion1900.dchat.data.chat.impl.JsonSchemaReaderImpl
 import com.legion1900.dchat.data.textile.abs.TextileEventBus
 import com.legion1900.dchat.data.textile.abs.TextileProxy
-import com.legion1900.dchat.data.textile.impl.AutoInviteHandler
-import com.legion1900.dchat.data.textile.impl.CompositeListener
-import com.legion1900.dchat.data.textile.impl.TextileEventBusImpl
-import com.legion1900.dchat.data.textile.impl.TextileProxyImpl
+import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
+import com.legion1900.dchat.data.textile.impl.*
 import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
+import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.view.main.di.Provider
 import io.textile.textile.TextileEventListener
 import io.textile.textile.TextileLoggingListener
@@ -49,4 +53,21 @@ fun registrationManagerProvider(
 
 fun profileManagerProvider(proxy: () -> TextileProxy): Provider<ProfileManager> {
     return Provider { TextileProfileManager(proxy()) }
+}
+
+fun jsonSchemaReaderProvider(ctx: () -> Context): Provider<JsonSchemaReader> {
+    return Provider { JsonSchemaReaderImpl(ctx()) }
+}
+
+fun threadFileRepoProvider(proxy: () -> TextileProxy, gson: () -> Gson): Provider<ThreadFileRepo> {
+    return Provider { ThreadFileRepoImpl(proxy(), gson()) }
+}
+
+fun chatRepoProvider(
+    proxy: () -> TextileProxy,
+    schemaReader: () -> JsonSchemaReader,
+    fileRepo: () -> ThreadFileRepo,
+    profileManager: () -> ProfileManager
+): Provider<ChatRepo> {
+    return Provider { TextileChatRepo(proxy(), schemaReader(), fileRepo(), profileManager()) }
 }

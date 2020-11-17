@@ -24,9 +24,17 @@
         <item name="android:textSize">@dimen/default_text</item>
     </style>
 
-    <style name="BackgroundToolbar">
-        <item name="titleTextColor">?attr/colorPrimaryVariant</item>
+    <style name="DefaultToolbar">
         <item name="android:layout_width">match_parent</item>
         <item name="android:layout_height">?attr/actionBarSize</item>
+    </style>
+
+    <style name="BackgroundToolbar" parent="DefaultToolbar">
+        <item name="titleTextColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="AccentToolbar" parent="DefaultToolbar">
+        <item name="titleTextColor">?attr/colorOnPrimary</item>
+        <item name="android:background">?attr/colorPrimary</item>
     </style>
 </resources>
