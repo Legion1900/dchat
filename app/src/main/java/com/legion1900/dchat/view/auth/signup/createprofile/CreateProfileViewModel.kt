@@ -37,8 +37,8 @@ class CreateProfileViewModel(
     fun createAccount(mnemonic: List<String>, name: String) {
         registrationManager.createAccount(mnemonic)
             .andThen(setAvatar())
+            .andThen { profileManager.setName(name).subscribe(it) }
             .subscribe {
-                val acc = profileManager.getCurrentAccount().blockingGet()
                 appStateRepo.setLoggedIn(true)
                 _isCreated.postValue(true)
             }.let(disposables::add)
