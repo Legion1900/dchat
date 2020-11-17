@@ -2,7 +2,9 @@ package com.legion1900.dchat.view.main.di
 
 import com.legion1900.dchat.data.textile.abs.TextileEventBus
 import com.legion1900.dchat.data.textile.abs.TextileProxy
+import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
+import com.legion1900.dchat.view.main.di.providers.profileManagerProvider
 import com.legion1900.dchat.view.main.di.providers.proxyProvider
 import com.legion1900.dchat.view.main.di.providers.registrationManagerProvider
 import com.legion1900.dchat.view.main.di.providers.textileEventBusProvider
@@ -28,7 +30,9 @@ class ChatContainer(
             { appContainer.isDebug },
             { false },
             { path }
-        )
+        ),
+
+        ProfileManager::class to profileManagerProvider { resolve()!! }
     )
 
     override fun <T : Any> resolve(klass: KClass<T>): T? = dependencyProvider[klass]

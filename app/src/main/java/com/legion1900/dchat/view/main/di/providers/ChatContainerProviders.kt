@@ -1,6 +1,7 @@
 package com.legion1900.dchat.view.main.di.providers
 
 import android.app.Application
+import com.legion1900.dchat.data.account.TextileProfileManager
 import com.legion1900.dchat.data.account.TextileRegistrationManager
 import com.legion1900.dchat.data.textile.abs.TextileEventBus
 import com.legion1900.dchat.data.textile.abs.TextileProxy
@@ -8,6 +9,7 @@ import com.legion1900.dchat.data.textile.impl.AutoInviteHandler
 import com.legion1900.dchat.data.textile.impl.CompositeListener
 import com.legion1900.dchat.data.textile.impl.TextileEventBusImpl
 import com.legion1900.dchat.data.textile.impl.TextileProxyImpl
+import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.view.main.di.Provider
 import io.textile.textile.TextileEventListener
@@ -43,4 +45,8 @@ fun registrationManagerProvider(
     path: () -> String
 ): Provider<RegistrationManager> {
     return Provider { TextileRegistrationManager(path(), isDebug(), isLogToDisk()) }
+}
+
+fun profileManagerProvider(proxy: () -> TextileProxy): Provider<ProfileManager> {
+    return Provider { TextileProfileManager(proxy()) }
 }

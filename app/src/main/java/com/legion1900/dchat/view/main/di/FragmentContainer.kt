@@ -3,6 +3,7 @@ package com.legion1900.dchat.view.main.di
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.legion1900.dchat.domain.account.MnemonicGenerator
+import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
@@ -41,7 +42,8 @@ class FragmentContainer(
                 createProfileVmProvider(
                     { chatContainer.resolve(RegistrationManager::class)!! },
                     { activityContainer.resolve(AppStateRepo::class)!! },
-                    { activityContainer.resolve(TmpFileRepo::class)!! }
+                    { activityContainer.resolve(TmpFileRepo::class)!! },
+                    { chatContainer.resolve(ProfileManager::class)!! }
                 )
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")

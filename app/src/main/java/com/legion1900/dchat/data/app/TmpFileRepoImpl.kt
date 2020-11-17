@@ -5,29 +5,29 @@ import io.reactivex.Completable
 import io.reactivex.Maybe
 import io.reactivex.Single
 import io.reactivex.schedulers.Schedulers
-import java.io.*
+import java.io.File
+import java.io.FileNotFoundException
+import java.io.FileOutputStream
+import java.io.IOException
 import java.util.concurrent.locks.ReentrantLock
 
 class TmpFileRepoImpl(private val path: String) : TmpFileRepo {
 
     private val lock = ReentrantLock(true)
-
-    override fun writeFile(inputStream: InputStream, name: String): Single<File> {
+    override fun writeFile(data: ByteArray, name: String): Single<File> {
         val file = File(path, name)
         val fout = FileOutputStream(file)
-        return Single.fromCallable {
+        return Single.create { emitter ->
             try {
                 lock.lock()
-                val bytes = inputStream.readBytes()
-                fout.write(bytes)
+                fout.write(data)
+                emitter.onSuccess(file)
+            } catch (e: Exception) {
+                emitter.onError(e)
             } finally {
                 lock.unlock()
             }
-            file
-        }.doFinally {
-            inputStream.close()
-            fout.close()
-        }.observeOn(Schedulers.io())
+        }
     }
 
     override fun getFileByName(name: String): Maybe<File> {
