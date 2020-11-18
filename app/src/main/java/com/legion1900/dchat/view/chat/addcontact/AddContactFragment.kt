@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import com.legion1900.dchat.databinding.FragmentAddContactBinding
@@ -34,9 +35,25 @@ class AddContactFragment : Fragment() {
         return binding.root
     }
 
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.searchBtn.setOnClickListener(::onSearchClick)
+    }
+
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun onSearchClick(v: View) {
+        binding.apply {
+            searchBtn.isClickable = false
+            emptyPlaceholder.isVisible = false
+            searchResults.isVisible = false
+            progressBar.isVisible = true
+        }
+        val query = binding.searchInput.text.toString()
+        viewModel.searchFor(query)
     }
 
     private fun inject() {

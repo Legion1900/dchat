@@ -12,6 +12,7 @@ import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.contact.FindContactImpl
 import com.legion1900.dchat.domain.contact.FindContactUseCase
+import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
@@ -61,6 +62,9 @@ fun chatListVmProvider(
     return Provider { ChatListViewModel(chatRepo()) }
 }
 
-fun addContactVmProvider(findUc: () -> FindContactUseCase): Provider<AddContactViewModel> {
-    return Provider { AddContactViewModel((findUc())) }
+fun addContactVmProvider(
+    findUc: () -> FindContactUseCase,
+    photoRepo: () -> PhotoRepo
+): Provider<AddContactViewModel> {
+    return Provider { AddContactViewModel(findUc(), photoRepo()) }
 }

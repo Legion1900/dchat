@@ -11,6 +11,7 @@ import com.legion1900.dchat.domain.app.TmpFileRepo
 import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.contact.FindContactUseCase
+import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
@@ -56,7 +57,10 @@ class FragmentContainer(
                 chatListVmProvider { chatContainer.resolve(ChatRepo::class)!! }
             }
             AddContactViewModel::class.java -> getPair {
-                addContactVmProvider { resolve(FindContactUseCase::class)!! }
+                addContactVmProvider(
+                    { resolve(FindContactUseCase::class)!! },
+                    { chatContainer.resolve(PhotoRepo::class)!! }
+                )
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")
         }
