@@ -9,6 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         style="@style/BackgroundToolbar"
+        android:theme="@style/ToolbarBgTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:title="@string/create_mnemonic_toolbar_title" />

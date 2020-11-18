@@ -31,10 +31,21 @@
 
     <style name="BackgroundToolbar" parent="DefaultToolbar">
         <item name="titleTextColor">?attr/colorPrimaryVariant</item>
+        <item name="colorControlNormal">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="ToolbarBgTheme">
+        <item name="colorControlNormal">?attr/colorPrimaryVariant</item>
     </style>
 
     <style name="AccentToolbar" parent="DefaultToolbar">
         <item name="titleTextColor">?attr/colorOnPrimary</item>
         <item name="android:background">?attr/colorPrimary</item>
+        <item name="colorControlNormal">?attr/colorOnPrimary</item>
+    </style>
+
+<!--    <style name="ToolbarAccentTheme" parent="Theme.DChat">-->
+    <style name="ToolbarAccentTheme">
+        <item name="colorControlNormal">?attr/colorOnPrimary</item>
     </style>
 </resources>

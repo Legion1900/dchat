@@ -8,6 +8,6 @@
     <fragment
         android:id="@+id/chatListFragment"
         android:name="com.legion1900.dchat.view.chat.ChatListFragment"
-        android:label="fragment_chat_list"
+        android:label="@string/app_name"
         tools:layout="@layout/fragment_chat_list" />
 </navigation>

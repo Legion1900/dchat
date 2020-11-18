@@ -9,6 +9,7 @@
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
         style="@style/BackgroundToolbar"
+        android:theme="@style/ToolbarBgTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:title="@string/check_mnemonic_toolbar_title" />
@@ -19,30 +20,30 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/small_margin"
-        tools:text="@string/check_mnemonic_hint"
         app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+        app:layout_constraintTop_toBottomOf="@id/toolbar"
+        tools:text="@string/check_mnemonic_hint" />
 
     <com.google.android.material.chip.ChipGroup
         android:id="@+id/selected_words"
         android:layout_width="0dp"
-        android:background="@drawable/big_rounded_rect"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/medium_margin"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        android:background="@drawable/big_rounded_rect"
         android:padding="@dimen/small_padding"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
         app:layout_constraintHeight_percent=".3"
         app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@id/hint" />
 
     <ScrollView
         android:layout_width="0dp"
-        app:layout_constraintStart_toStartOf="@id/guideline_start"
-        app:layout_constraintEnd_toEndOf="@id/guideline_end"
         android:layout_height="0dp"
-        app:layout_constraintBottom_toTopOf="@id/continue_btn"
         android:layout_marginTop="@dimen/small_margin"
+        app:layout_constraintBottom_toTopOf="@id/continue_btn"
+        app:layout_constraintEnd_toEndOf="@id/guideline_end"
+        app:layout_constraintStart_toStartOf="@id/guideline_start"
         app:layout_constraintTop_toBottomOf="@id/selected_words">
 
         <com.google.android.material.chip.ChipGroup
