@@ -6,10 +6,12 @@ sealed class TextileEvent
 
 data class NodeStateChanged(val isRunning: Boolean) : TextileEvent()
 
-data class QueryDone(val id: String) : TextileEvent()
+abstract class IdBasedEvent(val id: String) : TextileEvent()
 
-data class QueryError(val id: String, val e: Exception) : TextileEvent()
+class QueryDone(id: String) : IdBasedEvent(id)
 
-data class ContactQueryResult(val id: String, val contact: Model.Contact) : TextileEvent()
+class QueryError(id: String, val e: Exception) : IdBasedEvent(id)
+
+class ContactQueryResult(id: String, val contact: Model.Contact) : IdBasedEvent(id)
 
 data class NotificationReceived(val notification: Model.Notification) : TextileEvent()

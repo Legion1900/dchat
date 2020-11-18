@@ -1,9 +1,6 @@
 package com.legion1900.dchat.data.contact
 
-import com.legion1900.dchat.data.textile.abs.ContactQueryResult
-import com.legion1900.dchat.data.textile.abs.QueryDone
-import com.legion1900.dchat.data.textile.abs.QueryError
-import com.legion1900.dchat.data.textile.abs.TextileProxy
+import com.legion1900.dchat.data.textile.abs.*
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.dto.Account
 import io.reactivex.*
@@ -22,15 +19,16 @@ class TextileContactManager(
             .toFlowable(BackpressureStrategy.BUFFER)
     }
 
-    override fun searchContactById(id: String, wait: Int): Single<Account> {
+    override fun searchContactById(id: String, wait: Int): Maybe<Account> {
         return searchInternal(wait, 1, address = id)
-            .toSingleModel()
+            .toMaybeModel()
             .map { toAccount(it) }
     }
 
     override fun addContact(id: String): Completable {
         return searchInternal(DEFAULT_WAIT, 1, address = id)
-            .toSingleModel()
+            .toMaybeModel()
+            .toSingle()
             .zipWith(proxy.instance) { contact, textile ->
                 textile.contacts.add(contact)
             }.flatMapCompletable { Completable.complete() }
@@ -106,19 +104,22 @@ class TextileContactManager(
         }
     }
 
-    private fun Single<SearchHandle>.toSingleModel(): Single<Model.Contact> {
+    private fun Single<SearchHandle>.toMaybeModel(): Maybe<Model.Contact> {
         return flatMap { handle ->
-            val successEvent = proxy.eventBus.getEventSubject(ContactQueryResult::class)
-                .filter { it.id == handle.id }
-                .firstOrError()
-            val errorEvent = proxy.eventBus.getEventSubject(QueryError::class)
-                .filter { it.id == handle.id }
-                .firstOrError()
-            Single.ambArray(successEvent, errorEvent)
-                .flatMap { if (it is QueryError) Single.error(it.e) else Single.just(it) }
-                .map { it as ContactQueryResult }
-                .map { it.contact }
-        }
+            val emptyEvent = filterEvent<QueryDone>(handle.id)
+            val successEvent = filterEvent<ContactQueryResult>(handle.id)
+            val errorEvent = filterEvent<QueryError>(handle.id)
+            Single.ambArray(successEvent, emptyEvent, errorEvent)
+        }.flatMap { if (it is QueryError) Single.error(it.e) else Single.just(it) }
+            .flatMapMaybe { if (it is QueryDone) Maybe.empty() else Maybe.just(it) }
+            .map { it as ContactQueryResult }
+            .map { it.contact }
+    }
+
+    private inline fun <reified T : IdBasedEvent> filterEvent(eventId: String): Single<T> {
+        return proxy.eventBus.getEventSubject(T::class)
+            .filter { it.id == eventId }
+            .firstOrError()
     }
 
     private fun toAccount(c: Model.Contact) = Account(c.address, c.name, c.avatar)
