@@ -5,6 +5,7 @@
     <dimen name="small_padding">10dp</dimen>
     <dimen name="medium_padding">15dp</dimen>
     <dimen name="small_margin">10dp</dimen>
+    <dimen name="contact_margin">5dp</dimen>
     <dimen name="medium_margin">15dp</dimen>
     <dimen name="default_text">22sp</dimen>
     <dimen name="button_text">22sp</dimen>

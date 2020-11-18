@@ -19,9 +19,26 @@
         <item name="android:backgroundTint">?attr/colorPrimaryVariant</item>
     </style>
 
+    <style name="ContactText">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:textColor">?attr/colorPrimaryVariant</item>
+    </style>
+
+    <style name="ContactText.Id">
+        <item name="android:textColor">@color/pigeon</item>
+        <item name="android:textStyle">italic</item>
+    </style>
+
     <style name="DefaultText">
         <item name="android:textColor">?attr/colorPrimaryVariant</item>
         <item name="android:textSize">@dimen/default_text</item>
+    </style>
+
+    <style name="DefaultText.EmptyPlaceholder">
+        <item name="android:gravity">center</item>
+        <item name="android:textStyle">italic</item>
     </style>
 
     <style name="DefaultToolbar">
@@ -47,5 +64,20 @@
 <!--    <style name="ToolbarAccentTheme" parent="Theme.DChat">-->
     <style name="ToolbarAccentTheme">
         <item name="colorControlNormal">?attr/colorOnPrimary</item>
+    </style>
+
+    <style name="ProgressBar">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:indeterminateTint">?attr/colorPrimary</item>
+    </style>
+
+    <style name="AvatarPlaceholder">
+        <item name="android:layout_width">0dp</item>
+        <item name="android:layout_height">0dp</item>
+        <item name="android:autoSizeTextType">uniform</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">@dimen/contact_margin</item>
+        <item name="android:textColor">?attr/colorOnPrimary</item>
     </style>
 </resources>

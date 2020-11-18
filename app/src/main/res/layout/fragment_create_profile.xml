@@ -8,8 +8,8 @@
 
     <androidx.appcompat.widget.Toolbar
         android:id="@+id/toolbar"
-        android:theme="@style/ToolbarBgTheme"
         style="@style/BackgroundToolbar"
+        android:theme="@style/ToolbarBgTheme"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
         tools:title="@string/create_profile_toolbar_title" />
@@ -59,9 +59,7 @@
 
     <ProgressBar
         android:id="@+id/progress_bar"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:indeterminateTint="?attr/colorPrimary"
+        style="@style/ProgressBar"
         android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintDimensionRatio="W,1:1"

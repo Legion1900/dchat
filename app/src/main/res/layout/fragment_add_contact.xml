@@ -15,6 +15,7 @@
         tools:title="@string/add_contact_toolbar_title" />
 
     <EditText
+        android:inputType="text"
         android:id="@+id/search_input"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
@@ -25,7 +26,8 @@
         app:layout_constraintHorizontal_chainStyle="packed"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbar"
-        app:layout_constraintWidth_percent=".8" />
+        app:layout_constraintWidth_percent=".8"
+        tools:ignore="Autofill" />
 
     <ImageButton
         android:id="@+id/search_btn"
@@ -39,12 +41,32 @@
         app:layout_constraintTop_toTopOf="@id/search_input"
         app:srcCompat="@drawable/ic_search" />
 
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/ProgressBar"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintDimensionRatio="W,1:1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintWidth_percent=".3" />
+
+    <TextView
+        android:id="@+id/empty_placeholder"
+        style="@style/DefaultText.EmptyPlaceholder"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/add_contact_nothing_found"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/search_results"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/small_margin"
-        android:paddingHorizontal="@dimen/small_padding"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintTop_toBottomOf="@id/search_input" />
 
