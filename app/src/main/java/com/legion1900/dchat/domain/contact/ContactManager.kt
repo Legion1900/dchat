@@ -10,7 +10,7 @@ interface ContactManager {
     // TODO: move this method to separate interface; this must be a repo
     fun searchContactByName(name: String, limit: Int, wait: Int): Flowable<Account>
 
-    fun searchContactById(id: String, wait: Int): Single<Account>
+    fun searchContactById(id: String, wait: Int): Maybe<Account>
 
     fun addContact(id: String): Completable
 
