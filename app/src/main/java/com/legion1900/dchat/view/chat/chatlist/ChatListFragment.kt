@@ -1,4 +1,4 @@
-package com.legion1900.dchat.view.chat
+package com.legion1900.dchat.view.chat.chatlist
 
 import android.os.Bundle
 import android.view.*
