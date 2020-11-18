@@ -4,6 +4,7 @@ import android.os.Bundle
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import com.legion1900.dchat.R
 import com.legion1900.dchat.databinding.FragmentChatListBinding
@@ -48,7 +49,7 @@ class ChatListFragment : Fragment() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         return if (item.itemId == R.id.add_user) {
-
+            findNavController().navigate(R.id.action_chatList_to_addContact)
             true
         } else false
     }

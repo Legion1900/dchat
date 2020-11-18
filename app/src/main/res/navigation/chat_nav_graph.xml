@@ -9,5 +9,14 @@
         android:id="@+id/chatListFragment"
         android:name="com.legion1900.dchat.view.chat.chatlist.ChatListFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_chat_list" />
+        tools:layout="@layout/fragment_chat_list" >
+        <action
+            android:id="@+id/action_chatList_to_addContact"
+            app:destination="@id/addContactFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/addContactFragment"
+        android:name="com.legion1900.dchat.view.chat.addcontact.AddContactFragment"
+        android:label="@string/add_contact_toolbar_title"
+        tools:layout="@layout/fragment_add_contact" />
 </navigation>
