@@ -2,6 +2,7 @@ package com.legion1900.dchat.view.main.di.providers
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.legion1900.dchat.data.account.TextileProfileManager
 import com.legion1900.dchat.data.account.TextileRegistrationManager
@@ -27,12 +28,21 @@ fun proxyProvider(
     provideBus: () -> TextileEventBus,
     provideDebug: () -> Boolean
 ): Provider<TextileProxy> {
-    return Provider {
-        val bus = provideBus()
-        val app = provideApp()
-        val path = providePath()
-        val isDebug = provideDebug()
-        TextileProxyImpl(bus, app, path, isDebug)
+    Log.e("enigma", "creating proxy PROVIDER!")
+    return object : Provider<TextileProxy> {
+        private var proxy: TextileProxy? = null
+
+        override fun provide(): TextileProxy {
+            if (proxy == null) {
+                Log.e("enigma", "creating new proxy!")
+                val bus = provideBus()
+                val app = provideApp()
+                val path = providePath()
+                val isDebug = provideDebug()
+                proxy = TextileProxyImpl(bus, app, path, isDebug)
+            }
+            return proxy!!
+        }
     }
 }
 
