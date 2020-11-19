@@ -31,4 +31,7 @@
     <string name="add_contact_toolbar_title">Add contact</string>
     <string name="add_contact_search_hint">Name or ID</string>
     <string name="add_contact_nothing_found">No users found</string>
+
+    <!-- SelectMembersFragment -->
+    <string name="select_members_toolbar_title">New chat</string>
 </resources>

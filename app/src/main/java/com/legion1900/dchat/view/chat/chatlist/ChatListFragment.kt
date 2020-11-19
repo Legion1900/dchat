@@ -69,6 +69,6 @@ class ChatListFragment : Fragment() {
 
     @Suppress("UNUSED_PARAMETER")
     private fun onAddChatClick(v: View) {
-
+        findNavController().navigate(R.id.action_chatList_to_selectMembers)
     }
 }

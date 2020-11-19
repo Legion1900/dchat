@@ -8,6 +8,7 @@ import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
 import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.chat.ChatRepo
+import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.main.di.providers.*
 import kotlin.reflect.KClass
@@ -49,7 +50,9 @@ class ChatContainer(
             { resolve()!! }
         ),
 
-        PhotoRepo::class to photoRepoProvider { resolve()!! }
+        PhotoRepo::class to photoRepoProvider { resolve()!! },
+
+        ContactManager::class to contactManagerProvider { resolve(TextileProxy::class)!! },
     )
 
     override fun <T : Any> resolve(klass: KClass<T>): T? = dependencyProvider[klass]

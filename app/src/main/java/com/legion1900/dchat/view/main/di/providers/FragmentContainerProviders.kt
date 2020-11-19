@@ -15,6 +15,7 @@ import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewMo
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
 import com.legion1900.dchat.view.chat.chatlist.ChatListViewModel
+import com.legion1900.dchat.view.chat.newchat.SelectMembersViewModel
 import com.legion1900.dchat.view.main.di.Provider
 
 /*
@@ -23,10 +24,6 @@ import com.legion1900.dchat.view.main.di.Provider
 
 fun mnemonicGeneratorProvider(): Provider<MnemonicGenerator> {
     return Provider { TextileMnemonicGenerator() }
-}
-
-fun contactManagerProvider(proxy: () -> TextileProxy): Provider<ContactManager> {
-    return Provider { TextileContactManager(proxy()) }
 }
 
 fun findContactUcProvider(manager: () -> ContactManager): Provider<FindContactUseCase> {
@@ -71,4 +68,8 @@ fun addContactVmProvider(
     addContactUc: () -> AddContactUseCase
 ): Provider<AddContactViewModel> {
     return Provider { AddContactViewModel(findUc(), photoRepo(), addContactUc()) }
+}
+
+fun selectMembersVmProvider(manager: () -> ContactManager): Provider<SelectMembersViewModel> {
+    return Provider { SelectMembersViewModel(manager()) }
 }

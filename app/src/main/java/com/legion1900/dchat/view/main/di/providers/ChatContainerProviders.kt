@@ -9,6 +9,7 @@ import com.legion1900.dchat.data.account.TextileRegistrationManager
 import com.legion1900.dchat.data.chat.TextileChatRepo
 import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
 import com.legion1900.dchat.data.chat.impl.JsonSchemaReaderImpl
+import com.legion1900.dchat.data.contact.TextileContactManager
 import com.legion1900.dchat.data.media.TextilePhotoRepo
 import com.legion1900.dchat.data.textile.abs.TextileEventBus
 import com.legion1900.dchat.data.textile.abs.TextileProxy
@@ -17,6 +18,7 @@ import com.legion1900.dchat.data.textile.impl.*
 import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.chat.ChatRepo
+import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.main.di.Provider
 import io.textile.textile.TextileEventListener
@@ -84,4 +86,8 @@ fun chatRepoProvider(
 
 fun photoRepoProvider(proxy: () -> TextileProxy): Provider<PhotoRepo> {
     return Provider { TextilePhotoRepo(proxy()) }
+}
+
+fun contactManagerProvider(proxy: () -> TextileProxy): Provider<ContactManager> {
+    return Provider { TextileContactManager(proxy()) }
 }
