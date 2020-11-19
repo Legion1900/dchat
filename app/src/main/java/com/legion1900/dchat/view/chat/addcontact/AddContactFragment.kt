@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.legion1900.dchat.databinding.FragmentAddContactBinding
 import com.legion1900.dchat.view.main.ChatApplication
 import com.legion1900.dchat.view.main.di.FragmentContainer
@@ -19,6 +20,8 @@ class AddContactFragment : Fragment() {
 
     private var _binding: FragmentAddContactBinding? = null
     private val binding get() = _binding!!
+
+    private val adapter = ContactSearchAdapter()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -37,7 +40,11 @@ class AddContactFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        binding.searchBtn.setOnClickListener(::onSearchClick)
+        setupRecyclerView()
+        binding.apply {
+            searchBtn.setOnClickListener(::onSearchClick)
+        }
+        observeVm()
     }
 
     override fun onDestroyView() {
@@ -45,20 +52,54 @@ class AddContactFragment : Fragment() {
         _binding = null
     }
 
-    private fun onSearchClick(v: View) {
-        binding.apply {
-            searchBtn.isClickable = false
-            emptyPlaceholder.isVisible = false
-            searchResults.isVisible = false
-            progressBar.isVisible = true
-        }
-        val query = binding.searchInput.text.toString()
-        viewModel.searchFor(query)
-    }
-
     private fun inject() {
         container = ChatApplication.newFragmentContainer(AddContactViewModel::class.java)
         val factory = container.resolve(ViewModelProvider.Factory::class)!!
         viewModel = ViewModelProvider(this, factory)[AddContactViewModel::class.java]
+    }
+
+    private fun setupRecyclerView() {
+        binding.apply {
+            searchResults.adapter = adapter
+            searchResults.layoutManager = LinearLayoutManager(requireContext())
+        }
+        viewModel.result.value?.let {
+            adapter.setResult(it, viewModel.photos)
+        }
+    }
+
+    private fun observeVm() {
+        viewModel.apply {
+            result.observe(viewLifecycleOwner) { accounts ->
+                adapter.setResult(accounts)
+                setIsSearching(false)
+                isPlaceholderEnabled(accounts.isEmpty())
+            }
+            lastLoadedPhoto.observe(viewLifecycleOwner) { event ->
+                event.getIfNotHandled()?.let { (userId, photo) ->
+                    adapter.newAvatar(userId, photo)
+                }
+            }
+        }
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private fun onSearchClick(v: View) {
+        setIsSearching(true)
+        val query = binding.searchInput.text.toString()
+        viewModel.searchFor(query)
+    }
+
+    private fun setIsSearching(isSearching: Boolean) {
+        binding.apply {
+            searchBtn.isClickable = !isSearching
+            if (isSearching) isPlaceholderEnabled(false)
+            searchResults.isVisible = !isSearching
+            progressBar.isVisible = isSearching
+        }
+    }
+
+    private fun isPlaceholderEnabled(enabled: Boolean) {
+        binding.emptyPlaceholder.isVisible = enabled
     }
 }

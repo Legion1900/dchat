@@ -24,7 +24,7 @@ class AddContactViewModel(
     val photos: Map<String, ByteArray> = _photos
 
     private val _lastLoadedPhoto = MutableLiveData<SingleEvent<Pair<String, ByteArray>>>()
-    private val lastLoadedPhoto: LiveData<SingleEvent<Pair<String, ByteArray>>> = _lastLoadedPhoto
+    val lastLoadedPhoto: LiveData<SingleEvent<Pair<String, ByteArray>>> = _lastLoadedPhoto
 
     private val disposable = CompositeDisposable()
 
@@ -32,23 +32,36 @@ class AddContactViewModel(
         findContact.findContact(nameOrId, WAIT, LIMIT)
             .buffer(LIMIT)
             .first(emptyList())
-            .subscribe(_result::postValue) { logError("Error while searching for user", it) }
+            .subscribe(
+                {
+                    Log.d("enigma", "results: $it")
+                    _result.postValue(it)
+                    loadAvatars(it)
+                },
+                { logError("Error while searching for user", it) }
+            )
             .let(disposable::add)
     }
 
     private fun loadAvatars(accounts: List<Account>) {
         val accountsWithAvatars = accounts.filter { it.avatarId.isNotEmpty() }
-        Observable.fromIterable(accountsWithAvatars)
-            .map { it.id to it.avatarId }
-            .concatMapSingle { (userId, photoId) ->
-                photoRepo.getPhoto(photoId, PhotoWidth.SMALL)
-                    .map { userId to it }
-            }.doOnNext { _lastLoadedPhoto.postValue(SingleEvent(it)) }
+        val tasks = Array(accountsWithAvatars.size) { loadAvatar(accountsWithAvatars[it]) }
+        Observable.merge(tasks.toList())
+            .doOnNext { _lastLoadedPhoto.postValue(SingleEvent(it)) }
             .subscribe(
                 { (userId, photo) -> _photos[userId] = photo },
                 { logError("Error while loading photo", it) }
             )
             .let(disposable::add)
+    }
+
+    private fun loadAvatar(forUser: Account): Observable<Pair<String, ByteArray>> {
+        return photoRepo.getPhoto(forUser.avatarId, PhotoWidth.SMALL)
+            .map { forUser.id to it }
+            .toObservable()
+            .doOnError { logError("can't load avatar of user ${forUser.id}", it) }
+            .onErrorReturn { forUser.id to ByteArray(0) }
+            .takeWhile { (_, avatar) -> avatar.isNotEmpty() }
     }
 
     private fun logError(msg: String, e: Throwable) {

@@ -28,13 +28,11 @@ fun proxyProvider(
     provideBus: () -> TextileEventBus,
     provideDebug: () -> Boolean
 ): Provider<TextileProxy> {
-    Log.e("enigma", "creating proxy PROVIDER!")
     return object : Provider<TextileProxy> {
         private var proxy: TextileProxy? = null
 
         override fun provide(): TextileProxy {
             if (proxy == null) {
-                Log.e("enigma", "creating new proxy!")
                 val bus = provideBus()
                 val app = provideApp()
                 val path = providePath()
