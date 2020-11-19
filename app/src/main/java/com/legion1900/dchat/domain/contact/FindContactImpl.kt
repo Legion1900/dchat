@@ -7,7 +7,7 @@ class FindContactImpl(private val manager: ContactManager) : FindContactUseCase 
     override fun findContact(nameOrId: String, wait: Int, limit: Int): Flowable<Account> {
         val byName = manager.searchContactByName(nameOrId, limit, wait)
         val byId = searchById(nameOrId, wait)
-        return Flowable.concat(byName, byId)
+        return Flowable.merge(byName, byId)
     }
 
     private fun searchById(id: String, wait: Int): Flowable<Account> {

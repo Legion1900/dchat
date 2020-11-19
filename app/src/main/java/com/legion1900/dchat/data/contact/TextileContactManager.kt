@@ -90,18 +90,15 @@ class TextileContactManager(
 
     private fun Single<SearchHandle>.toObservableModel(): Observable<Model.Contact> {
         return flatMapObservable { handle ->
-            val resultEvents = proxy.eventBus.getEventSubject(ContactQueryResult::class)
-                .filter { it.id == handle.id }
-            val completeEvent = proxy.eventBus.getEventSubject(QueryDone::class)
-                .filter { it.id == handle.id }
-            val errorEvent = proxy.eventBus.getEventSubject(QueryError::class)
-                .filter { it.id == handle.id }
+            val resultEvents = filterEvents<ContactQueryResult>(handle.id)
+            val completeEvent = filterEvents<QueryDone>(handle.id)
+            val errorEvent = filterEvents<QueryError>(handle.id)
+                .flatMap { Observable.error<TextileEvent>(it.e) }
             Observable.merge(resultEvents, completeEvent, errorEvent)
-                .flatMap { if (it is QueryError) Observable.error(it.e) else Observable.just(it) }
-                .flatMap { if (it is QueryDone) Observable.empty() else Observable.just(it) }
-                .map { it as ContactQueryResult }
-                .map { it.contact }
-        }
+        }.takeWhile { it !is QueryDone }
+            .map { it as ContactQueryResult }
+            .map { it.contact }
+
     }
 
     private fun Single<SearchHandle>.toMaybeModel(): Maybe<Model.Contact> {
@@ -120,6 +117,11 @@ class TextileContactManager(
         return proxy.eventBus.getEventSubject(T::class)
             .filter { it.id == eventId }
             .firstOrError()
+    }
+
+    private inline fun <reified T : IdBasedEvent> filterEvents(eventId: String): Observable<T> {
+        return proxy.eventBus.getEventSubject(T::class)
+            .filter { it.id == eventId }
     }
 
     private fun toAccount(c: Model.Contact) = Account(c.address, c.name, c.avatar)
