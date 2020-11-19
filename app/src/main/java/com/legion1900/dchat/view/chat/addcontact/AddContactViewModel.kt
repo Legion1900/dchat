@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.legion1900.dchat.domain.contact.AddContactResult
 import com.legion1900.dchat.domain.contact.AddContactUseCase
 import com.legion1900.dchat.domain.contact.FindContactUseCase
 import com.legion1900.dchat.domain.dto.Account
@@ -28,6 +29,9 @@ class AddContactViewModel(
     private val _lastLoadedPhoto = MutableLiveData<SingleEvent<Pair<String, ByteArray>>>()
     val lastLoadedPhoto: LiveData<SingleEvent<Pair<String, ByteArray>>> = _lastLoadedPhoto
 
+    private val _addStatus = MutableLiveData<SingleEvent<Pair<String, AddContactResult>>>()
+    val addStatus: LiveData<SingleEvent<Pair<String, AddContactResult>>> = _addStatus
+
     private val disposable = CompositeDisposable()
 
     fun searchFor(nameOrId: String) {
@@ -42,6 +46,17 @@ class AddContactViewModel(
                 { logError("Error while searching for user", it) }
             )
             .let(disposable::add)
+    }
+
+    fun addContact(id: String) {
+        addContact.addToContacts(id)
+            .subscribe(
+                { result ->
+                    val name = _result.value!!.first { it.id == id }.name
+                    _addStatus.postValue(SingleEvent(name to result))
+                },
+                { logError("Error while adding to contacts uid=$id", it) }
+            ).let(disposable::add)
     }
 
     private fun loadAvatars(accounts: List<Account>) {

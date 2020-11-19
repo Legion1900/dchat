@@ -1,6 +1,7 @@
 package com.legion1900.dchat.view.chat.addcontact
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
@@ -8,7 +9,9 @@ import com.bumptech.glide.Glide
 import com.legion1900.dchat.databinding.ItemContactSearchBinding
 import com.legion1900.dchat.domain.dto.Account
 
-class ContactSearchAdapter : RecyclerView.Adapter<ContactSearchAdapter.ContactHolder>() {
+class ContactSearchAdapter(
+    private val onContactClick: (View) -> Unit
+) : RecyclerView.Adapter<ContactSearchAdapter.ContactHolder>() {
 
     private val contacts = mutableListOf<Account>()
 
@@ -19,6 +22,7 @@ class ContactSearchAdapter : RecyclerView.Adapter<ContactSearchAdapter.ContactHo
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactHolder {
         val inflater = LayoutInflater.from(parent.context)
         val binding = ItemContactSearchBinding.inflate(inflater)
+        binding.root.setOnClickListener(onContactClick)
         return ContactHolder(binding).apply { avatar.clipToOutline = true }
     }
 
@@ -32,6 +36,8 @@ class ContactSearchAdapter : RecyclerView.Adapter<ContactSearchAdapter.ContactHo
             id.text = account.id
         }
     }
+
+    fun getItem(position: Int) = contacts[position]
 
     private fun loadAvatar(avatarBytes: ByteArray, avatar: ImageView) {
         Glide.with(avatar)

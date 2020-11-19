@@ -3,11 +3,11 @@ package com.legion1900.dchat.domain.contact
 import io.reactivex.Single
 
 class AddContactImpl(private val contactManager: ContactManager) : AddContactUseCase {
-    override fun contactId(id: String): Single<AddContactResult> {
+    override fun addToContacts(userId: String): Single<AddContactResult> {
         return contactManager.listContacts()
             .map { it.map { contact -> contact.id } }
-            .map { it.contains(id) }
-            .addIfNeeded(id)
+            .map { it.contains(userId) }
+            .addIfNeeded(userId)
     }
 
     private fun Single<Boolean>.addIfNeeded(id: String): Single<AddContactResult> {
