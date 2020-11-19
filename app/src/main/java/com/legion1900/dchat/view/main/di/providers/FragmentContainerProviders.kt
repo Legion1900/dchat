@@ -9,9 +9,7 @@ import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
 import com.legion1900.dchat.domain.chat.ChatRepo
-import com.legion1900.dchat.domain.contact.ContactManager
-import com.legion1900.dchat.domain.contact.FindContactImpl
-import com.legion1900.dchat.domain.contact.FindContactUseCase
+import com.legion1900.dchat.domain.contact.*
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
@@ -33,6 +31,10 @@ fun contactManagerProvider(proxy: () -> TextileProxy): Provider<ContactManager> 
 
 fun findContactUcProvider(manager: () -> ContactManager): Provider<FindContactUseCase> {
     return Provider { FindContactImpl(manager()) }
+}
+
+fun addContactUcProvider(manager: () -> ContactManager): Provider<AddContactUseCase> {
+    return Provider { AddContactImpl(manager()) }
 }
 
 /*
@@ -65,7 +67,8 @@ fun chatListVmProvider(
 
 fun addContactVmProvider(
     findUc: () -> FindContactUseCase,
-    photoRepo: () -> PhotoRepo
+    photoRepo: () -> PhotoRepo,
+    addContactUc: () -> AddContactUseCase
 ): Provider<AddContactViewModel> {
-    return Provider { AddContactViewModel(findUc(), photoRepo()) }
+    return Provider { AddContactViewModel(findUc(), photoRepo(), addContactUc()) }
 }

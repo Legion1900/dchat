@@ -4,6 +4,7 @@ import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.legion1900.dchat.domain.contact.AddContactUseCase
 import com.legion1900.dchat.domain.contact.FindContactUseCase
 import com.legion1900.dchat.domain.dto.Account
 import com.legion1900.dchat.domain.media.PhotoRepo
@@ -15,7 +16,8 @@ import java.util.concurrent.ConcurrentHashMap
 
 class AddContactViewModel(
     private val findContact: FindContactUseCase,
-    private val photoRepo: PhotoRepo
+    private val photoRepo: PhotoRepo,
+    private val addContact: AddContactUseCase
 ) : ViewModel() {
     private val _result = MutableLiveData<List<Account>>()
     val result: LiveData<List<Account>> = _result
