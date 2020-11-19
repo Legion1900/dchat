@@ -43,6 +43,7 @@ class ContactSearchAdapter : RecyclerView.Adapter<ContactSearchAdapter.ContactHo
     override fun getItemCount(): Int = contacts.size
 
     fun setResult(result: List<Account>, avatars: Map<String, ByteArray>? = null) {
+        contacts.clear()
         contacts += result
         avatars?.let { this.avatars += avatars }
         result.withIndex()

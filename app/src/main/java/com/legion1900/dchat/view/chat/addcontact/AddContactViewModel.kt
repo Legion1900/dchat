@@ -34,7 +34,6 @@ class AddContactViewModel(
             .first(emptyList())
             .subscribe(
                 {
-                    Log.d("enigma", "results: $it")
                     _result.postValue(it)
                     loadAvatars(it)
                 },
