@@ -54,7 +54,10 @@ class FragmentContainer(
                 )
             }
             ChatListViewModel::class.java -> getPair {
-                chatListVmProvider { chatContainer.resolve(ChatRepo::class)!! }
+                chatListVmProvider(
+                    { chatContainer.resolve(ChatRepo::class)!! },
+                    { chatContainer.resolve(ProfileManager::class)!! }
+                )
             }
             AddContactViewModel::class.java -> getPair {
                 addContactVmProvider(

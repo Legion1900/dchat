@@ -30,6 +30,7 @@ class ChatListFragment : Fragment() {
         container = ChatApplication.newFragmentContainer(ChatListViewModel::class.java)
         factory = container.resolve(ViewModelProvider.Factory::class)!!
         setHasOptionsMenu(true)
+        viewModel.loadProfileInfo()
     }
 
     override fun onCreateView(
