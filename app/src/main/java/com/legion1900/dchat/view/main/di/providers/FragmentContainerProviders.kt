@@ -1,8 +1,6 @@
 package com.legion1900.dchat.view.main.di.providers
 
 import com.legion1900.dchat.data.account.TextileMnemonicGenerator
-import com.legion1900.dchat.data.contact.TextileContactManager
-import com.legion1900.dchat.data.textile.abs.TextileProxy
 import com.legion1900.dchat.domain.account.MnemonicGenerator
 import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
@@ -28,6 +26,10 @@ fun mnemonicGeneratorProvider(): Provider<MnemonicGenerator> {
 
 fun findContactUcProvider(manager: () -> ContactManager): Provider<FindContactUseCase> {
     return Provider { FindContactImpl(manager()) }
+}
+
+fun loadAvatarsUcProvider(photoRepo: () -> PhotoRepo): Provider<LoadAvatarsUseCase> {
+    return Provider { LoadAvatarsImpl(photoRepo()) }
 }
 
 fun addContactUcProvider(manager: () -> ContactManager): Provider<AddContactUseCase> {
@@ -64,10 +66,10 @@ fun chatListVmProvider(
 
 fun addContactVmProvider(
     findUc: () -> FindContactUseCase,
-    photoRepo: () -> PhotoRepo,
+    loadAvatars: () -> LoadAvatarsUseCase,
     addContactUc: () -> AddContactUseCase
 ): Provider<AddContactViewModel> {
-    return Provider { AddContactViewModel(findUc(), photoRepo(), addContactUc()) }
+    return Provider { AddContactViewModel(findUc(), loadAvatars(), addContactUc()) }
 }
 
 fun selectMembersVmProvider(manager: () -> ContactManager): Provider<SelectMembersViewModel> {

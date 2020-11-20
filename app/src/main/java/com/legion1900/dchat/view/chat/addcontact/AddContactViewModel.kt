@@ -7,17 +7,15 @@ import androidx.lifecycle.ViewModel
 import com.legion1900.dchat.domain.contact.AddContactResult
 import com.legion1900.dchat.domain.contact.AddContactUseCase
 import com.legion1900.dchat.domain.contact.FindContactUseCase
+import com.legion1900.dchat.domain.contact.LoadAvatarsUseCase
 import com.legion1900.dchat.domain.dto.Account
-import com.legion1900.dchat.domain.media.PhotoRepo
-import com.legion1900.dchat.domain.media.PhotoWidth
 import com.legion1900.dchat.view.util.SingleEvent
-import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.ConcurrentHashMap
 
 class AddContactViewModel(
     private val findContact: FindContactUseCase,
-    private val photoRepo: PhotoRepo,
+    private val loadAvatars: LoadAvatarsUseCase,
     private val addContact: AddContactUseCase
 ) : ViewModel() {
     private val _result = MutableLiveData<List<Account>>()
@@ -60,24 +58,15 @@ class AddContactViewModel(
     }
 
     private fun loadAvatars(accounts: List<Account>) {
-        val accountsWithAvatars = accounts.filter { it.avatarId.isNotEmpty() }
-        val tasks = Array(accountsWithAvatars.size) { loadAvatar(accountsWithAvatars[it]) }
-        Observable.merge(tasks.toList())
-            .doOnNext { _lastLoadedPhoto.postValue(SingleEvent(it)) }
+        loadAvatars.loadAvatars(accounts)
             .subscribe(
-                { (userId, photo) -> _photos[userId] = photo },
+                { idPhoto ->
+                    _lastLoadedPhoto.postValue(SingleEvent(idPhoto))
+                    _photos[idPhoto.first] = idPhoto.second
+                },
                 { logError("Error while loading photo", it) }
             )
             .let(disposable::add)
-    }
-
-    private fun loadAvatar(forUser: Account): Observable<Pair<String, ByteArray>> {
-        return photoRepo.getPhoto(forUser.avatarId, PhotoWidth.SMALL)
-            .map { forUser.id to it }
-            .toObservable()
-            .doOnError { logError("can't load avatar of user ${forUser.id}", it) }
-            .onErrorReturn { forUser.id to ByteArray(0) }
-            .takeWhile { (_, avatar) -> avatar.isNotEmpty() }
     }
 
     private fun logError(msg: String, e: Throwable) {
