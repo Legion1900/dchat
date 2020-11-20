@@ -27,9 +27,9 @@
             android:layout_height="wrap_content"
             android:backgroundTint="@color/white"
             android:hint="@string/select_members_search_bar_hint"
+            android:importantForAutofill="no"
             android:inputType="none"
-            android:maxLines="3"
-            android:importantForAutofill="no" />
+            android:maxLines="3" />
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -49,5 +49,14 @@
         app:layout_anchor="@id/contacts_list"
         app:layout_anchorGravity="bottom|end"
         app:layout_behavior="com.google.android.material.behavior.HideBottomViewOnScrollBehavior" />
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="@style/ProgressBar"
+        android:layout_width="70dp"
+        android:layout_height="70dp"
+        app:layout_anchor="@id/contacts_list"
+        app:layout_anchorGravity="center"
+        tools:visibility="gone" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

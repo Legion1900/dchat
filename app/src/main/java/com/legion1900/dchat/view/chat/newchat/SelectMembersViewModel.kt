@@ -8,6 +8,7 @@ import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.contact.LoadAvatarsUseCase
 import com.legion1900.dchat.domain.dto.Account
 import com.legion1900.dchat.view.util.SingleEvent
+import io.reactivex.Observable
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.ConcurrentHashMap
 
@@ -17,7 +18,10 @@ class SelectMembersViewModel(
 ) : ViewModel() {
     private val disposable = CompositeDisposable()
 
+    private val contactsRequest by lazy { contactManager.listContacts().cache() }
     private val contacts = MutableLiveData<List<Account>>()
+
+    private val filteredContacts = MutableLiveData<List<Account>>()
 
     // <userId, avatarBytes>
     private val avatars = ConcurrentHashMap<String, ByteArray>()
@@ -32,12 +36,23 @@ class SelectMembersViewModel(
 
     fun getLastLoadedAvatar(): LiveData<SingleEvent<Pair<String, ByteArray>>> = lastLoadedAvatar
 
+    fun getFilteredContacts(): LiveData<List<Account>> = filteredContacts
+
     fun loadContacts() {
-        contactManager.listContacts()
-            .subscribe { contacts ->
-                this.contacts.postValue(contacts)
-                startLoadingAvatars(contacts)
-            }.let(disposable::add)
+        contactsRequest.subscribe { contacts ->
+            this.contacts.postValue(contacts)
+            startLoadingAvatars(contacts)
+        }.let(disposable::add)
+    }
+
+    fun filterByName(name: String) {
+        contactsRequest.flatMap { contacts ->
+            Observable.fromIterable(contacts)
+                .filter { it.name.contains(name, true) }
+                .buffer(contacts.size)
+                .first(emptyList())
+        }.subscribe(filteredContacts::postValue)
+            .let(disposable::add)
     }
 
     private fun startLoadingAvatars(contacts: List<Account>) {
