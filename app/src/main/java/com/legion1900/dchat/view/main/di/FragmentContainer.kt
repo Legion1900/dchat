@@ -76,7 +76,10 @@ class FragmentContainer(
                 )
             }
             SelectMembersViewModel::class.java -> getPair {
-                selectMembersVmProvider { chatContainer.resolve(ContactManager::class)!! }
+                selectMembersVmProvider(
+                    { chatContainer.resolve(ContactManager::class)!! },
+                    { resolve(LoadAvatarsUseCase::class)!! }
+                )
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")
         }

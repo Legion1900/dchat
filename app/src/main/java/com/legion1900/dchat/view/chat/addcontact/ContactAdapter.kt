@@ -9,9 +9,9 @@ import com.bumptech.glide.Glide
 import com.legion1900.dchat.databinding.ItemContactSearchBinding
 import com.legion1900.dchat.domain.dto.Account
 
-class ContactSearchAdapter(
+class ContactAdapter(
     private val onContactClick: (View) -> Unit
-) : RecyclerView.Adapter<ContactSearchAdapter.ContactHolder>() {
+) : RecyclerView.Adapter<ContactAdapter.ContactHolder>() {
 
     private val contacts = mutableListOf<Account>()
 

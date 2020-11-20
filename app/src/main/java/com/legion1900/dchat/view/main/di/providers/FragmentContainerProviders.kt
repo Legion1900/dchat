@@ -72,6 +72,9 @@ fun addContactVmProvider(
     return Provider { AddContactViewModel(findUc(), loadAvatars(), addContactUc()) }
 }
 
-fun selectMembersVmProvider(manager: () -> ContactManager): Provider<SelectMembersViewModel> {
-    return Provider { SelectMembersViewModel(manager()) }
+fun selectMembersVmProvider(
+    manager: () -> ContactManager,
+    loadAvatars: () -> LoadAvatarsUseCase
+): Provider<SelectMembersViewModel> {
+    return Provider { SelectMembersViewModel(manager(), loadAvatars()) }
 }

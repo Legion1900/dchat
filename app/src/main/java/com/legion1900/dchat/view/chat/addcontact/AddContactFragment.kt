@@ -23,7 +23,7 @@ class AddContactFragment : Fragment() {
     private var _binding: FragmentAddContactBinding? = null
     private val binding get() = _binding!!
 
-    private val adapter = ContactSearchAdapter(::onContactClick)
+    private val adapter = ContactAdapter(::onContactClick)
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
