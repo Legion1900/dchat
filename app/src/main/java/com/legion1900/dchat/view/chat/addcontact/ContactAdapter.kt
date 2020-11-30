@@ -10,7 +10,7 @@ import com.legion1900.dchat.databinding.ItemContactSearchBinding
 import com.legion1900.dchat.domain.dto.Account
 
 class ContactAdapter(
-    private val onContactClick: (View) -> Unit
+    private val onContactClick: ((View) -> Unit)? = null
 ) : RecyclerView.Adapter<ContactAdapter.ContactHolder>() {
 
     private val contacts = mutableListOf<Account>()
