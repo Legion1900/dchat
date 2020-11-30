@@ -1,10 +1,12 @@
 package com.legion1900.dchat.view.chat.newchat.createchat
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.legion1900.dchat.domain.chat.usecase.CreateChatUseCase
 import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarUseCase
+import com.legion1900.dchat.view.util.SingleEvent
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -20,6 +22,9 @@ class CreateChatViewModel(
     private val _avatarBytes = MutableLiveData<ByteArray>()
     val avatarBytes: LiveData<ByteArray> = _avatarBytes
 
+    private val _isFinished = MutableLiveData<SingleEvent<Unit>>()
+    val isFinished: LiveData<SingleEvent<Unit>> = _isFinished
+
     private val disposables = CompositeDisposable()
 
     fun setAvatar(avatar: InputStream, avatarExtension: String) {
@@ -28,6 +33,16 @@ class CreateChatViewModel(
         Single.fromCallable { avatar.readBytes() }
             .observeOn(Schedulers.io())
             .subscribe(_avatarBytes::postValue)
+            .let(disposables::add)
+    }
+
+    fun createChat(name: String, memberIds: List<String>) {
+        createChat.createChat(name, memberIds).flatMapCompletable { chatId ->
+            Log.d("enigma", "chat created: $chatId")
+            _avatarBytes.value?.let {
+                setChatAvatarUseCase.setAvatar(chatId, it, avatarExtension!!)
+            }
+        }.subscribe { _isFinished.postValue(SingleEvent(Unit)) }
             .let(disposables::add)
     }
 }

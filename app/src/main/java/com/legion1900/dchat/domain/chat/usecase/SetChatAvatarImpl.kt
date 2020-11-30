@@ -9,12 +9,16 @@ class SetChatAvatarImpl(
     private val fileRepo: TmpFileRepo,
     private val chatManager: ChatManager
 ) : SetChatAvatarUseCase {
-    override fun setAvatar(chatId: String, avatar: ByteArray): Completable {
-        return fileRepo.writeFile(avatar, randomName())
+    override fun setAvatar(
+        chatId: String,
+        avatar: ByteArray,
+        avatarExtension: String
+    ): Completable {
+        return fileRepo.writeFile(avatar, randomName(avatarExtension))
             .flatMapCompletable { file ->
                 chatManager.setAvatar(chatId, file)
             }.andThen(fileRepo.deleteAllFiles())
     }
 
-    private fun randomName() = "chat_avatar_${UUID.randomUUID()}"
+    private fun randomName(ext: String) = "chat_avatar_${UUID.randomUUID()}.$ext"
 }
