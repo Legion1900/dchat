@@ -37,7 +37,7 @@
         android:label="fragment_create_chat"
         tools:layout="@layout/fragment_create_chat" >
         <argument
-            android:name="memberIds"
+            android:name="members"
             app:argType="string[]" />
     </fragment>
 </navigation>

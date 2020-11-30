@@ -21,6 +21,7 @@ import com.google.android.material.chip.ChipDrawable
 import com.legion1900.dchat.R
 import com.legion1900.dchat.databinding.FragmentSelectMembersBinding
 import com.legion1900.dchat.domain.dto.Account
+import com.legion1900.dchat.domain.dto.asBase64
 import com.legion1900.dchat.view.chat.addcontact.ContactAdapter
 import com.legion1900.dchat.view.main.ChatApplication
 import com.legion1900.dchat.view.util.ToolbarUtil
@@ -189,9 +190,9 @@ class SelectMembersFragment : Fragment() {
 
     @Suppress("UNUSED_PARAMETER")
     private fun onNextFabClick(v: View) {
-        val ids = viewModel.members.map { it.id }
+        val ids = viewModel.members.map { it.asBase64() }.toTypedArray()
         val directions = SelectMembersFragmentDirections
-            .actionSelectMembersFragmentToCreateChatFragment(ids.toTypedArray())
+            .actionSelectMembersFragmentToCreateChatFragment(ids)
         findNavController().navigate(directions)
     }
 }
