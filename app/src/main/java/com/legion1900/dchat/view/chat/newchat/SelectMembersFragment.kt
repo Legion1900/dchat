@@ -156,23 +156,22 @@ class SelectMembersFragment : Fragment() {
         val spanSize = specialName.length - 1
         binding.searchInput.text.replace(0, 0, specialName)
         val span = ImageSpan(chip)
-        binding.searchInput.text.setSpan(
-            span,
-            0,
-            spanSize,
-            Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
-        )
+        attachSpan(span, spanSize)
         val clickSpan = object : ClickableSpan() {
             override fun onClick(widget: View) {
                 Log.d("enigma", "span clicked!")
             }
-
         }
+        attachSpan(clickSpan, spanSize)
 
+        viewModel.members += account
+    }
+
+    private fun attachSpan(span: Any, size: Int) {
         binding.searchInput.text.setSpan(
-            clickSpan,
+            span,
             0,
-            spanSize,
+            size,
             Spanned.SPAN_EXCLUSIVE_EXCLUSIVE
         )
     }

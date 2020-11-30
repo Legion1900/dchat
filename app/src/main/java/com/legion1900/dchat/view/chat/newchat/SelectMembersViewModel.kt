@@ -16,6 +16,9 @@ class SelectMembersViewModel(
     private val contactManager: ContactManager,
     private val loadAvatarsUseCase: LoadAvatarsUseCase
 ) : ViewModel() {
+
+    val members = mutableListOf<Account>()
+
     private val disposable = CompositeDisposable()
 
     private val contactsRequest by lazy { contactManager.listContacts().cache() }
