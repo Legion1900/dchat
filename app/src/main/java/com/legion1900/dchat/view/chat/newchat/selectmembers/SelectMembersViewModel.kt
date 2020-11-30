@@ -1,4 +1,4 @@
-package com.legion1900.dchat.view.chat.newchat
+package com.legion1900.dchat.view.chat.newchat.selectmembers
 
 import android.util.Log
 import androidx.lifecycle.LiveData

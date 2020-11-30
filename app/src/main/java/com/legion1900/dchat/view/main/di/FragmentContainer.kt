@@ -17,7 +17,7 @@ import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewMo
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
 import com.legion1900.dchat.view.chat.chatlist.ChatListViewModel
-import com.legion1900.dchat.view.chat.newchat.SelectMembersViewModel
+import com.legion1900.dchat.view.chat.newchat.selectmembers.SelectMembersViewModel
 import com.legion1900.dchat.view.main.di.providers.*
 import kotlin.reflect.KClass
 

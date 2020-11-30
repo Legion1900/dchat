@@ -24,7 +24,7 @@
         tools:layout="@layout/fragment_add_contact" />
     <fragment
         android:id="@+id/selectMembersFragment"
-        android:name="com.legion1900.dchat.view.chat.newchat.SelectMembersFragment"
+        android:name="com.legion1900.dchat.view.chat.newchat.selectmembers.SelectMembersFragment"
         android:label="@string/select_members_toolbar_title"
         tools:layout="@layout/fragment_select_members" />
 </navigation>
