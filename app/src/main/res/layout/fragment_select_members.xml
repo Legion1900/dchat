@@ -21,15 +21,20 @@
             android:theme="@style/ToolbarAccentTheme"
             tools:title="@string/select_members_toolbar_title" />
 
-        <EditText
-            android:id="@+id/search_input"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:backgroundTint="@color/white"
-            android:hint="@string/select_members_search_bar_hint"
-            android:importantForAutofill="no"
-            android:inputType="none"
-            android:maxLines="3" />
+            android:layout_height="wrap_content">
+
+            <EditText
+                android:id="@+id/search_input"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:backgroundTint="@color/white"
+                android:hint="@string/select_members_search_bar_hint"
+                android:importantForAutofill="no"
+                android:inputType="none"
+                android:maxLines="3" />
+        </androidx.core.widget.NestedScrollView>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView

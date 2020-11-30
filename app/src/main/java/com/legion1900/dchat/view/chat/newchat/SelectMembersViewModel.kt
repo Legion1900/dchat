@@ -22,6 +22,7 @@ class SelectMembersViewModel(
     private val contacts = MutableLiveData<List<Account>>()
 
     private val filteredContacts = MutableLiveData<List<Account>>()
+    private var lastFilter: String? = null
 
     // <userId, avatarBytes>
     private val avatars = ConcurrentHashMap<String, ByteArray>()
@@ -46,13 +47,16 @@ class SelectMembersViewModel(
     }
 
     fun filterByName(name: String) {
-        contactsRequest.flatMap { contacts ->
-            Observable.fromIterable(contacts)
-                .filter { it.name.contains(name, true) }
-                .buffer(contacts.size)
-                .first(emptyList())
-        }.subscribe(filteredContacts::postValue)
-            .let(disposable::add)
+        if (lastFilter != name) {
+            lastFilter = name
+            contactsRequest.flatMap { contacts ->
+                Observable.fromIterable(contacts)
+                    .filter { it.name.contains(name, true) }
+                    .buffer(contacts.size)
+                    .first(emptyList())
+            }.subscribe(filteredContacts::postValue)
+                .let(disposable::add)
+        }
     }
 
     private fun startLoadingAvatars(contacts: List<Account>) {
