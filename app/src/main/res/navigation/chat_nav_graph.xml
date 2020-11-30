@@ -34,8 +34,8 @@
     <fragment
         android:id="@+id/createChatFragment"
         android:name="com.legion1900.dchat.view.chat.newchat.createchat.CreateChatFragment"
-        android:label="fragment_create_chat"
-        tools:layout="@layout/fragment_create_chat" >
+        android:label="@string/create_chat_toolbar_title"
+        tools:layout="@layout/fragment_create_chat">
         <argument
             android:name="members"
             app:argType="string[]" />

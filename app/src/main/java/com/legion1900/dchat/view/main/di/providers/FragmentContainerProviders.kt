@@ -6,13 +6,20 @@ import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
+import com.legion1900.dchat.domain.chat.AclManager
+import com.legion1900.dchat.domain.chat.ChatManager
 import com.legion1900.dchat.domain.chat.ChatRepo
+import com.legion1900.dchat.domain.chat.usecase.CreateChatImpl
+import com.legion1900.dchat.domain.chat.usecase.CreateChatUseCase
+import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarImpl
+import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarUseCase
 import com.legion1900.dchat.domain.contact.*
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
 import com.legion1900.dchat.view.chat.chatlist.ChatListViewModel
+import com.legion1900.dchat.view.chat.newchat.createchat.CreateChatViewModel
 import com.legion1900.dchat.view.chat.newchat.selectmembers.SelectMembersViewModel
 import com.legion1900.dchat.view.main.di.Provider
 
@@ -34,6 +41,20 @@ fun loadAvatarsUcProvider(photoRepo: () -> PhotoRepo): Provider<LoadAvatarsUseCa
 
 fun addContactUcProvider(manager: () -> ContactManager): Provider<AddContactUseCase> {
     return Provider { AddContactImpl(manager()) }
+}
+
+fun createChatUcProvider(
+    chatRepo: () -> ChatRepo,
+    aclManager: () -> AclManager
+): Provider<CreateChatUseCase> {
+    return Provider { CreateChatImpl(chatRepo(), aclManager()) }
+}
+
+fun setChatAvatarUcProvider(
+    tmpFileRepo: () -> TmpFileRepo,
+    chatManager: () -> ChatManager
+): Provider<SetChatAvatarUseCase> {
+    return Provider { SetChatAvatarImpl(tmpFileRepo(), chatManager()) }
 }
 
 /*
@@ -77,4 +98,11 @@ fun selectMembersVmProvider(
     loadAvatars: () -> LoadAvatarsUseCase
 ): Provider<SelectMembersViewModel> {
     return Provider { SelectMembersViewModel(manager(), loadAvatars()) }
+}
+
+fun createChatVmProvider(
+    createChat: () -> CreateChatUseCase,
+    setChatAvatar: () -> SetChatAvatarUseCase
+): Provider<CreateChatViewModel> {
+    return Provider { CreateChatViewModel(createChat(), setChatAvatar()) }
 }

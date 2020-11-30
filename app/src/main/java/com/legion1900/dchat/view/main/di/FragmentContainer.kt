@@ -7,7 +7,11 @@ import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
+import com.legion1900.dchat.domain.chat.AclManager
+import com.legion1900.dchat.domain.chat.ChatManager
 import com.legion1900.dchat.domain.chat.ChatRepo
+import com.legion1900.dchat.domain.chat.usecase.CreateChatUseCase
+import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarUseCase
 import com.legion1900.dchat.domain.contact.AddContactUseCase
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.contact.FindContactUseCase
@@ -17,6 +21,7 @@ import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewMo
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
 import com.legion1900.dchat.view.chat.chatlist.ChatListViewModel
+import com.legion1900.dchat.view.chat.newchat.createchat.CreateChatViewModel
 import com.legion1900.dchat.view.chat.newchat.selectmembers.SelectMembersViewModel
 import com.legion1900.dchat.view.main.di.providers.*
 import kotlin.reflect.KClass
@@ -38,8 +43,18 @@ class FragmentContainer(
         LoadAvatarsUseCase::class to loadAvatarsUcProvider {
             chatContainer.resolve(PhotoRepo::class)!!
         },
+        CreateChatUseCase::class to createChatUcProvider(
+            { chatContainer.resolve(ChatRepo::class)!! },
+            { chatContainer.resolve(AclManager::class)!! }
+        ),
+        SetChatAvatarUseCase::class to setChatAvatarUcProvider(
+            { activityContainer.resolve(TmpFileRepo::class)!! },
+            { chatContainer.resolve(ChatManager::class)!! }
+        ),
 
-        ViewModelProvider.Factory::class to viewModelFactoryProvider(createViewModelProvider())
+        ViewModelProvider.Factory::class to viewModelFactoryProvider(
+            createViewModelProvider()
+        )
     )
 
     override fun <T : Any> resolve(klass: KClass<T>): T? {
@@ -79,6 +94,12 @@ class FragmentContainer(
                 selectMembersVmProvider(
                     { chatContainer.resolve(ContactManager::class)!! },
                     { resolve(LoadAvatarsUseCase::class)!! }
+                )
+            }
+            CreateChatViewModel::class.java -> getPair {
+                createChatVmProvider(
+                    { resolve(CreateChatUseCase::class)!! },
+                    { resolve(SetChatAvatarUseCase::class)!! }
                 )
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")

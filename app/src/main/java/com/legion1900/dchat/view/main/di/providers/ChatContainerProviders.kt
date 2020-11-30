@@ -2,10 +2,11 @@ package com.legion1900.dchat.view.main.di.providers
 
 import android.app.Application
 import android.content.Context
-import android.util.Log
 import com.google.gson.Gson
 import com.legion1900.dchat.data.account.TextileProfileManager
 import com.legion1900.dchat.data.account.TextileRegistrationManager
+import com.legion1900.dchat.data.chat.TextileAclManager
+import com.legion1900.dchat.data.chat.TextileChatManager
 import com.legion1900.dchat.data.chat.TextileChatRepo
 import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
 import com.legion1900.dchat.data.chat.impl.JsonSchemaReaderImpl
@@ -17,6 +18,8 @@ import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
 import com.legion1900.dchat.data.textile.impl.*
 import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
+import com.legion1900.dchat.domain.chat.AclManager
+import com.legion1900.dchat.domain.chat.ChatManager
 import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.media.PhotoRepo
@@ -90,4 +93,19 @@ fun photoRepoProvider(proxy: () -> TextileProxy): Provider<PhotoRepo> {
 
 fun contactManagerProvider(proxy: () -> TextileProxy): Provider<ContactManager> {
     return Provider { TextileContactManager(proxy()) }
+}
+
+fun aclManagerProvider(
+    proxy: () -> TextileProxy,
+    fileRepo: () -> ThreadFileRepo
+): Provider<AclManager> {
+    return Provider { TextileAclManager(proxy(), fileRepo()) }
+}
+
+fun chatManagerProvider(
+    proxy: () -> TextileProxy,
+    photoRepo: () -> PhotoRepo,
+    fileRepo: () -> ThreadFileRepo
+): Provider<ChatManager> {
+    return Provider { TextileChatManager(proxy(), photoRepo(), fileRepo()) }
 }
