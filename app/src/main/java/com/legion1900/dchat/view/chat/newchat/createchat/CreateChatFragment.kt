@@ -52,6 +52,7 @@ class CreateChatFragment : Fragment() {
         ToolbarUtil(this).setupToolbar(binding.toolbar)
         setupRecyclerView()
         binding.selectAvatarBtn.setOnClickListener(::onSelectAvatarClick)
+        binding.selectAvatarBtn.clipToOutline = true
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

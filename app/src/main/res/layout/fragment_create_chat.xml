@@ -27,8 +27,8 @@
 
             <ImageButton
                 android:id="@+id/select_avatar_btn"
-                android:layout_width="@dimen/chat_avatar_size"
-                android:layout_height="@dimen/chat_avatar_size"
+                android:layout_width="@dimen/dialog_avatar_height"
+                android:layout_height="@dimen/dialog_avatar_height"
                 android:layout_marginVertical="@dimen/small_margin"
                 android:layout_marginStart="@dimen/small_margin"
                 android:background="@drawable/chip_icon_bg"
