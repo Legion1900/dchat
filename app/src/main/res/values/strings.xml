@@ -35,4 +35,8 @@
     <!-- SelectMembersFragment -->
     <string name="select_members_toolbar_title">New chat</string>
     <string name="select_members_search_bar_hint">Invite people…</string>
+
+    <!-- CreateChatFragment -->
+    <string name="create_chat_toolbar_title">New chat</string>
+    <string name="create_chat_chat_name_hint">Enter chat name</string>
 </resources>

@@ -15,6 +15,7 @@ import androidx.core.text.getSpans
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.chip.ChipDrawable
 import com.legion1900.dchat.R
@@ -92,6 +93,7 @@ class SelectMembersFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         observeVm()
         viewModel.loadContacts()
+        binding.nextFab.setOnClickListener(::onNextFabClick)
         binding.searchInput.apply {
             addTextChangedListener(searchInputWatcher)
             movementMethod = LinkMovementMethod.getInstance()
@@ -183,5 +185,13 @@ class SelectMembersFragment : Fragment() {
     private fun getSearchFilter(): String {
         val input = binding.searchInput.text.toString()
         return input.split(";").last().removePrefix(" ").also { Log.d("enigma", "filter: '$it'") }
+    }
+
+    @Suppress("UNUSED_PARAMETER")
+    private fun onNextFabClick(v: View) {
+        val ids = viewModel.members.map { it.id }
+        val directions = SelectMembersFragmentDirections
+            .actionSelectMembersFragmentToCreateChatFragment(ids.toTypedArray())
+        findNavController().navigate(directions)
     }
 }

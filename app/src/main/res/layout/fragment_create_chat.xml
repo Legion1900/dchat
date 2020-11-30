@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context="com.legion1900.dchat.view.chat.newchat.selectmembers.SelectMembersFragment">
+    tools:context="com.legion1900.dchat.view.chat.newchat.createchat.CreateChatFragment">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/app_bar"
@@ -21,20 +21,33 @@
             android:theme="@style/ToolbarAccentTheme"
             tools:title="@string/select_members_toolbar_title" />
 
-        <androidx.core.widget.NestedScrollView
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
+            <ImageButton
+                android:id="@+id/select_avatar_btn"
+                android:layout_width="@dimen/chat_avatar_size"
+                android:layout_height="@dimen/chat_avatar_size"
+                android:layout_marginVertical="@dimen/small_margin"
+                android:layout_marginStart="@dimen/small_margin"
+                android:background="@drawable/chip_icon_bg"
+                android:outlineProvider="background"
+                app:srcCompat="@drawable/ic_photo" />
+
             <EditText
-                android:id="@+id/search_input"
+                android:id="@+id/chat_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/small_margin"
+                android:layout_marginEnd="@dimen/small_margin"
                 android:backgroundTint="@color/white"
-                android:hint="@string/select_members_search_bar_hint"
+                android:hint="@string/create_chat_chat_name_hint"
                 android:importantForAutofill="no"
-                android:inputType="none"
+                android:inputType="text"
                 android:maxLines="3" />
-        </androidx.core.widget.NestedScrollView>
+        </LinearLayout>
     </com.google.android.material.appbar.AppBarLayout>
 
     <androidx.recyclerview.widget.RecyclerView
@@ -44,13 +57,12 @@
         app:layout_behavior="com.google.android.material.appbar.AppBarLayout$ScrollingViewBehavior" />
 
     <com.google.android.material.floatingactionbutton.FloatingActionButton
-        android:id="@+id/next_fab"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/small_margin"
         android:layout_marginBottom="@dimen/small_margin"
         android:backgroundTint="?attr/colorPrimary"
-        android:src="@drawable/ic_arrow_forward"
+        android:src="@drawable/ic_check"
         app:borderWidth="0dp"
         app:layout_anchor="@id/contacts_list"
         app:layout_anchorGravity="bottom|end"
@@ -61,8 +73,8 @@
         style="@style/ProgressBar"
         android:layout_width="70dp"
         android:layout_height="70dp"
+        android:visibility="gone"
         app:layout_anchor="@id/contacts_list"
-        app:layout_anchorGravity="center"
-        tools:visibility="gone" />
+        app:layout_anchorGravity="center" />
 
 </androidx.coordinatorlayout.widget.CoordinatorLayout>
