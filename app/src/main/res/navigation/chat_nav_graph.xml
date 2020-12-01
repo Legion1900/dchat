@@ -45,7 +45,7 @@
     </fragment>
     <fragment
         android:id="@+id/messageListFragment"
-        android:name="com.legion1900.dchat.view.chat.MessageListFragment"
+        android:name="com.legion1900.dchat.view.chat.messagelist.MessageListFragment"
         android:label=""
         tools:layout="@layout/fragment_message_list">
         <argument

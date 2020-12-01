@@ -1,4 +1,4 @@
-package com.legion1900.dchat.view.chat
+package com.legion1900.dchat.view.chat.messagelist
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.navArgs
 import com.legion1900.dchat.databinding.FragmentMessageListBinding
+import com.legion1900.dchat.view.chat.MessageListFragmentArgs
 import com.legion1900.dchat.view.util.ToolbarUtil
 
 class MessageListFragment : Fragment() {
