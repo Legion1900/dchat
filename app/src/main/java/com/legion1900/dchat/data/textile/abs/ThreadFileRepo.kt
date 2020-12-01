@@ -14,5 +14,7 @@ interface ThreadFileRepo {
         limit: Int
     ): Single<ThreadFiles<T>>
 
+    fun <T> getFile(hash: String, clazz: Class<T>): Single<T>
+
     fun <T> insertData(data: T, threadId: String): Completable
 }

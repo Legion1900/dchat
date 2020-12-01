@@ -32,6 +32,10 @@ class ThreadFileRepoImpl(private val proxy: TextileProxy, private val gson: Gson
             }
     }
 
+    override fun <T> getFile(hash: String, clazz: Class<T>): Single<T> {
+        return readFile(hash, clazz)
+    }
+
     override fun <T> insertData(data: T, threadId: String): Completable {
         return proxy.instance.flatMapCompletable { textile ->
             Completable.create { emitter ->
