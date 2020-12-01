@@ -160,16 +160,16 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun initTextile() {
-        val bus = TextileEventBusImpl(logger)
-        proxy = TextileProxyImpl(bus, application, repoPath, true)
-        contactManager = TextileContactManager(proxy)
-        profileManager = TextileProfileManager(proxy)
-        photoRepo = TextilePhotoRepo(proxy)
-        val schemaReader = JsonSchemaReaderImpl(this)
-        fileRepo = ThreadFileRepoImpl(proxy, Gson())
-        chatRepo = TextileChatRepo(proxy, schemaReader, fileRepo, profileManager)
-        chatManager = TextileChatManager(proxy, photoRepo, fileRepo)
-        aclManager = TextileAclManager(proxy, fileRepo)
+//        val bus = TextileEventBusImpl(logger)
+//        proxy = TextileProxyImpl(bus, application, repoPath, true)
+//        contactManager = TextileContactManager(proxy)
+//        profileManager = TextileProfileManager(proxy)
+//        photoRepo = TextilePhotoRepo(proxy)
+//        val schemaReader = JsonSchemaReaderImpl(this)
+//        fileRepo = ThreadFileRepoImpl(proxy, Gson())
+//        chatRepo = TextileChatRepo(proxy, schemaReader, fileRepo, profileManager)
+//        chatManager = TextileChatManager(proxy, photoRepo, fileRepo)
+//        aclManager = TextileAclManager(proxy, fileRepo)
     }
 
     private fun loadProfile() {

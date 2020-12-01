@@ -10,7 +10,9 @@ import com.legion1900.dchat.data.chat.TextileAclManager
 import com.legion1900.dchat.data.chat.TextileChatManager
 import com.legion1900.dchat.data.chat.TextileChatRepo
 import com.legion1900.dchat.data.chat.TextileMessageManager
+import com.legion1900.dchat.data.chat.abs.ChatModelConverter
 import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
+import com.legion1900.dchat.data.chat.impl.ChatModelConverterImpl
 import com.legion1900.dchat.data.chat.impl.JsonSchemaReaderImpl
 import com.legion1900.dchat.data.contact.TextileContactManager
 import com.legion1900.dchat.data.media.TextilePhotoRepo
@@ -96,9 +98,18 @@ fun chatRepoProvider(
     proxy: () -> TextileProxy,
     schemaReader: () -> JsonSchemaReader,
     fileRepo: () -> ThreadFileRepo,
-    profileManager: () -> ProfileManager
+    profileManager: () -> ProfileManager,
+    converter: () -> ChatModelConverter
 ): Provider<ChatRepo> {
-    return Provider { TextileChatRepo(proxy(), schemaReader(), fileRepo(), profileManager()) }
+    return Provider {
+        TextileChatRepo(
+            proxy(),
+            schemaReader(),
+            fileRepo(),
+            profileManager(),
+            converter()
+        )
+    }
 }
 
 fun photoRepoProvider(proxy: () -> TextileProxy): Provider<PhotoRepo> {
@@ -138,4 +149,8 @@ fun messageManagerProvider(
             profileManager()
         )
     }
+}
+
+fun chatModelConverterProvider(fileRepo: () -> ThreadFileRepo): Provider<ChatModelConverter> {
+    return Provider { ChatModelConverterImpl(fileRepo()) }
 }

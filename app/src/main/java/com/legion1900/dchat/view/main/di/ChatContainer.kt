@@ -1,6 +1,7 @@
 package com.legion1900.dchat.view.main.di
 
 import com.google.gson.Gson
+import com.legion1900.dchat.data.chat.abs.ChatModelConverter
 import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
 import com.legion1900.dchat.data.textile.abs.TextileEventBus
 import com.legion1900.dchat.data.textile.abs.TextileProxy
@@ -50,6 +51,7 @@ class ChatContainer(
             { resolve()!! },
             { resolve()!! },
             { resolve()!! },
+            { resolve()!! },
             { resolve()!! }
         ),
 
@@ -70,7 +72,9 @@ class ChatContainer(
             { resolve()!! },
             { resolve()!! },
             { resolve()!! }
-        )
+        ),
+
+        ChatModelConverter::class to chatModelConverterProvider { resolve()!! }
     )
 
     override fun <T : Any> resolve(klass: KClass<T>): T? = dependencyProvider[klass]
