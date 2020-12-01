@@ -3,6 +3,7 @@ package com.legion1900.dchat.data.textile.impl
 import com.legion1900.dchat.data.textile.abs.*
 import io.reactivex.subjects.PublishSubject
 import io.textile.pb.Model
+import io.textile.textile.FeedItemData
 import io.textile.textile.TextileEventListener
 import java.lang.Exception
 import kotlin.reflect.KClass
@@ -16,7 +17,8 @@ class TextileEventBusImpl(
         newSubject<QueryDone>(),
         newSubject<QueryError>(),
         newSubject<ContactQueryResult>(),
-        newSubject<NotificationReceived>()
+        newSubject<NotificationReceived>(),
+        newSubject<ThreadUpdateReceived>()
     )
 
     @Suppress("UNCHECKED_CAST")
@@ -54,6 +56,11 @@ class TextileEventBusImpl(
     override fun notificationReceived(notification: Model.Notification) {
         globalListener.notificationReceived(notification)
         routeEvent(NotificationReceived(notification))
+    }
+
+    override fun threadUpdateReceived(threadId: String, feedItemData: FeedItemData) {
+        globalListener.threadUpdateReceived(threadId, feedItemData)
+        routeEvent(ThreadUpdateReceived(threadId, feedItemData))
     }
 
     private inline fun <reified T : TextileEvent> newSubject(): Pair<KClass<T>, PublishSubject<T>> {

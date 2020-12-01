@@ -1,6 +1,7 @@
 package com.legion1900.dchat.data.textile.abs
 
 import io.textile.pb.Model
+import io.textile.textile.FeedItemData
 
 sealed class TextileEvent
 
@@ -15,3 +16,5 @@ class QueryError(id: String, val e: Exception) : IdBasedEvent(id)
 class ContactQueryResult(id: String, val contact: Model.Contact) : IdBasedEvent(id)
 
 data class NotificationReceived(val notification: Model.Notification) : TextileEvent()
+
+data class ThreadUpdateReceived(val threadId: String, val data: FeedItemData) : TextileEvent()
