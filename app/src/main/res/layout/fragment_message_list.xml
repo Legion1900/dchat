@@ -23,7 +23,7 @@
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
             <EditText
                 android:id="@+id/msg_input"
@@ -31,9 +31,11 @@
                 android:layout_height="wrap_content"
                 android:backgroundTint="?attr/colorOnPrimary"
                 android:hint="@string/message_list_msg_input_hint"
-                android:inputType="text"
+                android:inputType="textMultiLine"
+                app:layout_constraintTop_toTopOf="parent"
                 android:maxLines="4"
                 android:paddingHorizontal="@dimen/small_padding"
+                android:scrollbars="vertical"
                 android:textSize="@dimen/default_text"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toStartOf="@id/send_btn"
@@ -41,6 +43,7 @@
 
             <ImageButton
                 android:id="@+id/send_btn"
+                app:layout_constraintHeight_max="55dp"
                 android:layout_width="0dp"
                 android:layout_height="0dp"
                 android:backgroundTint="?attr/colorOnPrimary"
