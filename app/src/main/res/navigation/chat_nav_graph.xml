@@ -9,13 +9,16 @@
         android:id="@+id/chatListFragment"
         android:name="com.legion1900.dchat.view.chat.chatlist.ChatListFragment"
         android:label="@string/app_name"
-        tools:layout="@layout/fragment_chat_list" >
+        tools:layout="@layout/fragment_chat_list">
         <action
             android:id="@+id/action_chatList_to_addContact"
             app:destination="@id/addContactFragment" />
         <action
             android:id="@+id/action_chatList_to_selectMembers"
             app:destination="@id/selectMembersFragment" />
+        <action
+            android:id="@+id/action_chatList_to_messageList"
+            app:destination="@id/messageListFragment" />
     </fragment>
     <fragment
         android:id="@+id/addContactFragment"
@@ -26,7 +29,7 @@
         android:id="@+id/selectMembersFragment"
         android:name="com.legion1900.dchat.view.chat.newchat.selectmembers.SelectMembersFragment"
         android:label="@string/select_members_toolbar_title"
-        tools:layout="@layout/fragment_select_members" >
+        tools:layout="@layout/fragment_select_members">
         <action
             android:id="@+id/action_selectMembersFragment_to_createChatFragment"
             app:destination="@id/createChatFragment" />
@@ -39,5 +42,21 @@
         <argument
             android:name="members"
             app:argType="string[]" />
+    </fragment>
+    <fragment
+        android:id="@+id/messageListFragment"
+        android:name="com.legion1900.dchat.view.chat.MessageListFragment"
+        android:label=""
+        tools:layout="@layout/fragment_message_list">
+        <argument
+            android:name="chatId"
+            app:argType="string" />
+        <argument
+            android:name="chatName"
+            app:argType="string" />
+        <argument
+            android:name="chatAvatar"
+            app:argType="string"
+            app:nullable="true" />
     </fragment>
 </navigation>

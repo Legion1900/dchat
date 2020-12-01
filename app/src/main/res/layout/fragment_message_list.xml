@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.legion1900.dchat.view.chat.MessageListFragment">
+
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        style="@style/AccentToolbar"
+        android:theme="@style/ToolbarAccentTheme"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:title="Cool chat" />
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/msg_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardElevation="15dp"
+        app:layout_constraintBottom_toBottomOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <EditText
+                android:id="@+id/msg_input"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:backgroundTint="?attr/colorOnPrimary"
+                android:hint="@string/message_list_msg_input_hint"
+                android:inputType="text"
+                android:maxLines="4"
+                android:paddingHorizontal="@dimen/small_padding"
+                android:textSize="@dimen/default_text"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/send_btn"
+                app:layout_constraintStart_toStartOf="parent" />
+
+            <ImageButton
+                android:id="@+id/send_btn"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:backgroundTint="?attr/colorOnPrimary"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_send_msg"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintDimensionRatio="H,1:1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.cardview.widget.CardView>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/message_list"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toTopOf="@id/msg_bar"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/toolbar" />
+</androidx.constraintlayout.widget.ConstraintLayout>

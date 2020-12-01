@@ -1,6 +1,7 @@
 package com.legion1900.dchat.view.chat.chatlist
 
 import android.os.Bundle
+import android.util.Base64
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -88,6 +89,10 @@ class ChatListFragment : Fragment() {
     }
 
     private fun onChatClick(v: View) {
-
+        val position = binding.chatList.getChildAdapterPosition(v)
+        val (id, name, avatarBytes) = adapter.getChat(position)
+        val avatar = avatarBytes?.let { Base64.encodeToString(it, Base64.DEFAULT) }
+        val directions = ChatListFragmentDirections.actionChatListToMessageList(id, name, avatar)
+        findNavController().navigate(directions)
     }
 }

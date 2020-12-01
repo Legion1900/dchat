@@ -36,6 +36,8 @@ class ChatAdapter(
         holder.bind(chat, requestManager)
     }
 
+    fun getChat(position: Int) = getItem(position)
+
     class ChatHolder(val binding: ItemChatBinding) : RecyclerView.ViewHolder(binding.root) {
         fun bind(model: ChatModel, manager: RequestManager) {
             binding.apply {

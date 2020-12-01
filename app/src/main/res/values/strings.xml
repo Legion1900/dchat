@@ -39,4 +39,7 @@
     <!-- CreateChatFragment -->
     <string name="create_chat_toolbar_title">New chat</string>
     <string name="create_chat_chat_name_hint">Enter chat name</string>
+
+    <!-- MessageListFragment -->
+    <string name="message_list_msg_input_hint">Message</string>
 </resources>
