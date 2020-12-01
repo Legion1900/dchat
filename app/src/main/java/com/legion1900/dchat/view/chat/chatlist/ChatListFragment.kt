@@ -35,7 +35,6 @@ class ChatListFragment : Fragment() {
         factory = container.resolve(ViewModelProvider.Factory::class)!!
         setHasOptionsMenu(true)
         viewModel.loadProfileInfo()
-        viewModel.loadChatList()
         observeVm()
     }
 
@@ -47,6 +46,11 @@ class ChatListFragment : Fragment() {
         _binding = FragmentChatListBinding.inflate(inflater, container, false)
         toolbarUtil.setupToolbar(binding.toolbar, AppBarConfiguration(setOf(R.id.chatListFragment)))
         return binding.root
+    }
+
+    override fun onStart() {
+        super.onStart()
+        viewModel.loadChatList()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
