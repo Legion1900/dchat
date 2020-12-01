@@ -31,13 +31,14 @@ class ChatListFragment : Fragment() {
         factory = container.resolve(ViewModelProvider.Factory::class)!!
         setHasOptionsMenu(true)
         viewModel.loadProfileInfo()
+        viewModel.loadChatList()
     }
 
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentChatListBinding.inflate(inflater, container, false)
         toolbarUtil.setupToolbar(binding.toolbar, AppBarConfiguration(setOf(R.id.chatListFragment)))
         return binding.root
@@ -58,13 +59,17 @@ class ChatListFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         binding.apply {
-            addChat.setOnClickListener(::onAddChatClick)
+            createChatBtn.setOnClickListener(::onAddChatClick)
         }
     }
 
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    private fun observeVm() {
+
     }
 
     @Suppress("UNUSED_PARAMETER")

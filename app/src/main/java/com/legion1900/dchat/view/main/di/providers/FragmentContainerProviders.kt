@@ -9,10 +9,7 @@ import com.legion1900.dchat.domain.app.TmpFileRepo
 import com.legion1900.dchat.domain.chat.AclManager
 import com.legion1900.dchat.domain.chat.ChatManager
 import com.legion1900.dchat.domain.chat.ChatRepo
-import com.legion1900.dchat.domain.chat.usecase.CreateChatImpl
-import com.legion1900.dchat.domain.chat.usecase.CreateChatUseCase
-import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarImpl
-import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarUseCase
+import com.legion1900.dchat.domain.chat.usecase.*
 import com.legion1900.dchat.domain.contact.*
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
@@ -57,6 +54,14 @@ fun setChatAvatarUcProvider(
     return Provider { SetChatAvatarImpl(tmpFileRepo(), chatManager()) }
 }
 
+fun getChatUcProvider(
+    chatRepo: () -> ChatRepo,
+    contactManager: () -> ContactManager,
+    photoRepo: () -> PhotoRepo
+): Provider<GetChatsUseCase> {
+    return Provider { GetChatsImpl(chatRepo(), photoRepo(), contactManager()) }
+}
+
 /*
 * ViewModels provision
 * */
@@ -79,10 +84,10 @@ fun createProfileVmProvider(
 }
 
 fun chatListVmProvider(
-    chatRepo: () -> ChatRepo,
-    profileManager: () -> ProfileManager
+    getChat: () -> GetChatsUseCase,
+    profileManager: () -> ProfileManager,
 ): Provider<ChatListViewModel> {
-    return Provider { ChatListViewModel(chatRepo(), profileManager()) }
+    return Provider { ChatListViewModel(profileManager(), getChat()) }
 }
 
 fun addContactVmProvider(

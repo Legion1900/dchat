@@ -11,6 +11,7 @@ import com.legion1900.dchat.domain.chat.AclManager
 import com.legion1900.dchat.domain.chat.ChatManager
 import com.legion1900.dchat.domain.chat.ChatRepo
 import com.legion1900.dchat.domain.chat.usecase.CreateChatUseCase
+import com.legion1900.dchat.domain.chat.usecase.GetChatsUseCase
 import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarUseCase
 import com.legion1900.dchat.domain.contact.AddContactUseCase
 import com.legion1900.dchat.domain.contact.ContactManager
@@ -51,6 +52,11 @@ class FragmentContainer(
             { activityContainer.resolve(TmpFileRepo::class)!! },
             { chatContainer.resolve(ChatManager::class)!! }
         ),
+        GetChatsUseCase::class to getChatUcProvider(
+            { chatContainer.resolve(ChatRepo::class)!! },
+            { chatContainer.resolve(ContactManager::class)!! },
+            { chatContainer.resolve(PhotoRepo::class)!! }
+        ),
 
         ViewModelProvider.Factory::class to viewModelFactoryProvider(
             createViewModelProvider()
@@ -79,7 +85,7 @@ class FragmentContainer(
             }
             ChatListViewModel::class.java -> getPair {
                 chatListVmProvider(
-                    { chatContainer.resolve(ChatRepo::class)!! },
+                    { resolve(GetChatsUseCase::class)!! },
                     { chatContainer.resolve(ProfileManager::class)!! }
                 )
             }
