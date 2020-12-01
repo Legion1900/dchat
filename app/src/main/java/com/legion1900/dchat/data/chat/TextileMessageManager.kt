@@ -12,6 +12,7 @@ import com.legion1900.dchat.domain.chat.SendPhoto
 import com.legion1900.dchat.domain.chat.SendText
 import com.legion1900.dchat.domain.media.PhotoRepo
 import io.reactivex.Completable
+import java.util.*
 
 class TextileMessageManager(
     private val threadFileRepo: ThreadFileRepo,
@@ -50,7 +51,9 @@ class TextileMessageManager(
     private fun sendMessage(chatId: String, text: String, photoId: String? = null): Completable {
         val type = if (photoId == null) ContentTypeJson.TEXT else ContentTypeJson.PHOTO
         val content = ContentJson(text, photoId)
-        return senderId.map { MessageJson(type, content, it) }
+        return senderId.map { MessageJson(type, content, it, getTimestamp()) }
             .flatMapCompletable { threadFileRepo.insertData(it, chatId) }
     }
+
+    private fun getTimestamp() = Calendar.getInstance().time.time
 }

@@ -7,5 +7,7 @@ data class MessageJson(
     val contentType: ContentTypeJson,
     val content: ContentJson,
     @SerializedName("from_id")
-    val fromUser: String
+    val fromUser: String,
+    @SerializedName("date")
+    val timestamp: Long
 )

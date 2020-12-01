@@ -8,13 +8,18 @@
     "required": [
       "content_type",
       "content",
-      "from_id"
+      "from_id",
+      "date"
     ],
     "type": "object",
     "properties": {
       "from_id": {
         "type": "string",
         "description": "Sender ID"
+      },
+      "date": {
+        "type": "integer",
+        "description": "Datetime when message was added to thread"
       },
       "content_type": {
         "type": "string",

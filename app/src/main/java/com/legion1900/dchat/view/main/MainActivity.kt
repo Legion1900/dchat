@@ -236,22 +236,22 @@ class MainActivity : AppCompatActivity() {
     }
 
     fun testWriteMsg(v: View) {
-        val threadId = "12D3KooWMAbUALgAkeh64dWDRHeXwSbRN3xjieQZxP1tv3hoBvea"
-        val msgs = listOf(
-            MessageJson(ContentTypeJson.TEXT, ContentJson("First Message", null), "Me"),
-            MessageJson(ContentTypeJson.PHOTO, ContentJson("Second message", "fileID"), "Me")
-        )
-        val tasks = mutableListOf<Completable>()
-        msgs.forEach {
-            tasks += fileRepo.insertData(
-                it,
-                threadId
-            )
-        }
-        Completable.concat(tasks)
-            .doOnComplete { Log.d("enigma", "messages were written!") }
-            .andThen(fileRepo.getFiles(MessageJson::class.java, threadId, null, 100))
-            .subscribe { data -> Log.d("enigma", "data: $data") }
+//        val threadId = "12D3KooWMAbUALgAkeh64dWDRHeXwSbRN3xjieQZxP1tv3hoBvea"
+//        val msgs = listOf(
+//            MessageJson(ContentTypeJson.TEXT, ContentJson("First Message", null), "Me"),
+//            MessageJson(ContentTypeJson.PHOTO, ContentJson("Second message", "fileID"), "Me")
+//        )
+//        val tasks = mutableListOf<Completable>()
+//        msgs.forEach {
+//            tasks += fileRepo.insertData(
+//                it,
+//                threadId
+//            )
+//        }
+//        Completable.concat(tasks)
+//            .doOnComplete { Log.d("enigma", "messages were written!") }
+//            .andThen(fileRepo.getFiles(MessageJson::class.java, threadId, null, 100))
+//            .subscribe { data -> Log.d("enigma", "data: $data") }
     }
 
     fun onInviteUserClick(v: View) {
