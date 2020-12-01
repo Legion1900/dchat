@@ -11,6 +11,7 @@
         android:layout_height="@dimen/dialog_avatar_height"
         android:layout_marginTop="@dimen/contact_margin"
         android:background="@drawable/avatar_background"
+        android:scaleType="centerCrop"
         android:outlineProvider="background"
         app:layout_constraintStart_toStartOf="@id/start_guide"
         app:layout_constraintTop_toTopOf="parent" />

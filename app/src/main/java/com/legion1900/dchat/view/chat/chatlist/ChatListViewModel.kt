@@ -1,13 +1,14 @@
 package com.legion1900.dchat.view.chat.chatlist
 
 import android.util.Log
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.chat.usecase.ChatAvatarLoaded
 import com.legion1900.dchat.domain.chat.usecase.ErrorLoadingAvatar
 import com.legion1900.dchat.domain.chat.usecase.GetChatsUseCase
 import com.legion1900.dchat.domain.chat.usecase.NewChat
-import com.legion1900.dchat.domain.dto.Chat
 import com.legion1900.dchat.domain.dto.chat.ChatModel
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.ConcurrentHashMap
@@ -18,6 +19,8 @@ class ChatListViewModel(
 ) : ViewModel() {
 
     private val chatModels = ConcurrentHashMap<String, ChatModel>()
+    private val _chatList = MutableLiveData<List<ChatModel>>()
+    val chatList: LiveData<List<ChatModel>> = _chatList
 
     private val disposable = CompositeDisposable()
 
@@ -29,8 +32,7 @@ class ChatListViewModel(
                     is ChatAvatarLoaded -> handleAvatarLoaded(event)
                     is ErrorLoadingAvatar -> handleAvatarError(event)
                 }
-                Log.d("enigma", "New chat event: $event")
-                Log.d("enigma", "Current chat list: ${chatModels.values}")
+                _chatList.postValue(chatModels.values.toList())
             }.let(disposable::add)
     }
 
