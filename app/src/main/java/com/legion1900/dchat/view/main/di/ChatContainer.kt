@@ -10,6 +10,7 @@ import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.chat.AclManager
 import com.legion1900.dchat.domain.chat.ChatManager
 import com.legion1900.dchat.domain.chat.ChatRepo
+import com.legion1900.dchat.domain.chat.MessageManager
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.main.di.providers.*
@@ -58,7 +59,18 @@ class ChatContainer(
 
         AclManager::class to aclManagerProvider({ resolve()!! }, { resolve()!! }),
 
-        ChatManager::class to chatManagerProvider({ resolve()!! }, { resolve()!! }, { resolve()!! })
+        ChatManager::class to chatManagerProvider(
+            { resolve()!! },
+            { resolve()!! },
+            { resolve()!! }
+        ),
+
+        MessageManager::class to messageManagerProvider(
+            { resolve()!! },
+            { resolve()!! },
+            { resolve()!! },
+            { resolve()!! }
+        )
     )
 
     override fun <T : Any> resolve(klass: KClass<T>): T? = dependencyProvider[klass]

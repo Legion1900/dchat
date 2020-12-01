@@ -10,8 +10,10 @@ import com.legion1900.dchat.domain.app.TmpFileRepo
 import com.legion1900.dchat.domain.chat.AclManager
 import com.legion1900.dchat.domain.chat.ChatManager
 import com.legion1900.dchat.domain.chat.ChatRepo
+import com.legion1900.dchat.domain.chat.MessageManager
 import com.legion1900.dchat.domain.chat.usecase.CreateChatUseCase
 import com.legion1900.dchat.domain.chat.usecase.GetChatsUseCase
+import com.legion1900.dchat.domain.chat.usecase.SendMessageUseCase
 import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarUseCase
 import com.legion1900.dchat.domain.contact.AddContactUseCase
 import com.legion1900.dchat.domain.contact.ContactManager
@@ -22,6 +24,7 @@ import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewMo
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
 import com.legion1900.dchat.view.chat.chatlist.ChatListViewModel
+import com.legion1900.dchat.view.chat.messagelist.MessageListViewModel
 import com.legion1900.dchat.view.chat.newchat.createchat.CreateChatViewModel
 import com.legion1900.dchat.view.chat.newchat.selectmembers.SelectMembersViewModel
 import com.legion1900.dchat.view.main.di.providers.*
@@ -57,6 +60,9 @@ class FragmentContainer(
             { chatContainer.resolve(ContactManager::class)!! },
             { chatContainer.resolve(PhotoRepo::class)!! }
         ),
+        SendMessageUseCase::class to sendMessageUcProvider {
+            chatContainer.resolve(MessageManager::class)!!
+        },
 
         ViewModelProvider.Factory::class to viewModelFactoryProvider(
             createViewModelProvider()
@@ -107,6 +113,9 @@ class FragmentContainer(
                     { resolve(CreateChatUseCase::class)!! },
                     { resolve(SetChatAvatarUseCase::class)!! }
                 )
+            }
+            MessageListViewModel::class.java -> getPair {
+                messageListVmProvider { resolve(SendMessageUseCase::class)!! }
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")
         }

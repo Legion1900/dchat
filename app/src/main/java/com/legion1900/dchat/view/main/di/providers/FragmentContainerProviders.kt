@@ -9,6 +9,7 @@ import com.legion1900.dchat.domain.app.TmpFileRepo
 import com.legion1900.dchat.domain.chat.AclManager
 import com.legion1900.dchat.domain.chat.ChatManager
 import com.legion1900.dchat.domain.chat.ChatRepo
+import com.legion1900.dchat.domain.chat.MessageManager
 import com.legion1900.dchat.domain.chat.usecase.*
 import com.legion1900.dchat.domain.contact.*
 import com.legion1900.dchat.domain.media.PhotoRepo
@@ -16,6 +17,7 @@ import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewMo
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
 import com.legion1900.dchat.view.chat.chatlist.ChatListViewModel
+import com.legion1900.dchat.view.chat.messagelist.MessageListViewModel
 import com.legion1900.dchat.view.chat.newchat.createchat.CreateChatViewModel
 import com.legion1900.dchat.view.chat.newchat.selectmembers.SelectMembersViewModel
 import com.legion1900.dchat.view.main.di.Provider
@@ -60,6 +62,10 @@ fun getChatUcProvider(
     photoRepo: () -> PhotoRepo
 ): Provider<GetChatsUseCase> {
     return Provider { GetChatsImpl(chatRepo(), photoRepo(), contactManager()) }
+}
+
+fun sendMessageUcProvider(msgManager: () -> MessageManager): Provider<SendMessageUseCase> {
+    return Provider { SendMessageImpl(msgManager()) }
 }
 
 /*
@@ -110,4 +116,8 @@ fun createChatVmProvider(
     setChatAvatar: () -> SetChatAvatarUseCase
 ): Provider<CreateChatViewModel> {
     return Provider { CreateChatViewModel(createChat(), setChatAvatar()) }
+}
+
+fun messageListVmProvider(sendMsgUc: () -> SendMessageUseCase): Provider<MessageListViewModel> {
+    return Provider { MessageListViewModel(sendMsgUc()) }
 }

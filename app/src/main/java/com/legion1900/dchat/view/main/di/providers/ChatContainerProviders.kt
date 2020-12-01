@@ -2,12 +2,14 @@ package com.legion1900.dchat.view.main.di.providers
 
 import android.app.Application
 import android.content.Context
+import android.util.Log
 import com.google.gson.Gson
 import com.legion1900.dchat.data.account.TextileProfileManager
 import com.legion1900.dchat.data.account.TextileRegistrationManager
 import com.legion1900.dchat.data.chat.TextileAclManager
 import com.legion1900.dchat.data.chat.TextileChatManager
 import com.legion1900.dchat.data.chat.TextileChatRepo
+import com.legion1900.dchat.data.chat.TextileMessageManager
 import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
 import com.legion1900.dchat.data.chat.impl.JsonSchemaReaderImpl
 import com.legion1900.dchat.data.contact.TextileContactManager
@@ -21,9 +23,12 @@ import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.chat.AclManager
 import com.legion1900.dchat.domain.chat.ChatManager
 import com.legion1900.dchat.domain.chat.ChatRepo
+import com.legion1900.dchat.domain.chat.MessageManager
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.main.di.Provider
+import io.textile.textile.BaseTextileEventListener
+import io.textile.textile.FeedItemData
 import io.textile.textile.TextileEventListener
 import io.textile.textile.TextileLoggingListener
 
@@ -53,6 +58,15 @@ fun textileEventBusProvider(isDebug: () -> Boolean): Provider<TextileEventBus> {
     return Provider {
         val listeners = mutableListOf<TextileEventListener>(AutoInviteHandler())
         if (isDebug()) listeners += TextileLoggingListener()
+
+        listeners += object : BaseTextileEventListener() {
+            override fun threadUpdateReceived(threadId: String, feedItemData: FeedItemData) {
+                Log.d("enigma", "Thread Update:")
+                Log.d("enigma", "block: ${feedItemData.block}")
+                Log.d("enigma", ": ${feedItemData.files.filesList.first().file}")
+            }
+        }
+
         val compositeListener = CompositeListener(*listeners.toTypedArray())
         TextileEventBusImpl(compositeListener)
     }
@@ -108,4 +122,20 @@ fun chatManagerProvider(
     fileRepo: () -> ThreadFileRepo
 ): Provider<ChatManager> {
     return Provider { TextileChatManager(proxy(), photoRepo(), fileRepo()) }
+}
+
+fun messageManagerProvider(
+    threadFileRepo: () -> ThreadFileRepo,
+    proxy: () -> TextileProxy,
+    photoRepo: () -> PhotoRepo,
+    profileManager: () -> ProfileManager
+): Provider<MessageManager> {
+    return Provider {
+        TextileMessageManager(
+            threadFileRepo(),
+            proxy(),
+            photoRepo(),
+            profileManager()
+        )
+    }
 }
