@@ -2,6 +2,7 @@ package com.legion1900.dchat.view.chat.chatlist
 
 import android.os.Bundle
 import android.util.Base64
+import android.util.Log
 import android.view.*
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
@@ -44,7 +45,8 @@ class ChatListFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View {
         _binding = FragmentChatListBinding.inflate(inflater, container, false)
-        toolbarUtil.setupToolbar(binding.toolbar, AppBarConfiguration(setOf(R.id.chatListFragment)))
+        val config = AppBarConfiguration(setOf(R.id.chatListFragment), binding.drawerLayout)
+        toolbarUtil.setupToolbar(binding.toolbar, config)
         return binding.root
     }
 

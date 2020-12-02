@@ -42,4 +42,7 @@
 
     <!-- MessageListFragment -->
     <string name="message_list_msg_input_hint">Message</string>
+
+    <!-- ChatListFragment -->
+    <string name="chat_list_add_cafe_item">Register cafe</string>
 </resources>

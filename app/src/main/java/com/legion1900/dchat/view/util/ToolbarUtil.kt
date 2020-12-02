@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
+import com.legion1900.dchat.view.main.MainActivity
 
 class ToolbarUtil(private val fragment: Fragment) {
     fun setupToolbar(toolbar: Toolbar, config: AppBarConfiguration? = null) {
@@ -19,5 +20,6 @@ class ToolbarUtil(private val fragment: Fragment) {
         * */
         (fragment.requireActivity() as AppCompatActivity)
             .setupActionBarWithNavController(controller, barConfig)
+        (fragment.requireActivity() as MainActivity).appBarConfig = config
     }
 }

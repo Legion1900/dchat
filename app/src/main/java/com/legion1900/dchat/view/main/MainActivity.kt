@@ -7,6 +7,8 @@ import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.findNavController
+import androidx.navigation.ui.AppBarConfiguration
+import androidx.navigation.ui.navigateUp
 import com.google.gson.Gson
 import com.legion1900.dchat.R
 import com.legion1900.dchat.data.account.TextileMnemonicGenerator
@@ -46,6 +48,8 @@ import io.textile.textile.Textile
 import java.io.File
 
 class MainActivity : AppCompatActivity() {
+
+    var appBarConfig: AppBarConfiguration? = null
 
     private lateinit var factory: ViewModelProvider.Factory
     private val viewModel by lazy {
@@ -268,6 +272,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     override fun onSupportNavigateUp(): Boolean {
-        return findNavController(R.id.nav_host_fragment).navigateUp()
+        val controller = findNavController(R.id.nav_host_fragment)
+        return appBarConfig?.let { controller.navigateUp(it) } ?: controller.navigateUp()
     }
 }
