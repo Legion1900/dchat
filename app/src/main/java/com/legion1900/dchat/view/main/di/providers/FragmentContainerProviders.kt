@@ -6,10 +6,7 @@ import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
-import com.legion1900.dchat.domain.chat.AclManager
-import com.legion1900.dchat.domain.chat.ChatManager
-import com.legion1900.dchat.domain.chat.ChatRepo
-import com.legion1900.dchat.domain.chat.MessageManager
+import com.legion1900.dchat.domain.chat.*
 import com.legion1900.dchat.domain.chat.usecase.*
 import com.legion1900.dchat.domain.contact.*
 import com.legion1900.dchat.domain.media.PhotoRepo
@@ -68,6 +65,14 @@ fun sendMessageUcProvider(msgManager: () -> MessageManager): Provider<SendMessag
     return Provider { SendMessageImpl(msgManager()) }
 }
 
+fun getMessagesUcProvider(
+    msgManager: () -> MessageManager,
+    msgBus: () -> MessageEventBus,
+    contactManager: () -> ContactManager
+): Provider<GetMessagesUseCase> {
+    return Provider { GetMessageImpl(msgBus(), msgManager(), contactManager()) }
+}
+
 /*
 * ViewModels provision
 * */
@@ -118,6 +123,9 @@ fun createChatVmProvider(
     return Provider { CreateChatViewModel(createChat(), setChatAvatar()) }
 }
 
-fun messageListVmProvider(sendMsgUc: () -> SendMessageUseCase): Provider<MessageListViewModel> {
-    return Provider { MessageListViewModel(sendMsgUc()) }
+fun messageListVmProvider(
+    sendMsgUc: () -> SendMessageUseCase,
+    getMsg: () -> GetMessagesUseCase
+): Provider<MessageListViewModel> {
+    return Provider { MessageListViewModel(sendMsgUc(), getMsg()) }
 }

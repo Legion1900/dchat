@@ -24,6 +24,7 @@ class MessageListFragment : Fragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         inject()
+        viewModel.loadMessages(args.chatId)
     }
 
     override fun onCreateView(

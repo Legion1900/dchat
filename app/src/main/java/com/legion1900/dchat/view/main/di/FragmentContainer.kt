@@ -7,14 +7,8 @@ import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
-import com.legion1900.dchat.domain.chat.AclManager
-import com.legion1900.dchat.domain.chat.ChatManager
-import com.legion1900.dchat.domain.chat.ChatRepo
-import com.legion1900.dchat.domain.chat.MessageManager
-import com.legion1900.dchat.domain.chat.usecase.CreateChatUseCase
-import com.legion1900.dchat.domain.chat.usecase.GetChatsUseCase
-import com.legion1900.dchat.domain.chat.usecase.SendMessageUseCase
-import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarUseCase
+import com.legion1900.dchat.domain.chat.*
+import com.legion1900.dchat.domain.chat.usecase.*
 import com.legion1900.dchat.domain.contact.AddContactUseCase
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.contact.FindContactUseCase
@@ -63,6 +57,11 @@ class FragmentContainer(
         SendMessageUseCase::class to sendMessageUcProvider {
             chatContainer.resolve(MessageManager::class)!!
         },
+        GetMessagesUseCase::class to getMessagesUcProvider(
+            { chatContainer.resolve(MessageManager::class)!! },
+            { chatContainer.resolve(MessageEventBus::class)!! },
+            { chatContainer.resolve(ContactManager::class)!! }
+        ),
 
         ViewModelProvider.Factory::class to viewModelFactoryProvider(
             createViewModelProvider()
@@ -115,7 +114,10 @@ class FragmentContainer(
                 )
             }
             MessageListViewModel::class.java -> getPair {
-                messageListVmProvider { resolve(SendMessageUseCase::class)!! }
+                messageListVmProvider(
+                    { resolve(SendMessageUseCase::class)!! },
+                    { resolve(GetMessagesUseCase::class)!! }
+                )
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")
         }

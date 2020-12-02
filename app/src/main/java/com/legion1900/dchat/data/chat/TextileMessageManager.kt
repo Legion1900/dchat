@@ -3,6 +3,7 @@ package com.legion1900.dchat.data.chat
 import com.legion1900.dchat.data.chat.gson.ContentJson
 import com.legion1900.dchat.data.chat.gson.ContentTypeJson
 import com.legion1900.dchat.data.chat.gson.MessageJson
+import com.legion1900.dchat.data.message.converter.MessageModelConverter
 import com.legion1900.dchat.data.textile.abs.TextileProxy
 import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
 import com.legion1900.dchat.domain.account.ProfileManager
@@ -10,8 +11,12 @@ import com.legion1900.dchat.domain.chat.MessageManager
 import com.legion1900.dchat.domain.chat.SendMessage
 import com.legion1900.dchat.domain.chat.SendPhoto
 import com.legion1900.dchat.domain.chat.SendText
+import com.legion1900.dchat.domain.dto.message.Message
 import com.legion1900.dchat.domain.media.PhotoRepo
+import io.reactivex.BackpressureStrategy
 import io.reactivex.Completable
+import io.reactivex.Flowable
+import io.reactivex.Observable
 import java.util.*
 
 class TextileMessageManager(
@@ -23,6 +28,8 @@ class TextileMessageManager(
 
     private val keyUtil = ChatKeyUtil()
 
+    private val converter = MessageModelConverter()
+
     private val senderId = profileManager.getCurrentAccount()
         .map { it.id }
         .cache()
@@ -32,6 +39,14 @@ class TextileMessageManager(
             is SendText -> sendText(msg, chatId)
             is SendPhoto -> sendPhoto(msg, chatId)
         }
+    }
+
+    override fun getMessages(chatId: String): Flowable<Message> {
+        return threadFileRepo.getFiles(MessageJson::class.java, chatId, null, 1000)
+            .map { it.data }
+            .flatMapObservable { Observable.fromIterable(it) }
+            .toFlowable(BackpressureStrategy.BUFFER)
+            .map { converter.convert(it) }
     }
 
     private fun sendText(text: SendText, chatId: String): Completable {
