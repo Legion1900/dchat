@@ -7,6 +7,8 @@ import androidx.lifecycle.ViewModel
 import com.legion1900.dchat.domain.chat.usecase.GetMessagesUseCase
 import com.legion1900.dchat.domain.chat.usecase.SendMessageUseCase
 import com.legion1900.dchat.domain.dto.message.MessageModel
+import com.legion1900.dchat.view.util.SingleEvent
+import io.reactivex.disposables.CompositeDisposable
 import java.util.*
 import java.util.concurrent.ConcurrentSkipListSet
 import kotlin.Comparator
@@ -28,9 +30,15 @@ class MessageListViewModel(
         }
     }
 
+    private val _isMsgSent = MutableLiveData<SingleEvent<Boolean>>()
+    val isMsgSent: LiveData<SingleEvent<Boolean>> = _isMsgSent
+
+    private val disposable = CompositeDisposable()
+
     fun sendMessage(chatId: String, text: String) {
         sendMsg.sendMessage(chatId, text, null)
-            .subscribe { Log.d("enigma", "Message sent!!") }
+            .subscribe { _isMsgSent.postValue(SingleEvent(true)) }
+            .let(disposable::add)
     }
 
     fun loadMessages(chatId: String): LiveData<List<MessageModel>> {
@@ -40,8 +48,10 @@ class MessageListViewModel(
                 messages.add(model)
                 Log.d("enigma", "messages: $messages")
                 msgLiveData.postValue(messages.toList())
-            }
+            }.let(disposable::add)
         }
         return msgLiveData
     }
+
+
 }

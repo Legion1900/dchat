@@ -54,17 +54,27 @@
                 app:layout_constraintHeight_max="55dp"
                 app:layout_constraintTop_toTopOf="parent" />
 
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="@id/send_btn"
+                app:layout_constraintEnd_toEndOf="@id/send_btn"
+                app:layout_constraintStart_toStartOf="@id/send_btn"
+                app:layout_constraintTop_toTopOf="@id/send_btn" />
+
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.cardview.widget.CardView>
 
     <androidx.recyclerview.widget.RecyclerView
-        android:paddingHorizontal="@dimen/medium_padding"
         android:id="@+id/message_list"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:clipToPadding="false"
-        android:clipChildren="false"
         android:background="@color/earl_grey"
+        android:clipChildren="false"
+        android:clipToPadding="false"
+        android:paddingHorizontal="@dimen/medium_padding"
         app:layout_constraintBottom_toTopOf="@id/msg_bar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

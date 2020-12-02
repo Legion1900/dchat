@@ -13,7 +13,7 @@ import java.util.*
 
 class MessageAdapter : ListAdapter<MessageModel, MessageAdapter.MessageHolder>(diffCallback) {
 
-    private val dateFormat = SimpleDateFormat("HH:mm", Locale.GERMANY)
+    private val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MessageHolder {
         val inflater = LayoutInflater.from(parent.context)

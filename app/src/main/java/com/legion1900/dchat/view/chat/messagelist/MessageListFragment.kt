@@ -4,12 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.navArgs
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.legion1900.dchat.databinding.FragmentMessageListBinding
-
 import com.legion1900.dchat.view.main.ChatApplication
 import com.legion1900.dchat.view.util.ToolbarUtil
 
@@ -29,6 +29,12 @@ class MessageListFragment : Fragment() {
         inject()
         viewModel.loadMessages(args.chatId).observe(this) {
             adapter.submitList(it)
+        }
+        viewModel.isMsgSent.observe(this) { event ->
+            event.getIfNotHandled()?.run {
+                setIsSending(false)
+                binding.msgInput.setText("")
+            }
         }
     }
 
@@ -68,7 +74,18 @@ class MessageListFragment : Fragment() {
 
     @Suppress("UNUSED_PARAMETER")
     private fun onSendClick(v: View) {
+        binding.apply {
+            setIsSending(true)
+        }
         val text = binding.msgInput.text.toString()
         viewModel.sendMessage(args.chatId, text)
+    }
+
+    private fun setIsSending(isSending: Boolean) {
+        binding.apply {
+            sendBtn.isEnabled = !isSending
+            sendBtn.visibility = if (isSending) View.INVISIBLE else View.VISIBLE
+            progressBar.isVisible = isSending
+        }
     }
 }
