@@ -5,6 +5,7 @@
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:background="@drawable/big_rounded_rect"
+    android:layout_marginVertical="5dp"
     android:backgroundTint="@color/white">
 
     <ImageView
@@ -29,6 +30,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/medium_margin"
+        android:ellipsize="end"
         android:maxLength="30"
         android:singleLine="true"
         app:layout_constraintBottom_toBottomOf="@id/avatar"
@@ -36,9 +38,11 @@
         app:layout_constraintHorizontal_bias="0"
         app:layout_constraintStart_toEndOf="@id/avatar"
         app:layout_constraintTop_toTopOf="@id/avatar"
+        app:layout_constraintWidth_default="wrap"
         tools:text="Rick" />
 
     <TextView
+        android:id="@+id/avatar_placeholder"
         style="@style/AvatarPlaceholder"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -62,6 +66,7 @@
         tools:text="@tools:sample/lorem/random" />
 
     <TextView
+        android:id="@+id/time"
         style="ContactText.Id"
         android:layout_width="0dp"
         android:layout_height="0dp"

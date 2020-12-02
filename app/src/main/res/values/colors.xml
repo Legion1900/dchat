@@ -11,6 +11,7 @@
     <color name="white">#FFFFFFFF</color>
     <color name="charcoal">#454545</color>
     <color name="pigeon">#C2C2C2</color>
+    <color name="earl_grey">#D4D4D4</color>
     <color name="apple">#2AD12A</color>
     <color name="leaf">#25B825</color>
 </resources>
