@@ -10,6 +10,7 @@ import com.legion1900.dchat.domain.chat.usecase.ErrorLoadingAvatar
 import com.legion1900.dchat.domain.chat.usecase.GetChatsUseCase
 import com.legion1900.dchat.domain.chat.usecase.NewChat
 import com.legion1900.dchat.domain.dto.chat.ChatModel
+import com.legion1900.dchat.domain.inbox.InboxManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.domain.media.PhotoWidth
 import io.reactivex.disposables.CompositeDisposable
@@ -18,7 +19,8 @@ import java.util.concurrent.ConcurrentHashMap
 class ChatListViewModel(
     private val profileManager: ProfileManager,
     private val getChatsUseCase: GetChatsUseCase,
-    private val photoRepo: PhotoRepo
+    private val photoRepo: PhotoRepo,
+    private val inboxManager: InboxManager
 ) : ViewModel() {
 
     private val chatModels = ConcurrentHashMap<String, ChatModel>()

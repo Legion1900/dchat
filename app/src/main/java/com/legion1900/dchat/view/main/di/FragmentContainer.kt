@@ -14,6 +14,7 @@ import com.legion1900.dchat.domain.contact.AddContactUseCase
 import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.contact.FindContactUseCase
 import com.legion1900.dchat.domain.contact.LoadAvatarsUseCase
+import com.legion1900.dchat.domain.inbox.InboxManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.auth.signin.EnterMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
@@ -97,7 +98,8 @@ class FragmentContainer(
                 chatListVmProvider(
                     { resolve(GetChatsUseCase::class)!! },
                     { chatContainer.resolve(ProfileManager::class)!! },
-                    { chatContainer.resolve(PhotoRepo::class)!! }
+                    { chatContainer.resolve(PhotoRepo::class)!! },
+                    { chatContainer.resolve(InboxManager::class)!! },
                 )
             }
             AddContactViewModel::class.java -> getPair {

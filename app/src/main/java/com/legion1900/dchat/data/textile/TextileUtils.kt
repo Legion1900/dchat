@@ -2,7 +2,6 @@ package com.legion1900.dchat.data.textile
 
 import io.textile.pb.Model
 import io.textile.textile.Handlers
-import java.lang.Exception
 
 fun dataHandler(
     onComplete: (ByteArray?, String) -> Unit,
@@ -32,5 +31,21 @@ fun blockHandler(
         override fun onError(e: Exception) {
             onError(e)
         }
+    }
+}
+
+fun errorHandler(
+    onComplete: () -> Unit,
+    onError: (Exception) -> Unit
+): Handlers.ErrorHandler {
+    return object : Handlers.ErrorHandler {
+        override fun onComplete() {
+            onComplete()
+        }
+
+        override fun onError(e: Exception) {
+            onError(e)
+        }
+
     }
 }

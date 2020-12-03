@@ -10,6 +10,7 @@ import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.chat.*
 import com.legion1900.dchat.domain.contact.ContactManager
+import com.legion1900.dchat.domain.inbox.InboxManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.main.di.providers.*
 import kotlin.reflect.KClass
@@ -73,7 +74,9 @@ class ChatContainer(
 
         ChatModelConverter::class to chatModelConverterProvider { resolve()!! },
 
-        MessageEventBus::class to messageEventBusProvider({ resolve()!! }, { resolve()!! })
+        MessageEventBus::class to messageEventBusProvider({ resolve()!! }, { resolve()!! }),
+
+        InboxManager::class to inboxManagerProvider { resolve()!! }
     )
 
     override fun <T : Any> resolve(klass: KClass<T>): T? = dependencyProvider[klass]

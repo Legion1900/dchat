@@ -12,6 +12,7 @@ import com.legion1900.dchat.data.chat.abs.JsonSchemaReader
 import com.legion1900.dchat.data.chat.impl.ChatModelConverterImpl
 import com.legion1900.dchat.data.chat.impl.JsonSchemaReaderImpl
 import com.legion1900.dchat.data.contact.TextileContactManager
+import com.legion1900.dchat.data.inbox.TextileInboxManager
 import com.legion1900.dchat.data.media.TextilePhotoRepo
 import com.legion1900.dchat.data.textile.abs.TextileEventBus
 import com.legion1900.dchat.data.textile.abs.TextileProxy
@@ -21,6 +22,7 @@ import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
 import com.legion1900.dchat.domain.chat.*
 import com.legion1900.dchat.domain.contact.ContactManager
+import com.legion1900.dchat.domain.inbox.InboxManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.main.di.Provider
 import io.textile.textile.BaseTextileEventListener
@@ -154,4 +156,8 @@ fun messageEventBusProvider(
     threadFileRepo: () -> ThreadFileRepo
 ): Provider<MessageEventBus> {
     return Provider { TextileMessageBus(proxy(), threadFileRepo()) }
+}
+
+fun inboxManagerProvider(proxy: () -> TextileProxy): Provider<InboxManager> {
+    return Provider { TextileInboxManager(proxy()) }
 }

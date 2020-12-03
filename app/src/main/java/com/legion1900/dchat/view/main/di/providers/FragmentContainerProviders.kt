@@ -11,6 +11,7 @@ import com.legion1900.dchat.domain.app.TmpFileRepo
 import com.legion1900.dchat.domain.chat.*
 import com.legion1900.dchat.domain.chat.usecase.*
 import com.legion1900.dchat.domain.contact.*
+import com.legion1900.dchat.domain.inbox.InboxManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.view.auth.signin.EnterMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
@@ -106,9 +107,10 @@ fun createProfileVmProvider(
 fun chatListVmProvider(
     getChat: () -> GetChatsUseCase,
     profileManager: () -> ProfileManager,
-    photoRepo: () -> PhotoRepo
+    photoRepo: () -> PhotoRepo,
+    inboxManager: () -> InboxManager
 ): Provider<ChatListViewModel> {
-    return Provider { ChatListViewModel(profileManager(), getChat(), photoRepo()) }
+    return Provider { ChatListViewModel(profileManager(), getChat(), photoRepo(), inboxManager()) }
 }
 
 fun addContactVmProvider(
