@@ -38,6 +38,10 @@ class ChatListFragment : Fragment() {
 
     private lateinit var requestManager: RequestManager
 
+    private val cafeFragment = CafeDataDialog.newInstance { url, token ->
+        viewModel.registerCafe(url, token)
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         container = ChatApplication.newFragmentContainer(ChatListViewModel::class.java)
@@ -78,6 +82,12 @@ class ChatListFragment : Fragment() {
             drawer.getHeaderView(0).apply {
                 findViewById<ImageView>(R.id.avatar).clipToOutline = true
                 findViewById<TextView>(R.id.id).setOnClickListener(::onUserIdClick)
+            }
+            drawer.setNavigationItemSelectedListener { item ->
+                if (item.itemId == R.id.item_register_cafe) {
+                    cafeFragment.show(childFragmentManager, "CafeDialogTag")
+                    true
+                } else false
             }
         }
     }
@@ -124,6 +134,9 @@ class ChatListFragment : Fragment() {
                     it.text = id
                 }
             }
+            registrationResult.observe(viewLifecycleOwner) { event ->
+                event.getIfNotHandled()?.let { showCafeRegMsg(it) }
+            }
         }
     }
 
@@ -145,5 +158,13 @@ class ChatListFragment : Fragment() {
         copyToClipboard(id)
         Toast.makeText(requireContext(), "ID copied to clipboard", Toast.LENGTH_SHORT)
             .show()
+    }
+
+    private fun showCafeRegMsg(result: RegistrationResult) {
+        val msg = when (result) {
+            RegistrationResult.SUCCESS -> "Cafe added"
+            RegistrationResult.FAILURE -> "Failed to register on cafe"
+        }
+        Toast.makeText(requireContext(), msg, Toast.LENGTH_LONG).show()
     }
 }

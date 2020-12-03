@@ -45,6 +45,9 @@
 
     <!-- ChatListFragment -->
     <string name="chat_list_add_cafe_item">Register cafe</string>
+    <string name="chat_list_cafe_url_hint">Cafe URL</string>
+    <string name="chat_list_cafe_token_hint">Cafe token</string>
+    <string name="chat_list_register_btn">Connect</string>
 
     <!-- EnterMnemonicFragment -->
     <string name="enter_mnemonic_toolbar_title">Enter mnemonic</string>

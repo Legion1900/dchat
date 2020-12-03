@@ -13,6 +13,7 @@ import com.legion1900.dchat.domain.dto.chat.ChatModel
 import com.legion1900.dchat.domain.inbox.InboxManager
 import com.legion1900.dchat.domain.media.PhotoRepo
 import com.legion1900.dchat.domain.media.PhotoWidth
+import com.legion1900.dchat.view.util.SingleEvent
 import io.reactivex.disposables.CompositeDisposable
 import java.util.concurrent.ConcurrentHashMap
 
@@ -36,7 +37,14 @@ class ChatListViewModel(
     private val _userAvatar = MutableLiveData<ByteArray>()
     val userAvatar: LiveData<ByteArray> = _userAvatar
 
+    private val _registrationResult = MutableLiveData<SingleEvent<RegistrationResult>>()
+    val registrationResult: LiveData<SingleEvent<RegistrationResult>> = _registrationResult
+
     private val disposable = CompositeDisposable()
+
+    override fun onCleared() {
+        disposable.dispose()
+    }
 
     fun loadProfileInfo() {
         profileManager.getCurrentAccount()
@@ -50,13 +58,6 @@ class ChatListViewModel(
             }.let(disposable::add)
     }
 
-    private fun loadAvatar(avatarId: String) {
-        photoRepo.getPhoto(avatarId, PhotoWidth.SMALL)
-            .subscribe(_userAvatar::postValue) { e ->
-                Log.e("enigma", "error loading user avatar", e)
-            }.let(disposable::add)
-    }
-
     fun loadChatList() {
         getChatsUseCase.getChats()
             .subscribe { event ->
@@ -67,6 +68,17 @@ class ChatListViewModel(
                 }
                 _chatList.postValue(chatModels.values.toList())
             }.let(disposable::add)
+    }
+
+    fun registerCafe(url: String, token: String) {
+        inboxManager.registerInbox(url, token)
+            .subscribe(
+                { _registrationResult.postValue(SingleEvent(RegistrationResult.SUCCESS)) },
+                {
+                    Log.e("enigma", "cafe registration failure", it)
+                    _registrationResult.postValue(SingleEvent(RegistrationResult.FAILURE))
+                }
+            ).let(disposable::add)
     }
 
     private fun handleNewChat(model: ChatModel) {
@@ -86,7 +98,14 @@ class ChatListViewModel(
         )
     }
 
-    override fun onCleared() {
-        disposable.dispose()
+    private fun loadAvatar(avatarId: String) {
+        photoRepo.getPhoto(avatarId, PhotoWidth.SMALL)
+            .subscribe(_userAvatar::postValue) { e ->
+                Log.e("enigma", "error loading user avatar", e)
+            }.let(disposable::add)
     }
+}
+
+enum class RegistrationResult {
+    SUCCESS, FAILURE
 }
