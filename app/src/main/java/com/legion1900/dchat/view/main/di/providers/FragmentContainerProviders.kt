@@ -12,6 +12,7 @@ import com.legion1900.dchat.domain.chat.*
 import com.legion1900.dchat.domain.chat.usecase.*
 import com.legion1900.dchat.domain.contact.*
 import com.legion1900.dchat.domain.media.PhotoRepo
+import com.legion1900.dchat.view.auth.signin.EnterMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
@@ -137,4 +138,8 @@ fun messageListVmProvider(
     getMsg: () -> GetMessagesUseCase
 ): Provider<MessageListViewModel> {
     return Provider { MessageListViewModel(sendMsgUc(), getMsg()) }
+}
+
+fun enterMnemonicVmProvider(uc: () -> CreateProfileUseCase): Provider<EnterMnemonicViewModel> {
+    return Provider{ EnterMnemonicViewModel(uc()) }
 }

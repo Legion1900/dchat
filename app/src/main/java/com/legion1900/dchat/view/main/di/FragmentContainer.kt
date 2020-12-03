@@ -15,6 +15,7 @@ import com.legion1900.dchat.domain.contact.ContactManager
 import com.legion1900.dchat.domain.contact.FindContactUseCase
 import com.legion1900.dchat.domain.contact.LoadAvatarsUseCase
 import com.legion1900.dchat.domain.media.PhotoRepo
+import com.legion1900.dchat.view.auth.signin.EnterMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createmnemonic.CreateMnemonicViewModel
 import com.legion1900.dchat.view.auth.signup.createprofile.CreateProfileViewModel
 import com.legion1900.dchat.view.chat.addcontact.AddContactViewModel
@@ -123,6 +124,11 @@ class FragmentContainer(
                     { resolve(SendMessageUseCase::class)!! },
                     { resolve(GetMessagesUseCase::class)!! }
                 )
+            }
+            EnterMnemonicViewModel::class.java -> getPair {
+                enterMnemonicVmProvider {
+                    resolve(CreateProfileUseCase::class)!!
+                }
             }
             else -> throw Exception("Can not create requested ViewModel ${vmClass.name}")
         }
