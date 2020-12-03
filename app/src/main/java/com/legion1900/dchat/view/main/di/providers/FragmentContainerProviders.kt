@@ -4,6 +4,8 @@ import com.legion1900.dchat.data.account.TextileMnemonicGenerator
 import com.legion1900.dchat.domain.account.MnemonicGenerator
 import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
+import com.legion1900.dchat.domain.account.usecase.CreateProfileImpl
+import com.legion1900.dchat.domain.account.usecase.CreateProfileUseCase
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
 import com.legion1900.dchat.domain.chat.*
@@ -73,6 +75,13 @@ fun getMessagesUcProvider(
     return Provider { GetMessageImpl(msgBus(), msgManager(), contactManager()) }
 }
 
+fun createProfileUcProvider(
+    registrationManager: () -> RegistrationManager,
+    appStateRepo: () -> AppStateRepo
+): Provider<CreateProfileUseCase> {
+    return Provider { CreateProfileImpl(registrationManager(), appStateRepo()) }
+}
+
 /*
 * ViewModels provision
 * */
@@ -84,13 +93,12 @@ fun createMnemonicVmProvider(
 }
 
 fun createProfileVmProvider(
-    manager: () -> RegistrationManager,
-    appStateRepo: () -> AppStateRepo,
+    createProfileUc: () -> CreateProfileUseCase,
     fileRepo: () -> TmpFileRepo,
     profileManager: () -> ProfileManager
 ): Provider<CreateProfileViewModel> {
     return Provider {
-        CreateProfileViewModel(manager(), appStateRepo(), fileRepo(), profileManager())
+        CreateProfileViewModel(createProfileUc(), fileRepo(), profileManager())
     }
 }
 

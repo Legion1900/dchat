@@ -4,19 +4,16 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.legion1900.dchat.domain.account.ProfileManager
-import com.legion1900.dchat.domain.account.RegistrationManager
-import com.legion1900.dchat.domain.app.AppStateRepo
+import com.legion1900.dchat.domain.account.usecase.CreateProfileUseCase
 import com.legion1900.dchat.domain.app.TmpFileRepo
 import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
-import java.io.File
 import java.io.InputStream
 
 class CreateProfileViewModel(
-    private val registrationManager: RegistrationManager,
-    private val appStateRepo: AppStateRepo,
+    private val createProfileUseCase: CreateProfileUseCase,
     private val fileRepo: TmpFileRepo,
     private val profileManager: ProfileManager
 ) : ViewModel() {
@@ -35,11 +32,10 @@ class CreateProfileViewModel(
     fun isNameValid(name: String): Boolean = name.isNotEmpty()
 
     fun createAccount(mnemonic: List<String>, name: String) {
-        registrationManager.createAccount(mnemonic)
+        createProfileUseCase.createProfile(mnemonic)
             .andThen(setAvatar())
             .andThen { profileManager.setName(name).subscribe(it) }
             .subscribe {
-                appStateRepo.setLoggedIn(true)
                 _isCreated.postValue(true)
             }.let(disposables::add)
     }

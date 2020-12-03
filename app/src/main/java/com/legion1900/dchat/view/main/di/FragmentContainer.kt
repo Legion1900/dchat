@@ -5,6 +5,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.legion1900.dchat.domain.account.MnemonicGenerator
 import com.legion1900.dchat.domain.account.ProfileManager
 import com.legion1900.dchat.domain.account.RegistrationManager
+import com.legion1900.dchat.domain.account.usecase.CreateProfileUseCase
 import com.legion1900.dchat.domain.app.AppStateRepo
 import com.legion1900.dchat.domain.app.TmpFileRepo
 import com.legion1900.dchat.domain.chat.*
@@ -62,6 +63,10 @@ class FragmentContainer(
             { chatContainer.resolve(MessageEventBus::class)!! },
             { chatContainer.resolve(ContactManager::class)!! }
         ),
+        CreateProfileUseCase::class to createProfileUcProvider(
+            { chatContainer.resolve(RegistrationManager::class)!! },
+            { activityContainer.resolve(AppStateRepo::class)!! }
+        ),
 
         ViewModelProvider.Factory::class to viewModelFactoryProvider(
             createViewModelProvider()
@@ -82,8 +87,7 @@ class FragmentContainer(
             }
             CreateProfileViewModel::class.java -> getPair {
                 createProfileVmProvider(
-                    { chatContainer.resolve(RegistrationManager::class)!! },
-                    { activityContainer.resolve(AppStateRepo::class)!! },
+                    { resolve(CreateProfileUseCase::class)!! },
                     { activityContainer.resolve(TmpFileRepo::class)!! },
                     { chatContainer.resolve(ProfileManager::class)!! }
                 )
