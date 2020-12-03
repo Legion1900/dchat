@@ -97,10 +97,10 @@ class ChatListFragment : Fragment() {
     @SuppressLint("CutPasteId")
     private fun observeVm() {
         viewModel.apply {
-            chatList.observe(this@ChatListFragment) { chats ->
+            chatList.observe(viewLifecycleOwner) { chats ->
                 adapter.submitList(chats)
             }
-            userAvatar.observe(this@ChatListFragment) { avatar ->
+            userAvatar.observe(viewLifecycleOwner) { avatar ->
                 _binding?.drawer?.getHeaderView(0)?.apply {
                     findViewById<ImageView>(R.id.avatar).let {
                         requestManager.asBitmap()
@@ -110,14 +110,16 @@ class ChatListFragment : Fragment() {
                     findViewById<TextView>(R.id.avatar_placeholder).isVisible = false
                 }
             }
-            userName.observe(this@ChatListFragment) { name ->
+            userName.observe(viewLifecycleOwner) { name ->
                 _binding?.drawer?.getHeaderView(0)?.apply {
                     findViewById<TextView>(R.id.name).text = name
-                    findViewById<TextView>(R.id.avatar_placeholder).text = name.first().toString()
+                    name.firstOrNull()?.let {
+                        findViewById<TextView>(R.id.avatar_placeholder).text = it.toString()
+                    }
                     findViewById<ImageView>(R.id.avatar).isVisible = true
                 }
             }
-            userId.observe(this@ChatListFragment) { id ->
+            userId.observe(viewLifecycleOwner) { id ->
                 _binding?.drawer?.getHeaderView(0)?.findViewById<TextView>(R.id.id)?.let {
                     it.text = id
                 }
