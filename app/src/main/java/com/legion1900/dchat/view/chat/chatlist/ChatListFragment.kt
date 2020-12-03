@@ -45,7 +45,6 @@ class ChatListFragment : Fragment() {
         requestManager = Glide.with(this)
         setHasOptionsMenu(true)
         viewModel.loadProfileInfo()
-        observeVm()
     }
 
     override fun onCreateView(
@@ -71,6 +70,7 @@ class ChatListFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        observeVm()
         binding.apply {
             createChatBtn.setOnClickListener(::onAddChatClick)
             chatList.layoutManager = LinearLayoutManager(requireContext())
