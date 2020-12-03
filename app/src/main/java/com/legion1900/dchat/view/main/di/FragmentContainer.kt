@@ -91,7 +91,8 @@ class FragmentContainer(
             ChatListViewModel::class.java -> getPair {
                 chatListVmProvider(
                     { resolve(GetChatsUseCase::class)!! },
-                    { chatContainer.resolve(ProfileManager::class)!! }
+                    { chatContainer.resolve(ProfileManager::class)!! },
+                    { chatContainer.resolve(PhotoRepo::class)!! }
                 )
             }
             AddContactViewModel::class.java -> getPair {

@@ -1,19 +1,27 @@
 package com.legion1900.dchat.view.chat.chatlist
 
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.util.Base64
 import android.util.Log
 import android.view.*
+import android.widget.ImageView
+import android.widget.TextView
+import android.widget.Toast
+import androidx.core.view.children
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.bumptech.glide.Glide
 import com.legion1900.dchat.R
 import com.legion1900.dchat.databinding.FragmentChatListBinding
 import com.legion1900.dchat.view.main.ChatApplication
 import com.legion1900.dchat.view.main.di.FragmentContainer
 import com.legion1900.dchat.view.util.ToolbarUtil
+import com.legion1900.dchat.view.util.ext.copyToClipboard
 
 class ChatListFragment : Fragment() {
 
@@ -66,6 +74,10 @@ class ChatListFragment : Fragment() {
             createChatBtn.setOnClickListener(::onAddChatClick)
             chatList.layoutManager = LinearLayoutManager(requireContext())
             chatList.adapter = adapter
+            drawer.getHeaderView(0).apply {
+                findViewById<ImageView>(R.id.avatar).clipToOutline = true
+                findViewById<TextView>(R.id.id).setOnClickListener(::onUserIdClick)
+            }
         }
     }
 
@@ -81,10 +93,34 @@ class ChatListFragment : Fragment() {
         _binding = null
     }
 
+    @SuppressLint("CutPasteId")
     private fun observeVm() {
         viewModel.apply {
             chatList.observe(this@ChatListFragment) { chats ->
                 adapter.submitList(chats)
+            }
+            userAvatar.observe(this@ChatListFragment) { avatar ->
+                _binding?.drawer?.apply {
+                    findViewById<ImageView>(R.id.avatar).let {
+                        Glide.with(it)
+                            .asBitmap()
+                            .load(avatar)
+                            .into(it)
+                    }
+                    findViewById<TextView>(R.id.avatar_placeholder).isVisible = false
+                }
+            }
+            userName.observe(this@ChatListFragment) { name ->
+                _binding?.drawer?.apply {
+                    findViewById<TextView>(R.id.name).text = name
+                    findViewById<TextView>(R.id.avatar_placeholder).text = name.first().toString()
+                    findViewById<ImageView>(R.id.avatar).isVisible = true
+                }
+            }
+            userId.observe(this@ChatListFragment) { id ->
+                _binding?.drawer?.findViewById<TextView>(R.id.id)?.let {
+                    it.text = id
+                }
             }
         }
     }
@@ -100,5 +136,12 @@ class ChatListFragment : Fragment() {
         val avatar = avatarBytes?.let { Base64.encodeToString(it, Base64.DEFAULT) }
         val directions = ChatListFragmentDirections.actionChatListToMessageList(id, name, avatar)
         findNavController().navigate(directions)
+    }
+
+    private fun onUserIdClick(v: View) {
+        val id = (v as TextView).text.toString()
+        copyToClipboard(id)
+        Toast.makeText(requireContext(), "ID copied to clipboard", Toast.LENGTH_SHORT)
+            .show()
     }
 }

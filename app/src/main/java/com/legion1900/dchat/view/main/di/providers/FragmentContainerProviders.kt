@@ -97,8 +97,9 @@ fun createProfileVmProvider(
 fun chatListVmProvider(
     getChat: () -> GetChatsUseCase,
     profileManager: () -> ProfileManager,
+    photoRepo: () -> PhotoRepo
 ): Provider<ChatListViewModel> {
-    return Provider { ChatListViewModel(profileManager(), getChat()) }
+    return Provider { ChatListViewModel(profileManager(), getChat(), photoRepo()) }
 }
 
 fun addContactVmProvider(
