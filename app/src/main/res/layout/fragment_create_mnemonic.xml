@@ -42,6 +42,18 @@
         </LinearLayout>
     </ScrollView>
 
+    <TextView
+        android:id="@+id/copy_btn"
+        style="@style/DefaultText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/small_margin"
+        android:text="@string/create_mnemonic_copy_button"
+        app:layout_constrainedWidth="true"
+        app:layout_constraintBottom_toTopOf="@id/continue_btn"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
     <Button
         android:id="@+id/continue_btn"
         style="@style/DefaultButton.Primary"

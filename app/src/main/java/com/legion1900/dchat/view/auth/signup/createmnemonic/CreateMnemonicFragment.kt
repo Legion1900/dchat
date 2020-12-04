@@ -2,6 +2,7 @@ package com.legion1900.dchat.view.auth.signup.createmnemonic
 
 import android.os.Bundle
 import android.view.*
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.navigation.fragment.findNavController
@@ -11,6 +12,7 @@ import com.legion1900.dchat.view.auth.signup.util.MnemonicChipFactory
 import com.legion1900.dchat.view.main.ChatApplication
 import com.legion1900.dchat.view.main.di.FragmentContainer
 import com.legion1900.dchat.view.util.ToolbarUtil
+import com.legion1900.dchat.view.util.ext.copyToClipboard
 
 class CreateMnemonicFragment : Fragment() {
 
@@ -39,7 +41,7 @@ class CreateMnemonicFragment : Fragment() {
         inflater: LayoutInflater,
         container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
+    ): View {
         _binding = FragmentCreateMnemonicBinding.inflate(inflater, container, false)
         setHasOptionsMenu(true)
         toolbarUtil.setupToolbar(binding.toolbar)
@@ -61,6 +63,7 @@ class CreateMnemonicFragment : Fragment() {
             }
         }
         binding.continueBtn.setOnClickListener(::onContinueClick)
+        binding.copyBtn.setOnClickListener(::onCopyClick)
     }
 
     override fun onDestroyView() {
@@ -127,5 +130,12 @@ class CreateMnemonicFragment : Fragment() {
         val words = getCurrentMnemonic().toTypedArray()
         val direction = CreateMnemonicFragmentDirections.actionCreateMnemonicToCheckMnemonic(words)
         findNavController().navigate(direction)
+    }
+
+    private fun onCopyClick(v: View) {
+        val mnemonic = getCurrentMnemonic().joinToString(" ")
+        copyToClipboard(mnemonic)
+        Toast.makeText(requireContext(), "Copied to clipboard", Toast.LENGTH_SHORT)
+            .show()
     }
 }

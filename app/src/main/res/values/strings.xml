@@ -11,6 +11,7 @@
     <string name="create_mnemonic_manual">We do not use login and password to identify you. Instead we use mnemonic phrases. Write down secret phrase and show it to no one.</string>
     <string name="create_mnemonic_length_12">12 words</string>
     <string name="create_mnemonic_length_24">24 words</string>
+    <string name="create_mnemonic_copy_button"><u>Click to copy</u></string>
     <string name="create_mnemonic_continue_btn">I have written it down</string>
 
     <!-- CheckMnemonicFragment -->
