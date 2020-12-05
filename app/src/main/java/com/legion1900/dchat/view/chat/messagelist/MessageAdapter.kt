@@ -6,12 +6,12 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.legion1900.dchat.databinding.ItemMessageBinding
-import com.legion1900.dchat.domain.dto.message.MessageModel
+import com.legion1900.dchat.domain.dto.message.NewMessageModelEvent
 import com.legion1900.dchat.domain.dto.message.TextModel
 import java.text.SimpleDateFormat
 import java.util.*
 
-class MessageAdapter : ListAdapter<MessageModel, MessageAdapter.MessageHolder>(diffCallback) {
+class MessageAdapter : ListAdapter<NewMessageModelEvent, MessageAdapter.MessageHolder>(diffCallback) {
 
     private val dateFormat = SimpleDateFormat("HH:mm", Locale.getDefault())
 
@@ -25,7 +25,7 @@ class MessageAdapter : ListAdapter<MessageModel, MessageAdapter.MessageHolder>(d
         bind(getItem(position), holder.binding)
     }
 
-    fun bind(msg: MessageModel, binding: ItemMessageBinding) {
+    fun bind(msg: NewMessageModelEvent, binding: ItemMessageBinding) {
         binding.apply {
             name.text = msg.senderName
             avatarPlaceholder.text = msg.senderName.first().toString()
@@ -38,12 +38,12 @@ class MessageAdapter : ListAdapter<MessageModel, MessageAdapter.MessageHolder>(d
     class MessageHolder(val binding: ItemMessageBinding) : RecyclerView.ViewHolder(binding.root)
 
     private companion object {
-        val diffCallback = object : DiffUtil.ItemCallback<MessageModel>() {
-            override fun areItemsTheSame(oldItem: MessageModel, newItem: MessageModel): Boolean {
+        val diffCallback = object : DiffUtil.ItemCallback<NewMessageModelEvent>() {
+            override fun areItemsTheSame(oldItem: NewMessageModelEvent, newItem: NewMessageModelEvent): Boolean {
                 return oldItem.timestamp == newItem.timestamp
             }
 
-            override fun areContentsTheSame(oldItem: MessageModel, newItem: MessageModel): Boolean {
+            override fun areContentsTheSame(oldItem: NewMessageModelEvent, newItem: NewMessageModelEvent): Boolean {
                 return oldItem == newItem
             }
         }

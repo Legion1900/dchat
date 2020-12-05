@@ -6,12 +6,12 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.legion1900.dchat.domain.chat.usecase.GetMessagesUseCase
 import com.legion1900.dchat.domain.chat.usecase.SendMessageUseCase
-import com.legion1900.dchat.domain.dto.message.MessageModel
+import com.legion1900.dchat.domain.dto.message.MessageDeletedModelEvent
+import com.legion1900.dchat.domain.dto.message.MessageModelEvent
+import com.legion1900.dchat.domain.dto.message.NewMessageModelEvent
 import com.legion1900.dchat.view.util.SingleEvent
 import io.reactivex.disposables.CompositeDisposable
-import java.util.*
 import java.util.concurrent.ConcurrentSkipListSet
-import kotlin.Comparator
 
 class MessageListViewModel(
     private val sendMsg: SendMessageUseCase,
@@ -19,8 +19,8 @@ class MessageListViewModel(
 ) : ViewModel() {
 
     private var isLoadingMsg = false
-    private val msgLiveData = MutableLiveData<List<MessageModel>>()
-    private val messages = ConcurrentSkipListSet<MessageModel> { o1, o2 ->
+    private val msgLiveData = MutableLiveData<List<NewMessageModelEvent>>()
+    private val messages = ConcurrentSkipListSet<NewMessageModelEvent> { o1, o2 ->
         val t1 = o1.timestamp
         val t2 = o2.timestamp
         when {
@@ -41,11 +41,11 @@ class MessageListViewModel(
             .let(disposable::add)
     }
 
-    fun loadMessages(chatId: String): LiveData<List<MessageModel>> {
+    fun loadMessages(chatId: String): LiveData<List<NewMessageModelEvent>> {
         if (!isLoadingMsg) {
             isLoadingMsg = true
             getMsg.getMessages(chatId).subscribe { model ->
-                messages.add(model)
+                handleModel(model)
                 Log.d("enigma", "messages: $messages")
                 msgLiveData.postValue(messages.toList())
             }.let(disposable::add)
@@ -53,5 +53,11 @@ class MessageListViewModel(
         return msgLiveData
     }
 
+    private fun handleModel(model: MessageModelEvent) {
+        when (model) {
+            is NewMessageModelEvent -> messages.add(model)
+            is MessageDeletedModelEvent -> Log.d("enigma", "remove result: ${messages.removeIf { it.id == model.id }}")
+        }
+    }
 
 }
