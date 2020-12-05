@@ -9,5 +9,6 @@ class SendMessageImpl(private val msgManager: MessageManager) : SendMessageUseCa
     override fun sendMessage(chatId: String, text: String, photo: ByteArray?): Completable {
         val msg = SendText(text)
         return msgManager.sendMessage(chatId, msg)
+            .flatMapCompletable { Completable.complete() }
     }
 }

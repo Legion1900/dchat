@@ -76,10 +76,10 @@ class TextileChatRepo(
     private fun addChatOwner(aclId: String): Completable {
         return profileManager.getCurrentAccount()
             .map { it.id }
-            .flatMapCompletable { ownerId ->
+            .flatMap { ownerId ->
                 val acl = AclJson(listOf(ownerId))
                 fileRepo.insertData(acl, aclId)
-            }
+            }.flatMapCompletable { Completable.complete() }
     }
 
     private fun newMediaThread(): Single<Model.Thread> {

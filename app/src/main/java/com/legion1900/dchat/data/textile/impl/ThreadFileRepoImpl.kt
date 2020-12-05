@@ -44,12 +44,12 @@ class ThreadFileRepoImpl(private val proxy: TextileProxy, private val gson: Gson
         }
     }
 
-    override fun <T : ThreadFile> insertData(data: T, threadId: String): Completable {
-        return proxy.instance.flatMapCompletable { textile ->
-            Completable.create { emitter ->
+    override fun <T : ThreadFile> insertData(data: T, threadId: String): Single<String> {
+        return proxy.instance.flatMap { textile ->
+            Single.create { emitter ->
                 val str = gson.toJson(data)
                 val encoded = String(Base64.encode(str.toByteArray(), Base64.DEFAULT))
-                val handler = blockHandler({ emitter.onComplete() }, { emitter.onError(it) })
+                val handler = blockHandler({ emitter.onSuccess(it!!.id) }, { emitter.onError(it) })
                 textile.files.addData(encoded, threadId, null, handler)
             }
         }

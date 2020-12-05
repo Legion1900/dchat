@@ -13,9 +13,7 @@ import com.legion1900.dchat.domain.chat.SendPhoto
 import com.legion1900.dchat.domain.chat.SendText
 import com.legion1900.dchat.domain.dto.message.Message
 import com.legion1900.dchat.domain.media.PhotoRepo
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Completable
-import io.reactivex.Flowable
+import io.reactivex.*
 import io.reactivex.Observable
 import java.util.*
 
@@ -34,7 +32,7 @@ class TextileMessageManager(
         .map { it.id }
         .cache()
 
-    override fun sendMessage(chatId: String, msg: SendMessage): Completable {
+    override fun sendMessage(chatId: String, msg: SendMessage): Single<String> {
         return when (msg) {
             is SendText -> sendText(msg, chatId)
             is SendPhoto -> sendPhoto(msg, chatId)
@@ -55,25 +53,25 @@ class TextileMessageManager(
             .map { converter.convert(it) }
     }
 
-    private fun sendText(text: SendText, chatId: String): Completable {
+    private fun sendText(text: SendText, chatId: String): Single<String> {
         return sendMessage(chatId, text.text)
     }
 
-    private fun sendPhoto(photo: SendPhoto, chatId: String): Completable {
+    private fun sendPhoto(photo: SendPhoto, chatId: String): Single<String> {
         return proxy.instance.flatMap { api ->
             val mediaId = keyUtil.getMediaId(api.threads[chatId].key)
             photoRepo.addPhoto(mediaId, photo.file)
-        }.flatMapCompletable { photoId ->
+        }.flatMap { photoId ->
             val text = photo.text ?: ""
             sendMessage(chatId, text, photoId)
         }
     }
 
-    private fun sendMessage(chatId: String, text: String, photoId: String? = null): Completable {
+    private fun sendMessage(chatId: String, text: String, photoId: String? = null): Single<String> {
         val type = if (photoId == null) ContentTypeJson.TEXT else ContentTypeJson.PHOTO
         val content = ContentJson(text, photoId)
         return senderId.map { MessageJson(type, content, it, getTimestamp()) }
-            .flatMapCompletable { threadFileRepo.insertData(it, chatId) }
+            .flatMap { threadFileRepo.insertData(it, chatId) }
     }
 
     private fun getTimestamp() = Calendar.getInstance().time.time

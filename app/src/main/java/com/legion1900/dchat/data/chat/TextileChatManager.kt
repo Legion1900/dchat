@@ -25,7 +25,8 @@ class TextileChatManager(
                 mediaId to avatarId
             }.flatMapCompletable { (mediaId, avatarId) ->
                 photoRepo.addPhoto(mediaId, file)
-                    .flatMapCompletable { fileRepo.insertData(AvatarJson(it), avatarId) }
+                    .flatMap { fileRepo.insertData(AvatarJson(it), avatarId) }
+                    .flatMapCompletable { Completable.complete() }
             }
     }
 }

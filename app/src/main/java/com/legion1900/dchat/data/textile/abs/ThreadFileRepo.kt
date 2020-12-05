@@ -1,6 +1,5 @@
 package com.legion1900.dchat.data.textile.abs
 
-import io.reactivex.Completable
 import io.reactivex.Single
 
 /**
@@ -16,5 +15,8 @@ interface ThreadFileRepo {
 
     fun <T : ThreadFile> getFile(blockId: String, clazz: Class<T>): Single<T>
 
-    fun <T : ThreadFile> insertData(data: T, threadId: String): Completable
+    /**
+     * @return ID of block to which data were written
+     * */
+    fun <T : ThreadFile> insertData(data: T, threadId: String): Single<String>
 }

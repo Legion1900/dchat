@@ -51,7 +51,8 @@ class TextileAclManager(
             fileRepo.getFiles(AclJson::class.java, aclId, null, 1)
                 .map { it.data.first().participants }
                 .map { it.toMutableList().apply { add(userId) } }
-                .flatMapCompletable { fileRepo.insertData(AclJson(it), aclId) }
+                .flatMap { fileRepo.insertData(AclJson(it), aclId) }
+                .flatMapCompletable { Completable.complete() }
         }
     }
 }
