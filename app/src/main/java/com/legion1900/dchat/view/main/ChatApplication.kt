@@ -20,7 +20,7 @@ class ChatApplication : Application() {
             private set
 
         var activityContainer: ActivityContainer? = null
-        private lateinit var chatContainer: ChatContainer
+        lateinit var chatContainer: ChatContainer
 
         fun newFragmentContainer(vmClass: Class<out ViewModel>): FragmentContainer {
             return FragmentContainer(activityContainer!!, vmClass, chatContainer)

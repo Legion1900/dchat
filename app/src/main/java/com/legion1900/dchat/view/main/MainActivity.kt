@@ -34,6 +34,7 @@ class MainActivity : AppCompatActivity() {
     private fun initContainer() {
         ChatApplication.activityContainer = activityContainer {
             appContainer { ChatApplication.appContainer }
+            chatContainer { ChatApplication.chatContainer }
             directionProvider {
                 DirectionProvider {
                     if (viewModel.isLoggedIn()) {

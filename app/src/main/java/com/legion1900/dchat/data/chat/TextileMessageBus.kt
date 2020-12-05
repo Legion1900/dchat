@@ -43,7 +43,8 @@ class TextileMessageBus(
         return threadFileRepo.getFile(blockId, MessageJson::class.java)
             .map { update.threadId to it }
             .map { (chatId, msg) -> chatId to msgConverter.convert(msg) }
-            .map { (chatId, msg) -> NewMessage(chatId, msg) }
+            .map { (chatId, msg) -> NewMessage(chatId, msg) as MessageEvent }
+            .onErrorReturnItem(NotSupported)
     }
 
     private fun handleMessageDeleted(update: ThreadUpdateReceived): Single<MessageEvent> {

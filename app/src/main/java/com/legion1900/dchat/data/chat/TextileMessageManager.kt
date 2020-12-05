@@ -21,16 +21,16 @@ class TextileMessageManager(
     private val threadFileRepo: ThreadFileRepo,
     private val proxy: TextileProxy,
     private val photoRepo: PhotoRepo,
-    profileManager: ProfileManager
+    private val profileManager: ProfileManager
 ) : MessageManager {
 
     private val keyUtil = ChatKeyUtil()
 
     private val converter = MessageModelConverter()
 
-    private val senderId = profileManager.getCurrentAccount()
-        .map { it.id }
-        .cache()
+    private val senderId
+        get() = profileManager.getCurrentAccount()
+            .map { it.id }
 
     override fun sendMessage(chatId: String, msg: SendMessage): Single<String> {
         return when (msg) {
