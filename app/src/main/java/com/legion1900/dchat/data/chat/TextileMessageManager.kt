@@ -41,6 +41,12 @@ class TextileMessageManager(
         }
     }
 
+    override fun deleteMessage(id: String): Completable {
+        return proxy.instance.flatMapCompletable { api ->
+            Completable.fromRunnable { api.ignores.add(id) }
+        }
+    }
+
     override fun getMessages(chatId: String): Flowable<Message> {
         return threadFileRepo.getFiles(MessageJson::class.java, chatId, null, 1000)
             .map { it.data }

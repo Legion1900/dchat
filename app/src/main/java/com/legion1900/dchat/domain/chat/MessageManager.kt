@@ -6,5 +6,6 @@ import io.reactivex.Flowable
 
 interface MessageManager {
     fun sendMessage(chatId: String, msg: SendMessage): Completable
+    fun deleteMessage(id: String): Completable
     fun getMessages(chatId: String): Flowable<Message>
 }
