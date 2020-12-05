@@ -32,12 +32,12 @@ class TextileChatRepo(
     }
 
     override fun getChats(offset: Int, limit: Int): Single<List<Chat>> {
-        return getChatThreads()
+        return if (limit > 0) getChatThreads()
             .skip(offset.toLong())
             .concatMapSingle { chatConverter.convert(it) }
             .buffer(limit)
             .defaultIfEmpty(emptyList())
-            .firstOrError()
+            .firstOrError() else Single.just(emptyList())
     }
 
     override fun addNewChat(name: String): Single<String> {

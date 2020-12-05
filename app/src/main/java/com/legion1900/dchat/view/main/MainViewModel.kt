@@ -27,8 +27,9 @@ class MainViewModel(
         val delay = 30L
         val timeUnit = TimeUnit.SECONDS
         Observable.interval(delay, timeUnit, Schedulers.io())
+            .doOnNext { Log.d("enigma", "SYNC DONE; next in $delay $timeUnit") }
             .flatMapCompletable { syncChats.syncChats() }
-            .subscribe { Log.d("enigma", "SYNC DONE; next in $delay $timeUnit") }
+            .subscribe()
     }
 
     override fun onCleared() {
