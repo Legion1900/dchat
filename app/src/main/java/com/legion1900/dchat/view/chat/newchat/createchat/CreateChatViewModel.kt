@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import com.legion1900.dchat.domain.chat.usecase.CreateChatUseCase
 import com.legion1900.dchat.domain.chat.usecase.SetChatAvatarUseCase
 import com.legion1900.dchat.view.util.SingleEvent
+import io.reactivex.Completable
 import io.reactivex.Single
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
@@ -38,10 +39,9 @@ class CreateChatViewModel(
 
     fun createChat(name: String, memberIds: List<String>) {
         createChat.createChat(name, memberIds).flatMapCompletable { chatId ->
-            Log.d("enigma", "chat created: $chatId")
             _avatarBytes.value?.let {
                 setChatAvatarUseCase.setAvatar(chatId, it, avatarExtension!!)
-            }
+            } ?: Completable.complete()
         }.subscribe { _isFinished.postValue(SingleEvent(Unit)) }
             .let(disposables::add)
     }

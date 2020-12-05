@@ -10,6 +10,6 @@ class MessageModelConverter {
 
     fun convert(messageJson: MessageJson): Message {
         val content = contentConverter.convert(messageJson.contentType, messageJson.content)
-        return Message(content, messageJson.fromUser, messageJson.timestamp)
+        return Message(messageJson.blockId!!, content, messageJson.fromUser, messageJson.timestamp)
     }
 }

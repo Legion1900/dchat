@@ -2,18 +2,19 @@ package com.legion1900.dchat.data.textile.impl
 
 import android.util.Base64
 import com.google.gson.Gson
+import com.legion1900.dchat.data.textile.abs.TextileProxy
+import com.legion1900.dchat.data.textile.abs.ThreadFile
 import com.legion1900.dchat.data.textile.abs.ThreadFileRepo
 import com.legion1900.dchat.data.textile.abs.ThreadFiles
 import com.legion1900.dchat.data.textile.blockHandler
 import com.legion1900.dchat.data.textile.dataHandler
-import com.legion1900.dchat.data.textile.abs.TextileProxy
 import io.reactivex.Completable
 import io.reactivex.Observable
 import io.reactivex.Single
 
 class ThreadFileRepoImpl(private val proxy: TextileProxy, private val gson: Gson) : ThreadFileRepo {
 
-    override fun <T> getFiles(
+    override fun <T : ThreadFile> getFiles(
         clazz: Class<T>,
         threadId: String,
         offset: String?,
@@ -24,7 +25,10 @@ class ThreadFileRepoImpl(private val proxy: TextileProxy, private val gson: Gson
             .map { it.files.list(threadId, offset, limit.toLong()).itemsList }
             .flatMap { models ->
                 Observable.fromIterable(models)
-                    .concatMapSingle { readFile(it.getFiles(0).file.hash, clazz) }
+                    .concatMapSingle { viewFiles ->
+                        readFile(viewFiles.getFiles(0).file.hash, clazz)
+                            .doOnSuccess { it.blockId = viewFiles.block }
+                    }
                     .buffer(limit)
                     .defaultIfEmpty(emptyList())
                     .firstOrError()
@@ -32,11 +36,15 @@ class ThreadFileRepoImpl(private val proxy: TextileProxy, private val gson: Gson
             }
     }
 
-    override fun <T> getFile(hash: String, clazz: Class<T>): Single<T> {
-        return readFile(hash, clazz)
+    override fun <T : ThreadFile> getFile(blockId: String, clazz: Class<T>): Single<T> {
+        return proxy.instance.flatMap { api ->
+            val file = api.files.file(blockId).getFiles(0)
+            readFile(file.file.hash, clazz)
+                .doOnSuccess { it.blockId = blockId }
+        }
     }
 
-    override fun <T> insertData(data: T, threadId: String): Completable {
+    override fun <T : ThreadFile> insertData(data: T, threadId: String): Completable {
         return proxy.instance.flatMapCompletable { textile ->
             Completable.create { emitter ->
                 val str = gson.toJson(data)

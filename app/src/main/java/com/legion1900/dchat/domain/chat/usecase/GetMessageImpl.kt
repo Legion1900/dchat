@@ -36,7 +36,7 @@ class GetMessageImpl(
                 .toSingle(msg.senderId)
                 .map { name ->
                     val model = contentToModel(msg.content)
-                    MessageModel(name, model, msg.timestamp)
+                    MessageModel(msg.id, name, model, msg.timestamp)
                 }
         }
     }
